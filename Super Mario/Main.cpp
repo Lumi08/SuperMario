@@ -9,6 +9,7 @@ SDL_Window*	gWindow	= NULL;
 
 //Prototypes
 bool InitSDL();
+bool Update();
 void CloseSDL();
 
 using namespace::std;
@@ -17,7 +18,12 @@ int main(int argc, char* args[])
 {
 	if (InitSDL())
 	{
-		SDL_Delay(5000);
+		bool quit = false;
+
+		while (!quit)
+		{
+			quit = Update();
+		}
 	}
 
 	CloseSDL();
@@ -47,6 +53,34 @@ bool InitSDL()
 		}
 	}
 	return true;
+}
+
+bool Update()
+{
+	SDL_Event e;
+	SDL_PollEvent(&e);
+
+	switch (e.type)
+	{
+		case SDL_QUIT:
+		{
+			return true;
+			break;
+		}
+
+		case SDL_KEYUP:
+		{
+			switch (e.key.keysym.sym)
+			{
+				case SDLK_ESCAPE:
+				{
+					return true;
+				}
+			}
+		}
+	}
+
+	return false;
 }
 
 void CloseSDL()
