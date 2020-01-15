@@ -10,6 +10,8 @@ SDL_Window*	gWindow	= NULL;
 SDL_Renderer* gRenderer = NULL;
 SDL_Texture* gTexture = NULL;
 
+double gAngle = 0; 
+
 //Prototypes
 bool InitSDL();
 bool Update();
@@ -99,13 +101,20 @@ bool Update()
 			break;
 		}
 
-		case SDL_KEYUP:
+		case SDL_KEYDOWN:
 		{
 			switch (e.key.keysym.sym)
 			{
-				case SDLK_ESCAPE:
+				case SDLK_w:
 				{
-					return true;
+					gAngle += 1;
+					break;
+				}
+
+				case SDLK_s:
+				{
+					gAngle -= 1;
+					break;
 				}
 			}
 		}
@@ -120,7 +129,7 @@ void Render()
 	SDL_RenderClear(gRenderer);
 
 	SDL_Rect renderLocation = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
-	SDL_RenderCopyEx(gRenderer, gTexture, NULL, &renderLocation, 0, NULL, SDL_FLIP_NONE);
+	SDL_RenderCopyEx(gRenderer, gTexture, NULL, &renderLocation, gAngle, NULL, SDL_FLIP_NONE);
 	SDL_RenderPresent(gRenderer);
 }
 
