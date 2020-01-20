@@ -1,14 +1,18 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_mixer.h>
-#include "Constants.h"
 #include <iostream>
 #include <string>
+
+#include "Constants.h"
+#include "Commons.h"
+#include "Texture2D.h"
 
 //Globals
 SDL_Window*	gWindow	= NULL;
 SDL_Renderer* gRenderer = NULL;
-SDL_Texture* gTexture = NULL;
+
+Texture2D* gTexture = NULL;
 
 double gAngle = 0; 
 
@@ -17,8 +21,7 @@ bool InitSDL();
 bool Update();
 void CloseSDL();
 void Render();
-SDL_Texture* LoadTextureFromFile(std::string path);
-void FreeTexture();
+
 
 using namespace::std;
 
@@ -78,8 +81,8 @@ bool InitSDL()
 			return false;
 		}
 
-		gTexture = LoadTextureFromFile("Images/test.bmp");
-		if(gTexture == NULL)
+		gTexture = new Texture2D(gRenderer);
+		if (!gTexture->LoadFromFile("Images/test.bmp"))
 		{
 			return false;
 		}
@@ -125,57 +128,25 @@ bool Update()
 
 void Render()
 {
-	SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
+	SDL_SetRenderDrawColor(gRenderer, 0x00, 0x00, 0x00, 0x00);
 	SDL_RenderClear(gRenderer);
 
-	SDL_Rect renderLocation = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
-	SDL_RenderCopyEx(gRenderer, gTexture, NULL, &renderLocation, gAngle, NULL, SDL_FLIP_NONE);
+	gTexture->Render(Vector2D(), SDL_FLIP_NONE, gAngle);
+
 	SDL_RenderPresent(gRenderer);
 }
 
-
-void FreeTexture() 
-{
-	if (gTexture != NULL)
-	{
-		SDL_DestroyTexture(gTexture);
-		gTexture = NULL;
-	}
-}
-
-SDL_Texture* LoadTextureFromFile(string path)
-{
-	FreeTexture();
-
-	SDL_Texture* pTexture = NULL;
-
-	SDL_Surface* pSurface = IMG_Load(path.c_str());
-	if (pSurface != NULL)
-	{
-		pTexture = SDL_CreateTextureFromSurface(gRenderer, pSurface);
-		if (pTexture == NULL)
-		{
-			cout << "unable to create texture from surface. Error: " << SDL_GetError() << endl;
-		}
-
-		SDL_FreeSurface(pSurface);
-	}
-	else
-	{
-		cout << "Unable to create texture from surface. Error: " << IMG_GetError() << endl;
-	}
-
-	return pTexture;
-}
 
 void CloseSDL()
 {
 	SDL_DestroyWindow(gWindow);
 	gWindow = NULL;
 
-	FreeTexture();
 	SDL_DestroyRenderer(gRenderer);
 	gRenderer = NULL;
+
+	delete gTexture;
+	gTexture = NULL;
 
 	//Quit SDL subsystems
 	IMG_Quit();
