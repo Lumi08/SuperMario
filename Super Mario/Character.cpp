@@ -10,7 +10,8 @@ Character::Character(SDL_Renderer* renderer, std::string imagePath, Vector2D sta
 	this->mFacingDirection = RIGHT;
 	this->mSpeed = 0.05;
 	this->mWalkingFrameCount = 0;
-	mSourceRect = new SDL_Rect{0, 0, 16, 16};
+	mSourceRect = new SDL_Rect{0, 32, 16, 27};
+	this->walkAnimation = new Animation(renderer, imagePath, mSourceRect, 3, 300);
 	mMovingLeft = false;
 	mMovingRight = false;
 }
@@ -96,14 +97,16 @@ void Character::MoveLeft(float deltaTime)
 {
 	mPosition.x -= mSpeed;
 	mFacingDirection = LEFT;
-	AnimTick(deltaTime);
+	walkAnimation->Play(mPosition, SDL_FLIP_NONE, 0.0f);
+	//AnimTick(deltaTime);
 }
 
 void Character::MoveRight(float deltaTime)
 {
 	mPosition.x += mSpeed;
 	mFacingDirection = RIGHT;
-	AnimTick(deltaTime);
+	walkAnimation->Play(mPosition, SDL_FLIP_HORIZONTAL, 0.0f);
+	//AnimTick(deltaTime);
 }
 
 void Character::AnimTick(float deltaTime)

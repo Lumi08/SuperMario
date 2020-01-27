@@ -5,6 +5,7 @@
 #include <iostream>
 
 #include "Commons.h"
+#include "Animation.h"
 
 class Texture2D;
 class Character
@@ -24,6 +25,7 @@ protected:
 	SDL_Rect* mSourceRect;
 	Vector2D mPosition;
 	Texture2D* mTexture;
+	Animation* walkAnimation;
 	FACING mFacingDirection;
 
 	bool mMovingLeft, 
