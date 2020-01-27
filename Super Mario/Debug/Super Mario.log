@@ -1,2 +1,6 @@
-﻿  Main.cpp
-  Super Mario.vcxproj -> C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Super Mario Bros\SuperMario\Debug\Super Mario.exe
+﻿  Character.cpp
+  GameScreenLevel1.cpp
+  GameScreenManager.cpp
+  Generating Code...
+C:\Users\g014937j\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Super Mario\SuperMario\Super Mario\GameScreenLevel1.cpp(36): warning C4715: 'GameScreenLevel1::SetUpLevel': not all control paths return a value
+  Super Mario.vcxproj -> C:\Users\g014937j\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Super Mario\SuperMario\Debug\Super Mario.exe

@@ -1,14 +1,20 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_mixer.h>
-#include "Constants.h"
 #include <iostream>
 #include <string>
+
+#include "Constants.h"
+#include "Commons.h"
+#include "Texture2D.h"
+#include "GameScreenManager.h"
 
 //Globals
 SDL_Window*	gWindow	= NULL;
 SDL_Renderer* gRenderer = NULL;
-SDL_Texture* gTexture = NULL;
+
+GameScreenManager* gameScreenManager;
+Uint32 gOldTime;
 
 double gAngle = 0; 
 
@@ -17,8 +23,7 @@ bool InitSDL();
 bool Update();
 void CloseSDL();
 void Render();
-SDL_Texture* LoadTextureFromFile(std::string path);
-void FreeTexture();
+
 
 using namespace::std;
 
@@ -26,6 +31,9 @@ int main(int argc, char* args[])
 {
 	if (InitSDL())
 	{
+		gameScreenManager = new GameScreenManager(gRenderer, SCREEN_LEVEL1);
+		gOldTime = SDL_GetTicks();
+
 		bool quit = false;
 
 		while (!quit)
@@ -78,18 +86,13 @@ bool InitSDL()
 			return false;
 		}
 
-		gTexture = LoadTextureFromFile("Images/test.bmp");
-		if(gTexture == NULL)
-		{
-			return false;
-		}
-
 	}
 	return true;
 }
 
 bool Update()
 {
+	Uint32 newTime = SDL_GetTicks();
 	SDL_Event e;
 	SDL_PollEvent(&e);
 
@@ -100,82 +103,35 @@ bool Update()
 			return true;
 			break;
 		}
-
-		case SDL_KEYDOWN:
-		{
-			switch (e.key.keysym.sym)
-			{
-				case SDLK_w:
-				{
-					gAngle += 1;
-					break;
-				}
-
-				case SDLK_s:
-				{
-					gAngle -= 1;
-					break;
-				}
-			}
-		}
 	}
 
+	gameScreenManager->Update((float)(newTime - gOldTime) / 1000.0f, e);
+	gOldTime = newTime;
 	return false;
 }
 
 void Render()
 {
-	SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
+	SDL_SetRenderDrawColor(gRenderer, 0x00, 0x00, 0x00, 0x00);
 	SDL_RenderClear(gRenderer);
 
-	SDL_Rect renderLocation = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
-	SDL_RenderCopyEx(gRenderer, gTexture, NULL, &renderLocation, gAngle, NULL, SDL_FLIP_NONE);
+
+	gameScreenManager->Render();
+
 	SDL_RenderPresent(gRenderer);
 }
 
-
-void FreeTexture() 
-{
-	if (gTexture != NULL)
-	{
-		SDL_DestroyTexture(gTexture);
-		gTexture = NULL;
-	}
-}
-
-SDL_Texture* LoadTextureFromFile(string path)
-{
-	FreeTexture();
-
-	SDL_Texture* pTexture = NULL;
-
-	SDL_Surface* pSurface = IMG_Load(path.c_str());
-	if (pSurface != NULL)
-	{
-		pTexture = SDL_CreateTextureFromSurface(gRenderer, pSurface);
-		if (pTexture == NULL)
-		{
-			cout << "unable to create texture from surface. Error: " << SDL_GetError() << endl;
-		}
-
-		SDL_FreeSurface(pSurface);
-	}
-	else
-	{
-		cout << "Unable to create texture from surface. Error: " << IMG_GetError() << endl;
-	}
-
-	return pTexture;
-}
 
 void CloseSDL()
 {
 	SDL_DestroyWindow(gWindow);
 	gWindow = NULL;
 
-	FreeTexture();
 	SDL_DestroyRenderer(gRenderer);
 	gRenderer = NULL;
+
+	delete gameScreenManager;
+	gameScreenManager = NULL;
 
 	//Quit SDL subsystems
 	IMG_Quit();
