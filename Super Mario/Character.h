@@ -21,6 +21,7 @@ public:
 
 protected:
 	SDL_Renderer* mRenderer;
+	SDL_Rect* mSourceRect;
 	Vector2D mPosition;
 	Texture2D* mTexture;
 	FACING mFacingDirection;
@@ -28,9 +29,11 @@ protected:
 	bool mMovingLeft, 
 		mMovingRight;
 	float mSpeed;
+	int mWalkingFrameCount;
 
 	virtual void MoveLeft(float deltaTime);
 	virtual void MoveRight(float deltaTime);
+	void AnimTick(float deltaTime);
 };
 
 #endif // !_CHARACTER_H

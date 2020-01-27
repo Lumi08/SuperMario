@@ -8,7 +8,9 @@ Character::Character(SDL_Renderer* renderer, std::string imagePath, Vector2D sta
 	this->mTexture->LoadFromFile(imagePath);
 	this->mPosition = startPosition;
 	this->mFacingDirection = RIGHT;
-	this->mSpeed = 0.1;
+	this->mSpeed = 0.05;
+	this->mWalkingFrameCount = 0;
+	mSourceRect = new SDL_Rect{0, 0, 16, 16};
 	mMovingLeft = false;
 	mMovingRight = false;
 }
@@ -26,12 +28,12 @@ void Character::Render()
 	{
 		case RIGHT:
 		{
-			mTexture->Render(mPosition, SDL_FLIP_NONE, 0.0f);
+			mTexture->Render(mPosition, SDL_FLIP_HORIZONTAL, 0.0f, mSourceRect);
 			break;
 		}
 		case LEFT:
 		{
-			mTexture->Render(mPosition, SDL_FLIP_HORIZONTAL, 0.0f);
+			mTexture->Render(mPosition, SDL_FLIP_NONE, 0.0f, mSourceRect);
 			break;
 		}
 	}
@@ -94,12 +96,35 @@ void Character::MoveLeft(float deltaTime)
 {
 	mPosition.x -= mSpeed;
 	mFacingDirection = LEFT;
+	AnimTick(deltaTime);
 }
 
 void Character::MoveRight(float deltaTime)
 {
 	mPosition.x += mSpeed;
 	mFacingDirection = RIGHT;
+	AnimTick(deltaTime);
+}
+
+void Character::AnimTick(float deltaTime)
+{
+	if (mMovingLeft || mMovingRight)
+	{
+		if (mWalkingFrameCount >= 500)
+		{
+			if (mSourceRect->x != 16 * 1)
+			{
+				mSourceRect->x += 16;
+			}
+			else
+			{
+				mSourceRect->x = 0;
+			}
+
+			mWalkingFrameCount = 0;
+		}
+		mWalkingFrameCount++;
+	}
 }
 
 void Character::SetPosition(Vector2D newPosition)

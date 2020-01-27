@@ -1,3 +1,3 @@
 ﻿  Character.cpp
-C:\Users\g014937j\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Super Mario\SuperMario\Super Mario\Character.cpp(11): warning C4305: '=': truncation from 'double' to 'float'
-  Super Mario.vcxproj -> C:\Users\g014937j\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Super Mario\SuperMario\Debug\Super Mario.exe
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\Character.cpp(11,21): warning C4305: '=': truncation from 'double' to 'float'
+  Super Mario.vcxproj -> C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Debug\Super Mario.exe
