@@ -23,6 +23,14 @@ protected:
 	SDL_Renderer* mRenderer;
 	Vector2D mPosition;
 	Texture2D* mTexture;
+	FACING mFacingDirection;
+
+	bool mMovingLeft, 
+		mMovingRight;
+	float mSpeed;
+
+	virtual void MoveLeft(float deltaTime);
+	virtual void MoveRight(float deltaTime);
 };
 
 #endif // !_CHARACTER_H

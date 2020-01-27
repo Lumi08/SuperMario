@@ -1,6 +1,3 @@
 ﻿  Character.cpp
-  GameScreenLevel1.cpp
-  GameScreenManager.cpp
-  Generating Code...
-C:\Users\g014937j\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Super Mario\SuperMario\Super Mario\GameScreenLevel1.cpp(36): warning C4715: 'GameScreenLevel1::SetUpLevel': not all control paths return a value
+C:\Users\g014937j\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Super Mario\SuperMario\Super Mario\Character.cpp(11): warning C4305: '=': truncation from 'double' to 'float'
   Super Mario.vcxproj -> C:\Users\g014937j\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Super Mario\SuperMario\Debug\Super Mario.exe

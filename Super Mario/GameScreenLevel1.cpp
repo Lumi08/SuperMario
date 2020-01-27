@@ -16,11 +16,12 @@ GameScreenLevel1::~GameScreenLevel1()
 void GameScreenLevel1::Render()
 {
 	mBackgroundTexture->Render(Vector2D(), SDL_FLIP_NONE);
+	mCharacter->Render();
 }
 
 void GameScreenLevel1::Update(float deltaTime, SDL_Event e)
 {
-	character->Update(deltaTime, e);
+	mCharacter->Update(deltaTime, e);
 }
 
 bool GameScreenLevel1::SetUpLevel()
@@ -32,5 +33,5 @@ bool GameScreenLevel1::SetUpLevel()
 		return false;
 	}
 
-	character = new Character(mRenderer, "Images/Mario.png", Vector2D(64, 330));
+	mCharacter = new Character(mRenderer, "Images/Mario.png", Vector2D(64, 330));
 }

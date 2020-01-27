@@ -6,6 +6,11 @@ Character::Character(SDL_Renderer* renderer, std::string imagePath, Vector2D sta
 	this->mRenderer = renderer;
 	this->mTexture = new Texture2D(renderer);
 	this->mTexture->LoadFromFile(imagePath);
+	this->mPosition = startPosition;
+	this->mFacingDirection = RIGHT;
+	this->mSpeed = 0.1;
+	mMovingLeft = false;
+	mMovingRight = false;
 }
 
 Character::~Character()
@@ -17,12 +22,31 @@ Character::~Character()
 
 void Character::Render()
 {
-	mTexture->Render(mPosition, SDL_FLIP_NONE, 0.0f);
+	switch (mFacingDirection)
+	{
+		case RIGHT:
+		{
+			mTexture->Render(mPosition, SDL_FLIP_NONE, 0.0f);
+			break;
+		}
+		case LEFT:
+		{
+			mTexture->Render(mPosition, SDL_FLIP_HORIZONTAL, 0.0f);
+			break;
+		}
+	}
 }
 
 void Character::Update(float deltaTime, SDL_Event e)
 {
-	SDL_PollEvent(&e);
+	if (mMovingLeft)
+	{
+		MoveLeft(deltaTime);
+	}
+	else if (mMovingRight)
+	{
+		MoveRight(deltaTime);
+	}
 
 	switch (e.type)
 	{
@@ -32,19 +56,50 @@ void Character::Update(float deltaTime, SDL_Event e)
 			{
 				case SDLK_a:
 				{
-					this->mPosition.x -= 1;
+					mMovingLeft = true;
 					break;
 				}
 
 				case SDLK_d:
 				{
-					this->mPosition.x += 1;
+					mMovingRight = true;
+					break;
+				}
+			}
+			break;
+		}
+
+		case SDL_KEYUP:
+		{
+			switch (e.key.keysym.sym)
+			{
+				case SDLK_a:
+				{
+					mMovingLeft = false;
+					break;
+				}
+
+				case SDLK_d:
+				{
+					mMovingRight = false;
 					break;
 				}
 			}
 			break;
 		}
 	}
+}
+
+void Character::MoveLeft(float deltaTime)
+{
+	mPosition.x -= mSpeed;
+	mFacingDirection = LEFT;
+}
+
+void Character::MoveRight(float deltaTime)
+{
+	mPosition.x += mSpeed;
+	mFacingDirection = RIGHT;
 }
 
 void Character::SetPosition(Vector2D newPosition)
@@ -56,3 +111,4 @@ Vector2D Character::GetPosition()
 {
 	return mPosition;
 }
+
