@@ -3,11 +3,16 @@
 #include <SDL_mixer.h>
 #include <iostream>
 #include <string>
+#include <random>
+#include <vector>
+#include <Windows.h>
 
 #include "Constants.h"
 #include "Commons.h"
 #include "Texture2D.h"
 #include "GameScreenManager.h"
+
+using namespace std;
 
 //Globals
 SDL_Window*	gWindow	= NULL;
@@ -24,6 +29,7 @@ bool Update();
 void CloseSDL();
 void Render();
 
+void SetRandomWindowIcon();
 
 using namespace::std;
 
@@ -62,6 +68,8 @@ bool InitSDL()
 			SCREEN_WIDTH,
 			SCREEN_HEIGHT,
 			SDL_WINDOW_SHOWN);
+
+		SetRandomWindowIcon();
 
 		if (gWindow == NULL)
 		{
@@ -136,4 +144,45 @@ void CloseSDL()
 	//Quit SDL subsystems
 	IMG_Quit();
 	SDL_Quit();
+}
+
+void SetRandomWindowIcon()
+{
+	vector<string> fileNames;
+	string directory = "Images/icons/*.*";
+	WIN32_FIND_DATA fileData;
+	HANDLE hFind;
+
+	if (!((hFind = FindFirstFile(directory.c_str(), &fileData)) == INVALID_HANDLE_VALUE)) {
+		while (FindNextFile(hFind, &fileData)) {
+			fileNames.push_back(fileData.cFileName);
+		}
+	}
+	FindClose(hFind);
+
+	random_device rd;
+	mt19937 mt(rd());
+	uniform_int_distribution<int> dist(1, fileNames.size()-1);
+
+	SDL_Texture* mTexture = NULL;
+
+	SDL_Surface* pSurface = IMG_Load(("Images/Icons/" + fileNames.at(dist(mt))).c_str());
+	if (pSurface != NULL)
+	{
+		SDL_SetColorKey(pSurface, SDL_TRUE, SDL_MapRGB(pSurface->format, 0, 0xFF, 0xFF));
+		mTexture = SDL_CreateTextureFromSurface(gRenderer, pSurface);
+		if (mTexture == NULL)
+		{
+			cout << "unable to create texture from surface. Error: " << SDL_GetError() << endl;
+		}
+		SDL_SetWindowIcon(gWindow, pSurface);
+		SDL_FreeSurface(pSurface);
+	}
+	else
+	{
+		cout << "Unable to create surface. Error: " << IMG_GetError() << endl;
+	}
+	
+	SDL_DestroyTexture(mTexture);
+	
 }

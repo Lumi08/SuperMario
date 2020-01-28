@@ -6,10 +6,10 @@ Player::Player(SDL_Renderer* renderer, std::string imagePath, Vector2D startPosi
 	: Entity(renderer, imagePath, startPosition)
 {
 	mPlayerNumber = playerNum;
-	mDirectionFacing = RIGHT;
 	mMovementSpeed = 0.05;
-	mSourceRect = new SDL_Rect{ 0, 32, 16, 27 };
-	this->walkAnimation = new Animation(renderer, imagePath, mSourceRect, 3, 300);
+	mDirectionFacing = RIGHT;
+	mSourceRect = new SDL_Rect{ 0, 0, 16, 16 };
+	this->walkAnimation = new Animation(renderer, imagePath, mSourceRect, 2, 300);
 }
 
 Player::~Player()
@@ -38,8 +38,6 @@ void Player::Render()
 
 void Player::Update(float deltaTime, SDL_Event e)
 {
-	
-
 	if (mMovingLeft)
 	{
 		MoveLeft(deltaTime);
@@ -49,23 +47,50 @@ void Player::Update(float deltaTime, SDL_Event e)
 		MoveRight(deltaTime);
 	}
 
+	
 	switch (e.type)
 	{
 		case SDL_KEYDOWN:
 		{
 			switch (e.key.keysym.sym)
 			{
+				
 				case SDLK_a:
 				{
-					mMovingLeft = true;
+					if (mPlayerNumber == 1)
+					{
+						mMovingLeft = true;
+					}
 					break;
 				}
 
 				case SDLK_d:
 				{
-					mMovingRight = true;
+					if (mPlayerNumber == 1)
+					{
+						mMovingRight = true;
+					}
 					break;
 				}
+				
+				case SDLK_LEFT:
+				{
+					if (mPlayerNumber == 2)
+					{
+						mMovingLeft = true;
+					}
+					break;
+				}
+
+				case SDLK_RIGHT:
+				{
+					if (mPlayerNumber == 2)
+					{
+						mMovingRight = true;
+					}
+					break;
+				}
+				
 			}
 			break;
 		}
@@ -74,17 +99,43 @@ void Player::Update(float deltaTime, SDL_Event e)
 		{
 			switch (e.key.keysym.sym)
 			{
-			case SDLK_a:
-			{
-				mMovingLeft = false;
-				break;
-			}
+				case SDLK_a:
+				{
+					if (mPlayerNumber == 1)
+					{
+						mMovingLeft = false;
+					}
+					break;
+				}
 
-			case SDLK_d:
-			{
-				mMovingRight = false;
-				break;
-			}
+				case SDLK_d:
+				{
+					if (mPlayerNumber == 1)
+					{
+						mMovingRight = false;
+					}
+					break;
+				}
+				
+				
+				case SDLK_LEFT:
+				{
+					if (mPlayerNumber == 2)
+					{
+						mMovingLeft = false;
+					}
+					break;
+				}
+
+				case SDLK_RIGHT:
+				{
+					if (mPlayerNumber == 2)
+					{
+						mMovingRight = false;
+					}
+					break;
+				}
+				
 			}
 			break;
 		}

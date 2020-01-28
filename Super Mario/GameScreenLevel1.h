@@ -20,7 +20,8 @@ public:
 	void Update(float deltaTime, SDL_Event e);
 private:
 	Texture2D* mBackgroundTexture;
-	Player* mCharacter;
+	Player* mMario;
+	Player*	mLuigi;
 
 	bool SetUpLevel();
 };
