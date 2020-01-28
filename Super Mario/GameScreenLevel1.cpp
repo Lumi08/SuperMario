@@ -32,6 +32,6 @@ bool GameScreenLevel1::SetUpLevel()
 		std::cout << "Error: Failed to load background texture!" << std::endl;
 		return false;
 	}
-
-	mCharacter = new Character(mRenderer, "Images/Mario.png", Vector2D(64, 330));
+	mCharacter = new Player(mRenderer, "Images/Mario.png", Vector2D(64, 330), 1);
+	//mCharacter = new Character(mRenderer, "Images/Mario.png", Vector2D(64, 330));
 }

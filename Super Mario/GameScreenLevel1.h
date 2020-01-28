@@ -5,7 +5,8 @@
 
 #include "Commons.h"
 #include "GameScreen.h"
-#include "Character.h"
+#include "Player.h"
+//#include "Character.h"
 
 class Texture2D;
 class charatcer;
@@ -19,7 +20,7 @@ public:
 	void Update(float deltaTime, SDL_Event e);
 private:
 	Texture2D* mBackgroundTexture;
-	Character* mCharacter;
+	Player* mCharacter;
 
 	bool SetUpLevel();
 };
