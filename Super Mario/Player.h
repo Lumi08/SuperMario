@@ -7,6 +7,11 @@
 #include "Animation.h"
 #include "Entity.h"
 
+#define SMALLCHARACTERWIDTH 16
+#define SMALLCHARACTERHEIGHT 16
+#define BIGCHARACTERWIDTH 30
+#define BIGCHARACTERHEIGHT 27
+
 class Player : public Entity
 {
 public:
@@ -17,16 +22,30 @@ public:
 	void Update(float deltaTime, SDL_Event e);
 
 private:
-	int mPlayerNumber;
+	enum PlayerState
+	{
+		WALK = 0,
+		JUMP,
+		IDLE,
+		SLEEP
+	};
+
+	int mPlayerNumber,
+		mTimeIdle = 0;
 	float mMovementSpeed;
 	bool mMovingLeft,
 		mMovingRight;
 	FACING mDirectionFacing;
-	Animation* walkAnimation;
+	Animation* mWalkAnimation;
+	Animation* mSleepAnimation;
+	Animation* mIdleAnimation;
 	SDL_Rect* mSourceRect;
+	PlayerState mPlayerState;
 
 	void MoveLeft(float deltaTime);
 	void MoveRight(float deltaTime);
+
+	
 };
 
 #endif // !_PLAYER_H_

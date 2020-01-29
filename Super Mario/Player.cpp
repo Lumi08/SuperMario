@@ -7,9 +7,14 @@ Player::Player(SDL_Renderer* renderer, std::string imagePath, Vector2D startPosi
 {
 	mPlayerNumber = playerNum;
 	mMovementSpeed = 0.05;
+	mPlayerState = IDLE;
 	mDirectionFacing = RIGHT;
 	mSourceRect = new SDL_Rect{ 0, 0, 16, 16 };
-	this->walkAnimation = new Animation(renderer, imagePath, mSourceRect, 2, 300);
+	mWalkAnimation = new Animation(renderer, imagePath, mSourceRect, 2, 500);
+	mIdleAnimation = new Animation(renderer, imagePath, new SDL_Rect{ 0, 32, 16, 16 }, 2, 4500);
+	mSleepAnimation = new Animation(renderer, imagePath, new SDL_Rect{ 0, 16, 16, 16 }, 8, 1500);
+
+	//mSleepAnimation->SetLoopStartSprite(4);
 }
 
 Player::~Player()
@@ -21,16 +26,60 @@ Player::~Player()
 
 void Player::Render()
 {
-	switch (mDirectionFacing)
+	switch (mPlayerState)
 	{
-		case RIGHT:
+		case WALK:
 		{
-			mTexture->Render(mPosition, SDL_FLIP_HORIZONTAL, 0.0f, mSourceRect);
+			switch (mDirectionFacing)
+			{
+				case RIGHT:
+				{
+					mWalkAnimation->Play(mPosition, SDL_FLIP_HORIZONTAL);
+					break;
+				}
+
+				case LEFT:
+				{
+					mWalkAnimation->Play(mPosition, SDL_FLIP_NONE);
+					break;
+				}
+			}
 			break;
 		}
-		case LEFT:
+
+		case IDLE:
 		{
-			mTexture->Render(mPosition, SDL_FLIP_NONE, 0.0f, mSourceRect);
+			switch (mDirectionFacing)
+			{
+				case RIGHT:
+				{
+					mIdleAnimation->Play(mPosition, SDL_FLIP_HORIZONTAL);
+					break;
+				}
+				case LEFT:
+				{
+					mIdleAnimation->Play(mPosition, SDL_FLIP_NONE);
+					break;
+				}
+			}
+			break;
+		}
+
+		case SLEEP:
+		{
+			switch (mDirectionFacing)
+			{
+				case RIGHT:
+				{
+					mSleepAnimation->Play(mPosition, SDL_FLIP_HORIZONTAL);
+					break;
+				}
+				case LEFT:
+				{
+					mSleepAnimation->Play(mPosition, SDL_FLIP_NONE);
+					break;
+				}
+			}
 			break;
 		}
 	}
@@ -41,12 +90,23 @@ void Player::Update(float deltaTime, SDL_Event e)
 	if (mMovingLeft)
 	{
 		MoveLeft(deltaTime);
+		mTimeIdle = 0;
 	}
 	else if (mMovingRight)
 	{
 		MoveRight(deltaTime);
+		mTimeIdle = 0;
+	}
+	else
+	{
+		mPlayerState = IDLE;
+		mTimeIdle++;
 	}
 
+	if (mTimeIdle > 100000)
+	{
+		mPlayerState = SLEEP;
+	}
 	
 	switch (e.type)
 	{
@@ -134,19 +194,19 @@ void Player::Update(float deltaTime, SDL_Event e)
 						mMovingRight = false;
 					}
 					break;
-				}
-				
+				}		
 			}
 			break;
 		}
 	}
+	
 }
 
 void Player::MoveLeft(float deltaTime)
 {
 	mPosition.x -= mMovementSpeed;
 	mDirectionFacing = LEFT;
-	walkAnimation->Play(mPosition, SDL_FLIP_NONE, 0.0f);
+	mPlayerState = WALK;
 	//AnimTick(deltaTime);
 }
 
@@ -154,6 +214,6 @@ void Player::MoveRight(float deltaTime)
 {
 	mPosition.x += mMovementSpeed;
 	mDirectionFacing = RIGHT;
-	walkAnimation->Play(mPosition, SDL_FLIP_HORIZONTAL, 0.0f);
+	mPlayerState = WALK;
 	//AnimTick(deltaTime);
 }

@@ -123,7 +123,6 @@ void Render()
 	SDL_SetRenderDrawColor(gRenderer, 0x00, 0x00, 0x00, 0x00);
 	SDL_RenderClear(gRenderer);
 
-
 	gameScreenManager->Render();
 
 	SDL_RenderPresent(gRenderer);
@@ -164,17 +163,10 @@ void SetRandomWindowIcon()
 	mt19937 mt(rd());
 	uniform_int_distribution<int> dist(1, fileNames.size()-1);
 
-	SDL_Texture* mTexture = NULL;
-
 	SDL_Surface* pSurface = IMG_Load(("Images/Icons/" + fileNames.at(dist(mt))).c_str());
 	if (pSurface != NULL)
 	{
 		SDL_SetColorKey(pSurface, SDL_TRUE, SDL_MapRGB(pSurface->format, 0, 0xFF, 0xFF));
-		mTexture = SDL_CreateTextureFromSurface(gRenderer, pSurface);
-		if (mTexture == NULL)
-		{
-			cout << "unable to create texture from surface. Error: " << SDL_GetError() << endl;
-		}
 		SDL_SetWindowIcon(gWindow, pSurface);
 		SDL_FreeSurface(pSurface);
 	}
@@ -182,7 +174,5 @@ void SetRandomWindowIcon()
 	{
 		cout << "Unable to create surface. Error: " << IMG_GetError() << endl;
 	}
-	
-	SDL_DestroyTexture(mTexture);
 	
 }

@@ -15,9 +15,9 @@ Animation::Animation(SDL_Renderer* renderer, std::string imagePath, SDL_Rect* so
 
 Animation::~Animation()
 {
+	mRenderer = NULL;
 	delete mTexture;
 	mTexture = NULL;
-	mRenderer = NULL;
 }
 
 void Animation::Play(Vector2D position, SDL_RendererFlip flip, double angle)
@@ -30,12 +30,27 @@ void Animation::Play(Vector2D position, SDL_RendererFlip flip, double angle)
 		}
 		else
 		{
-			mSourceRect->x = mSourceRectStartPoint->x;
+			if (mSpriteLoopStartSprite != 0)
+			{
+				mSourceRect->x = mSourceRectStartPoint->x + ((mSpriteLoopStartSprite - 1) * mSourceRect->w);
+			}
+			else 
+			{
+				mSourceRect->x = mSourceRectStartPoint->x;
+			}
+
 			mSourceRect->y = mSourceRectStartPoint->y;
 		}
 		mCurrentFrameTime = 0;
 	}
 	mCurrentFrameTime++;
 
-	mTexture->Render(position, SDL_FLIP_HORIZONTAL, 0.0f, mSourceRect);
+
+	mTexture->Render(position, flip, 0.0f, mSourceRect);
 }
+
+void Animation::SetLoopStartSprite(int spriteNum)
+{
+	mSpriteLoopStartSprite = spriteNum;
+}
+

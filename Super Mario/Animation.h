@@ -13,6 +13,7 @@ public:
 	~Animation();
 
 	void Play(Vector2D newPosition, SDL_RendererFlip flip, double angle = 0.0f);
+	void SetLoopStartSprite(int spriteNum);
 private:
 	SDL_Renderer* mRenderer;
 	SDL_Rect* mSourceRect;
@@ -20,7 +21,9 @@ private:
 	Vector2D* mSourceRectStartPoint;
 	int mNumberOfFrames,
 		mTimePerFrame,
-		mCurrentFrameTime;
+		mCurrentFrameTime,
+		mSpriteLoopStartSprite = 0;
+	bool mInitLoopComplete = false;
 
 };
 
