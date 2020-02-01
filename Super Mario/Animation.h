@@ -12,7 +12,7 @@ public:
 	Animation(SDL_Renderer* renderer, std::string imagePath, SDL_Rect* sourceRectStart, int numberOfFrames, int timePerFrame);
 	~Animation();
 
-	void Play(Vector2D newPosition, SDL_RendererFlip flip, double angle = 0.0f);
+	void Play(Vector2D newPosition, SDL_RendererFlip flip, double angle = 0.0f, int timesToLoop = 0);
 	void SetLoopStartSprite(int spriteNum);
 private:
 	SDL_Renderer* mRenderer;
@@ -22,7 +22,8 @@ private:
 	int mNumberOfFrames,
 		mTimePerFrame,
 		mCurrentFrameTime,
-		mSpriteLoopStartSprite = 0;
+		mSpriteLoopStartSprite = 0,
+		mTimesLooped = -1;
 	bool mInitLoopComplete = false;
 
 };

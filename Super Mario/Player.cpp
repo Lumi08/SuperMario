@@ -11,8 +11,8 @@ Player::Player(SDL_Renderer* renderer, std::string imagePath, Vector2D startPosi
 	mDirectionFacing = RIGHT;
 	mSourceRect = new SDL_Rect{ 0, 0, 16, 16 };
 	mWalkAnimation = new Animation(renderer, imagePath, mSourceRect, 2, 500);
-	mIdleAnimation = new Animation(renderer, imagePath, new SDL_Rect{ 0, 32, 16, 16 }, 2, 4500);
-	mSleepAnimation = new Animation(renderer, imagePath, new SDL_Rect{ 0, 16, 16, 16 }, 8, 1500);
+	mIdleAnimation = new Animation(renderer, imagePath, new SDL_Rect{ 0, 32, 16, 16 }, 2, 5000);
+	mSleepAnimation = new Animation(renderer, imagePath, new SDL_Rect{ 0, 16, 16, 16 }, 6, 1000);
 
 	//mSleepAnimation->SetLoopStartSprite(4);
 }
@@ -87,6 +87,15 @@ void Player::Render()
 
 void Player::Update(float deltaTime, SDL_Event e)
 {
+	if (mPosition.y < SCREEN_HEIGHT - SMALLCHARACTERHEIGHT * 3)
+	{
+		mPosition.y += GRAVITY * deltaTime;
+	}
+	else
+	{
+		mCanJump = true;
+	}
+
 	if (mMovingLeft)
 	{
 		MoveLeft(deltaTime);
@@ -106,6 +115,16 @@ void Player::Update(float deltaTime, SDL_Event e)
 	if (mTimeIdle > 100000)
 	{
 		mPlayerState = SLEEP;
+	}
+
+	if (mJumping)
+	{
+		mPosition.y -= mJumpForce * deltaTime;
+		mJumpForce -= JUMP_FORCE_DECREMENT * deltaTime;
+		if (mJumpForce <= 0.0f)
+		{
+			mJumping = false; 
+		}
 	}
 	
 	switch (e.type)
@@ -132,6 +151,19 @@ void Player::Update(float deltaTime, SDL_Event e)
 					}
 					break;
 				}
+
+				case SDLK_w:
+				{
+					if (mPlayerNumber == 1)
+					{
+						if (mCanJump)
+						{
+
+							Jump();
+						}
+					}
+					break;
+				}
 				
 				case SDLK_LEFT:
 				{
@@ -150,6 +182,19 @@ void Player::Update(float deltaTime, SDL_Event e)
 					}
 					break;
 				}
+				
+				case SDLK_UP:
+				{
+					if (mPlayerNumber == 2)
+					{
+						if (mCanJump)
+						{
+							Jump();
+						}
+					}
+					break;
+				}
+				
 				
 			}
 			break;
@@ -217,3 +262,14 @@ void Player::MoveRight(float deltaTime)
 	mPlayerState = WALK;
 	//AnimTick(deltaTime);
 }
+
+void Player::Jump()
+{
+	if (!mJumping)
+	{
+		mJumpForce = INITIAL_JUMP_FORCE;
+		mJumping = true;
+		mCanJump = false;
+	}
+}
+

@@ -11,6 +11,10 @@
 #define SMALLCHARACTERHEIGHT 16
 #define BIGCHARACTERWIDTH 30
 #define BIGCHARACTERHEIGHT 27
+#define GRAVITY 100.0f
+
+#define JUMP_FORCE_DECREMENT 400.0f
+#define INITIAL_JUMP_FORCE 500.0f
 
 class Player : public Entity
 {
@@ -32,9 +36,11 @@ private:
 
 	int mPlayerNumber,
 		mTimeIdle = 0;
-	float mMovementSpeed;
+	float mMovementSpeed,
+		mJumpForce;
 	bool mMovingLeft,
-		mMovingRight;
+		mMovingRight,
+		mJumping, mCanJump;
 	FACING mDirectionFacing;
 	Animation* mWalkAnimation;
 	Animation* mSleepAnimation;
@@ -42,10 +48,8 @@ private:
 	SDL_Rect* mSourceRect;
 	PlayerState mPlayerState;
 
-	void MoveLeft(float deltaTime);
-	void MoveRight(float deltaTime);
-
-	
+	void MovementLogic(float deltaTime);
+	void Jump();
 };
 
 #endif // !_PLAYER_H_
