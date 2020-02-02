@@ -18,6 +18,11 @@ struct Vector2D
 	}
 };
 
+bool Overlapping(SDL_Rect rect1, SDL_Rect rect2)
+{
+
+}
+
 enum SCREENS
 {
 	SCREEN_INTRO = 0,

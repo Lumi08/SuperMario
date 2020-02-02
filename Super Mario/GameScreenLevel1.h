@@ -6,10 +6,11 @@
 #include "Commons.h"
 #include "GameScreen.h"
 #include "Player.h"
+#include "Brick.h"
 //#include "Character.h"
 
 class Texture2D;
-class charatcer;
+//class Entity;
 class GameScreenLevel1 : GameScreen
 {
 public:
@@ -22,7 +23,7 @@ private:
 	Texture2D* mBackgroundTexture;
 	Player* mMario;
 	Player*	mLuigi;
-
+	Brick* mBrick;
 	bool SetUpLevel();
 };
 

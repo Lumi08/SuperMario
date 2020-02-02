@@ -10,7 +10,7 @@ Player::Player(SDL_Renderer* renderer, std::string imagePath, Vector2D startPosi
 	mPlayerState = IDLE;
 	mDirectionFacing = RIGHT;
 	mSourceRect = new SDL_Rect{ 0, 0, 16, 16 };
-	mWalkAnimation = new Animation(renderer, mTexture, mSourceRect, 2, 500);
+	mWalkAnimation = new Animation(renderer, mTexture, new SDL_Rect{ 0, 0, 16, 16 }, 2, 500);
 	mIdleAnimation = new Animation(renderer, mTexture, new SDL_Rect{ 0, 32, 16, 16 }, 2, 5000);
 	mSleepAnimation = new Animation(renderer, mTexture, new SDL_Rect{ 0, 16, 16, 16 }, 6, 1000);
 
@@ -111,7 +111,7 @@ void Player::Update(float deltaTime, SDL_Event e)
 {
 	/*if (mPlayerNumber == 2)
 	{
-		std::cout << "Luigi : " << mJumpForce << std::endl;
+		std::cout << "Luigi : " << mPlayerState << std::endl;
 	}*/
 	MovementLogic(deltaTime);
 	
