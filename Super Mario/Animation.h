@@ -9,7 +9,7 @@ class Texture2D;
 class Animation
 {
 public:
-	Animation(SDL_Renderer* renderer, std::string imagePath, SDL_Rect* sourceRectStart, int numberOfFrames, int timePerFrame);
+	Animation(SDL_Renderer* renderer, Texture2D* texture, SDL_Rect* sourceRectStart, int numberOfFrames, int timePerFrame);
 	~Animation();
 
 	void Play(Vector2D newPosition, SDL_RendererFlip flip, double angle = 0.0f, int timesToLoop = 0);

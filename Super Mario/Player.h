@@ -13,7 +13,7 @@
 #define BIGCHARACTERHEIGHT 27
 #define GRAVITY 100.0f
 
-#define JUMP_FORCE_DECREMENT 400.0f
+#define JUMP_FORCE_DECREMENT 600.0f
 #define INITIAL_JUMP_FORCE 500.0f
 
 class Player : public Entity
@@ -37,10 +37,12 @@ private:
 	int mPlayerNumber,
 		mTimeIdle = 0;
 	float mMovementSpeed,
-		mJumpForce;
+		mJumpForce,
+		mPreviousYPos;
 	bool mMovingLeft,
 		mMovingRight,
-		mJumping, mCanJump;
+		mJumpKeyPressed,
+		mJumping;
 	FACING mDirectionFacing;
 	Animation* mWalkAnimation;
 	Animation* mSleepAnimation;

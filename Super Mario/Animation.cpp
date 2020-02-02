@@ -1,11 +1,10 @@
 #include "Animation.h"
 #include "Texture2D.h"
 
-Animation::Animation(SDL_Renderer* renderer, std::string imagePath, SDL_Rect* sourceRectStart, int numberOfFrames, int timePerFrame)
+Animation::Animation(SDL_Renderer* renderer, Texture2D* texture, SDL_Rect* sourceRectStart, int numberOfFrames, int timePerFrame)
 {
 	this->mRenderer = renderer;
-	this->mTexture = new Texture2D(renderer);
-	mTexture->LoadFromFile(imagePath);
+	this->mTexture = texture;
 	mSourceRectStartPoint = new Vector2D(sourceRectStart->x, sourceRectStart->y);
 	this->mSourceRect = sourceRectStart;
 	this->mNumberOfFrames = numberOfFrames;

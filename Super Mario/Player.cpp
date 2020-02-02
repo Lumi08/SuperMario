@@ -10,9 +10,9 @@ Player::Player(SDL_Renderer* renderer, std::string imagePath, Vector2D startPosi
 	mPlayerState = IDLE;
 	mDirectionFacing = RIGHT;
 	mSourceRect = new SDL_Rect{ 0, 0, 16, 16 };
-	mWalkAnimation = new Animation(renderer, imagePath, mSourceRect, 2, 500);
-	mIdleAnimation = new Animation(renderer, imagePath, new SDL_Rect{ 0, 32, 16, 16 }, 2, 5000);
-	mSleepAnimation = new Animation(renderer, imagePath, new SDL_Rect{ 0, 16, 16, 16 }, 6, 1000);
+	mWalkAnimation = new Animation(renderer, mTexture, mSourceRect, 2, 500);
+	mIdleAnimation = new Animation(renderer, mTexture, new SDL_Rect{ 0, 32, 16, 16 }, 2, 5000);
+	mSleepAnimation = new Animation(renderer, mTexture, new SDL_Rect{ 0, 16, 16, 16 }, 6, 1000);
 
 	//mSleepAnimation->SetLoopStartSprite(4);
 }
@@ -22,6 +22,9 @@ Player::~Player()
 	mRenderer = NULL;
 	delete mTexture;
 	mTexture = NULL;
+	delete mWalkAnimation;
+	delete mIdleAnimation;
+	delete mSleepAnimation;
 }
 
 void Player::Render()
@@ -82,49 +85,50 @@ void Player::Render()
 			}
 			break;
 		}
+
+		case JUMP:
+		{
+			switch (mDirectionFacing)
+			{
+				case RIGHT:
+				{
+					mTexture->Render(mPosition, SDL_FLIP_HORIZONTAL, 0.0f, mSourceRect);
+					break;
+				}
+
+				case LEFT:
+				{	
+					mTexture->Render(mPosition, SDL_FLIP_NONE, 0.0f, mSourceRect);
+					break;
+				}
+			}
+			break;
+		}
 	}
 }
 
 void Player::Update(float deltaTime, SDL_Event e)
 {
-	if (mPosition.y < SCREEN_HEIGHT - SMALLCHARACTERHEIGHT * 3)
+	/*if (mPlayerNumber == 2)
 	{
-		mPosition.y += GRAVITY * deltaTime;
-	}
-	else
-	{
-		mCanJump = true;
-	}
-
-	if (mMovingLeft)
-	{
-		MoveLeft(deltaTime);
-		mTimeIdle = 0;
-	}
-	else if (mMovingRight)
-	{
-		MoveRight(deltaTime);
-		mTimeIdle = 0;
-	}
-	else
-	{
-		mPlayerState = IDLE;
-		mTimeIdle++;
-	}
-
-	if (mTimeIdle > 100000)
-	{
-		mPlayerState = SLEEP;
-	}
-
+		std::cout << "Luigi : " << mJumpForce << std::endl;
+	}*/
+	MovementLogic(deltaTime);
+	
 	if (mJumping)
 	{
 		mPosition.y -= mJumpForce * deltaTime;
 		mJumpForce -= JUMP_FORCE_DECREMENT * deltaTime;
-		if (mJumpForce <= 0.0f)
-		{
-			mJumping = false; 
-		}
+	}
+	
+	if (mPosition.y < SCREEN_HEIGHT - SMALLCHARACTERHEIGHT * 3)
+	{
+		mJumping = true;
+		mPosition.y += GRAVITY * deltaTime;
+	}
+	else 
+	{
+		mJumping = false;
 	}
 	
 	switch (e.type)
@@ -156,11 +160,7 @@ void Player::Update(float deltaTime, SDL_Event e)
 				{
 					if (mPlayerNumber == 1)
 					{
-						if (mCanJump)
-						{
-
-							Jump();
-						}
+						mJumpKeyPressed = true;
 					}
 					break;
 				}
@@ -187,10 +187,7 @@ void Player::Update(float deltaTime, SDL_Event e)
 				{
 					if (mPlayerNumber == 2)
 					{
-						if (mCanJump)
-						{
-							Jump();
-						}
+						mJumpKeyPressed = true;
 					}
 					break;
 				}
@@ -222,6 +219,15 @@ void Player::Update(float deltaTime, SDL_Event e)
 					break;
 				}
 				
+				case SDLK_w:
+				{
+					if (mPlayerNumber == 1)
+					{
+						mJumpKeyPressed = false;
+					}
+					break;
+				}
+				
 				
 				case SDLK_LEFT:
 				{
@@ -239,37 +245,90 @@ void Player::Update(float deltaTime, SDL_Event e)
 						mMovingRight = false;
 					}
 					break;
-				}		
+				}	
+
+				case SDLK_UP:
+				{
+					if (mPlayerNumber == 2)
+					{
+						mJumpKeyPressed = false;
+					}
+					break;
+				}
 			}
 			break;
 		}
 	}
-	
+
+	mPreviousYPos = mPosition.y;
 }
 
-void Player::MoveLeft(float deltaTime)
+void Player::MovementLogic(float deltaTime)
 {
-	mPosition.x -= mMovementSpeed;
-	mDirectionFacing = LEFT;
-	mPlayerState = WALK;
-	//AnimTick(deltaTime);
-}
+	if (mJumpKeyPressed || mJumping)
+	{
+		Jump();
+		mTimeIdle = 0;
+	}
+	if (mMovingLeft)
+	{
+		mPosition.x -= mMovementSpeed;
+		mDirectionFacing = LEFT;
 
-void Player::MoveRight(float deltaTime)
-{
-	mPosition.x += mMovementSpeed;
-	mDirectionFacing = RIGHT;
-	mPlayerState = WALK;
-	//AnimTick(deltaTime);
+		if (!mJumping)
+		{
+			mPlayerState = WALK;
+		}
+		mTimeIdle = 0;
+	}
+	else if (mMovingRight)
+	{
+		mPosition.x += mMovementSpeed;
+		mDirectionFacing = RIGHT;
+		if (!mJumping)
+		{
+			mPlayerState = WALK;
+		}
+		mTimeIdle = 0;
+	}
+	else
+	{
+		if (!mJumping)
+		{
+			mTimeIdle++;
+			mPlayerState = IDLE;
+		}
+	}
+
+	if (mJumping)
+	{
+		if (mJumpForce < 100)
+		{
+			mSourceRect->x = 64;
+		}
+		else
+		{
+			mSourceRect->x = 48;
+		}
+	}
+	else
+	{
+		mSourceRect->x = 0;
+	}
+
+	if (mTimeIdle > 100000)
+	{
+		mPlayerState = SLEEP;
+	}
 }
 
 void Player::Jump()
 {
 	if (!mJumping)
 	{
+		mPlayerState = JUMP;
 		mJumpForce = INITIAL_JUMP_FORCE;
 		mJumping = true;
-		mCanJump = false;
 	}
 }
 
