@@ -32,7 +32,10 @@ void GameScreenLevel1::Update(float deltaTime, SDL_Event e)
 	
 	if (SDL_HasIntersection(mBrick->GetHitbox(), mMario->GetHitbox()))
 	{
-		std::cout << "Mario is inside brick" << std::endl;
+		if (mMario->GetY() < mBrick->GetY())
+		{
+			mMario->SetY(mBrick->GetY());
+		}
 	}
 	
 }
@@ -47,7 +50,7 @@ bool GameScreenLevel1::SetUpLevel()
 	}*/
 	mMario = new Player(mRenderer, "Images/Mario.png", Vector2D(64, 330), 3, 1);
 	mLuigi = new Player(mRenderer, "Images/Luigi.png", Vector2D(64, 250), 3, 2);
-	mBrick = new Brick(mRenderer, "Images/Brick.png", Vector2D(500, 800), 3);
+	mBrick = new Brick(mRenderer, "Images/Brick.png", Vector2D(500, 900), 3);
 	
 	return true;
 	//mCharacter = new Character(mRenderer, "Images/Mario.png", Vector2D(64, 330));

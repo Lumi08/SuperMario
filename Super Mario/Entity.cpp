@@ -38,11 +38,6 @@ void Entity::UpdateHitbox(Vector2D position, int width, int height)
 	mHitbox->h = height * mRenderScale;
 }
 
-SDL_Rect* Entity::GetHitbox()
-{
-	return mHitbox;
-}
-
 void Entity::Debug()
 {
 	SDL_SetRenderDrawColor(mRenderer, 255, 255, 255, 255);

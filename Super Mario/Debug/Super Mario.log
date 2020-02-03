@@ -1,2 +1,12 @@
-﻿  Texture2D.cpp
+﻿  Brick.cpp
+  Entity.cpp
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\Entity.cpp(35,23): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\Entity.cpp(36,23): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\Entity.cpp(37,21): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+  GameScreenLevel1.cpp
+  GameScreenManager.cpp
+  Player.cpp
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\Entity.cpp(38,22): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+  Generating Code...
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\Player.cpp(9,23): warning C4305: '=': truncation from 'double' to 'float'
   Super Mario.vcxproj -> C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Debug\Super Mario.exe

@@ -12,14 +12,23 @@ class Entity
 public:
 	Entity(SDL_Renderer* renderer, std::string imagePath, Vector2D startPosition, int width, int height, float renderScale);
 	~Entity();
-	
+
 	virtual void Render();
 	virtual void Update();
 	void UpdateHitbox(Vector2D position, int width, int height);
 
-	SDL_Rect* GetHitbox();
-	
 	void Debug();
+	
+	SDL_Rect* GetHitbox() { return mHitbox; }
+	float GetX() { return mPosition.x; }
+	float GetY() { return mPosition.y; }
+	int GetWidth() { return mWidth; }
+	int GetHeight() { return mHeight; }
+
+	void SetX(float x) { mPosition.x = x; }
+	void SetY(float y) { mPosition.y = y; }
+	void SetWidth(int width) { mWidth = width; }
+	void SetHeight(int height) { mHeight = height; }
 
 protected:
 	SDL_Renderer* mRenderer;
