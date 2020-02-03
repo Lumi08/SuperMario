@@ -1,7 +1,7 @@
 #include "Animation.h"
 #include "Texture2D.h"
 
-Animation::Animation(SDL_Renderer* renderer, Texture2D* texture, SDL_Rect* sourceRectStart, int numberOfFrames, int timePerFrame)
+Animation::Animation(SDL_Renderer* renderer, Texture2D* texture, SDL_Rect* sourceRectStart, int numberOfFrames, int timePerFrame, float renderScale)
 {
 	this->mRenderer = renderer;
 	this->mTexture = texture;
@@ -10,6 +10,7 @@ Animation::Animation(SDL_Renderer* renderer, Texture2D* texture, SDL_Rect* sourc
 	this->mNumberOfFrames = numberOfFrames;
 	this->mTimePerFrame = timePerFrame;
 	mCurrentFrameTime = 0;
+	mRenderScale = renderScale;
 }
 
 Animation::~Animation()
@@ -50,7 +51,7 @@ void Animation::Play(Vector2D position, SDL_RendererFlip flip, double angle, int
 	mCurrentFrameTime++;
 
 
-	mTexture->Render(position, flip, 0.0f, mSourceRect);
+	mTexture->Render(position, flip, mRenderScale, 0.0f, mSourceRect);
 }
 
 void Animation::SetLoopStartSprite(int spriteNum)

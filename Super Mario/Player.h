@@ -19,7 +19,7 @@
 class Player : public Entity
 {
 public:
-	Player(SDL_Renderer* renderer, std::string imagepath, Vector2D startPosition, int playerNum);
+	Player(SDL_Renderer* renderer, std::string imagepath, Vector2D startPosition, float renderScale, int playerNum);
 	~Player();
 
 	void Render();
@@ -37,8 +37,7 @@ private:
 	int mPlayerNumber,
 		mTimeIdle = 0;
 	float mMovementSpeed,
-		mJumpForce,
-		mPreviousYPos;
+		mJumpForce;
 	bool mMovingLeft,
 		mMovingRight,
 		mJumpKeyPressed,

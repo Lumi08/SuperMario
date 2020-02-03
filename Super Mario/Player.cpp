@@ -2,17 +2,17 @@
 #include "Player.h"
 #include "Texture2D.h"
 
-Player::Player(SDL_Renderer* renderer, std::string imagePath, Vector2D startPosition, int playerNum) 
-	: Entity(renderer, imagePath, startPosition)
+Player::Player(SDL_Renderer* renderer, std::string imagePath, Vector2D startPosition, float renderScale, int playerNum) 
+	: Entity(renderer, imagePath, startPosition, SMALLCHARACTERHEIGHT, SMALLCHARACTERWIDTH, renderScale)
 {
 	mPlayerNumber = playerNum;
 	mMovementSpeed = 0.05;
 	mPlayerState = IDLE;
 	mDirectionFacing = RIGHT;
 	mSourceRect = new SDL_Rect{ 0, 0, 16, 16 };
-	mWalkAnimation = new Animation(renderer, mTexture, new SDL_Rect{ 0, 0, 16, 16 }, 2, 500);
-	mIdleAnimation = new Animation(renderer, mTexture, new SDL_Rect{ 0, 32, 16, 16 }, 2, 5000);
-	mSleepAnimation = new Animation(renderer, mTexture, new SDL_Rect{ 0, 16, 16, 16 }, 6, 1000);
+	mWalkAnimation = new Animation(renderer, mTexture, new SDL_Rect{ 0, 0, 16, 16 }, 2, 500, mRenderScale);
+	mIdleAnimation = new Animation(renderer, mTexture, new SDL_Rect{ 0, 32, 16, 16 }, 2, 5000, mRenderScale);
+	mSleepAnimation = new Animation(renderer, mTexture, new SDL_Rect{ 0, 16, 16, 16 }, 6, 1000, mRenderScale);
 
 	//mSleepAnimation->SetLoopStartSprite(4);
 }
@@ -29,6 +29,7 @@ Player::~Player()
 
 void Player::Render()
 {
+	
 	switch (mPlayerState)
 	{
 		case WALK:
@@ -92,13 +93,13 @@ void Player::Render()
 			{
 				case RIGHT:
 				{
-					mTexture->Render(mPosition, SDL_FLIP_HORIZONTAL, 0.0f, mSourceRect);
+					mTexture->Render(mPosition, SDL_FLIP_HORIZONTAL, mRenderScale, 0.0f, mSourceRect);
 					break;
 				}
 
 				case LEFT:
 				{	
-					mTexture->Render(mPosition, SDL_FLIP_NONE, 0.0f, mSourceRect);
+					mTexture->Render(mPosition, SDL_FLIP_NONE, mRenderScale, 0.0f, mSourceRect);
 					break;
 				}
 			}
@@ -259,8 +260,6 @@ void Player::Update(float deltaTime, SDL_Event e)
 			break;
 		}
 	}
-
-	mPreviousYPos = mPosition.y;
 }
 
 void Player::MovementLogic(float deltaTime)
@@ -320,6 +319,8 @@ void Player::MovementLogic(float deltaTime)
 	{
 		mPlayerState = SLEEP;
 	}
+
+	UpdateHitbox(mPosition, mWidth, mHeight);
 }
 
 void Player::Jump()
