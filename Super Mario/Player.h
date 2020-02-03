@@ -25,6 +25,8 @@ public:
 	void Render();
 	void Update(float deltaTime, SDL_Event e);
 
+	void SetOnPlatform(bool isOnPlatform) { mOnPlatform = isOnPlatform; };
+	bool GetOnPlatform() { return mOnPlatform; }
 private:
 	enum PlayerState
 	{
@@ -41,7 +43,8 @@ private:
 	bool mMovingLeft,
 		mMovingRight,
 		mJumpKeyPressed,
-		mJumping;
+		mJumping,
+		mOnPlatform;
 	FACING mDirectionFacing;
 	Animation* mWalkAnimation;
 	Animation* mSleepAnimation;

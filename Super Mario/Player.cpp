@@ -13,7 +13,7 @@ Player::Player(SDL_Renderer* renderer, std::string imagePath, Vector2D startPosi
 	mWalkAnimation = new Animation(renderer, mTexture, new SDL_Rect{ 0, 0, 16, 16 }, 2, 500, mRenderScale);
 	mIdleAnimation = new Animation(renderer, mTexture, new SDL_Rect{ 0, 32, 16, 16 }, 2, 5000, mRenderScale);
 	mSleepAnimation = new Animation(renderer, mTexture, new SDL_Rect{ 0, 16, 16, 16 }, 6, 1000, mRenderScale);
-
+	mOnPlatform = false;
 	//mSleepAnimation->SetLoopStartSprite(4);
 }
 
@@ -122,7 +122,7 @@ void Player::Update(float deltaTime, SDL_Event e)
 		mJumpForce -= JUMP_FORCE_DECREMENT * deltaTime;
 	}
 	
-	if (mPosition.y < SCREEN_HEIGHT - SMALLCHARACTERHEIGHT * 3)
+	if (mPosition.y < SCREEN_HEIGHT - mHeight && !mOnPlatform)
 	{
 		mJumping = true;
 		mPosition.y += GRAVITY * deltaTime;
@@ -327,6 +327,7 @@ void Player::Jump()
 {
 	if (!mJumping)
 	{
+		mOnPlatform = false;
 		mPlayerState = JUMP;
 		mJumpForce = INITIAL_JUMP_FORCE;
 		mJumping = true;

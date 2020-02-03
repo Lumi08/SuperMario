@@ -22,6 +22,17 @@ struct Vector2D
 //{
 //	return true;
 //}
+SDL_FORCE_INLINE SDL_bool SDL_RectTest(const SDL_Rect* a, const SDL_Rect* b)
+{
+	if (a->x + (a->w / 2) >= b->x&&
+		a->x + (a->w / 2) <= b->x + b->w &&
+		a->y + (a->h / 2) >= b->y&&
+		a->y + (a->h / 2) <= b->y + b->h)
+	{
+		//return SDL_TRUE;
+	}
+	return SDL_FALSE;
+}
 
 enum SCREENS
 {

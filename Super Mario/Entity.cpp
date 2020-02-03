@@ -7,10 +7,10 @@ Entity::Entity(SDL_Renderer* renderer, std::string imagePath, Vector2D startPosi
 	mTexture = new Texture2D(renderer);
 	mTexture->LoadFromFile(imagePath);
 	mPosition = startPosition;
-	mWidth = width;
-	mHeight = height;
 	mRenderScale = renderScale;
-	mHitbox = new SDL_Rect{ (int)mPosition.x, (int)mPosition.y, (int)(width * mRenderScale), (int)(height * mRenderScale) };
+	mWidth = width * mRenderScale;
+	mHeight = height * mRenderScale;
+	mHitbox = new SDL_Rect{ (int)mPosition.x, (int)mPosition.y, (int)(mWidth), (int)(mHeight) };
 }
 
 Entity::~Entity()
@@ -34,8 +34,8 @@ void Entity::UpdateHitbox(Vector2D position, int width, int height)
 {
 	mHitbox->x = position.x;
 	mHitbox->y = position.y;
-	mHitbox->w = width * mRenderScale;
-	mHitbox->h = height * mRenderScale;
+	mHitbox->w = width;
+	mHitbox->h = height;
 }
 
 void Entity::Debug()
