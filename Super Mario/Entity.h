@@ -35,6 +35,7 @@ protected:
 	SDL_Rect* mHitbox;
 	Texture2D* mTexture;
 	Vector2D mPosition;
+	SIDE mSideColliding;
 	float mRenderScale;
 	int mWidth,
 		mHeight;

@@ -25,6 +25,9 @@ private:
 	Player*	mLuigi;
 	Brick* mBrick;
 	bool SetUpLevel();
+	//debug:
+	int int1;
+	bool debug = false;
 };
 
 #endif // !_GAMESCREENLEVEL1_H

@@ -1,4 +1,7 @@
-#pragma once
+#ifndef _COMMONS_H
+#define _COMMONS_H
+
+#include <iostream>
 
 struct Vector2D
 {
@@ -22,15 +25,34 @@ struct Vector2D
 //{
 //	return true;
 //}
-SDL_FORCE_INLINE SDL_bool SDL_RectTest(const SDL_Rect* a, const SDL_Rect* b)
+SDL_FORCE_INLINE SDL_bool RectIntersects(const SDL_Rect* a, const SDL_Rect* b, int &sideHit)
 {
-	if (a->x + (a->w / 2) >= b->x&&
-		a->x + (a->w / 2) <= b->x + b->w &&
-		a->y + (a->h / 2) >= b->y&&
-		a->y + (a->h / 2) <= b->y + b->h)
+	//Left
+	if (a->x > b->x + b->w)
 	{
-		//return SDL_TRUE;
+		sideHit = 2;
 	}
+	//Top
+	if (a->y > b->y + b->h)
+	{
+		sideHit = 4;
+	}
+	//Right
+	if (a->x + a->w < b->x)
+	{
+		sideHit = 1;
+	}
+	//Bottom
+	if (a->y + a->h < b->y)
+	{
+		sideHit = 3;
+	}
+
+	if (a->x + a->w > b->x && a->x < b->x + b->w && a->y + a->h > b->y && a->y < b->y + b->h)
+	{
+		return SDL_TRUE;
+	}
+
 	return SDL_FALSE;
 }
 
@@ -46,6 +68,16 @@ enum SCREENS
 
 enum FACING
 {
-	LEFT = 0,
-	RIGHT
+	FACING_LEFT = 0,
+	FACING_RIGHT
 };
+
+enum SIDE
+{
+	LEFT = 0,
+	TOP,
+	RIGHT,
+	BOTTOM
+};
+
+#endif // !_COMMONS_H

@@ -8,7 +8,7 @@ Player::Player(SDL_Renderer* renderer, std::string imagePath, Vector2D startPosi
 	mPlayerNumber = playerNum;
 	mMovementSpeed = 0.05;
 	mPlayerState = IDLE;
-	mDirectionFacing = RIGHT;
+	mDirectionFacing = FACING_RIGHT;
 	mSourceRect = new SDL_Rect{ 0, 0, 16, 16 };
 	mWalkAnimation = new Animation(renderer, mTexture, new SDL_Rect{ 0, 0, 16, 16 }, 2, 500, mRenderScale);
 	mIdleAnimation = new Animation(renderer, mTexture, new SDL_Rect{ 0, 32, 16, 16 }, 2, 5000, mRenderScale);
@@ -36,13 +36,13 @@ void Player::Render()
 		{
 			switch (mDirectionFacing)
 			{
-				case RIGHT:
+				case FACING_RIGHT:
 				{
 					mWalkAnimation->Play(mPosition, SDL_FLIP_HORIZONTAL);
 					break;
 				}
 
-				case LEFT:
+				case FACING_LEFT:
 				{
 					mWalkAnimation->Play(mPosition, SDL_FLIP_NONE);
 					break;
@@ -55,12 +55,12 @@ void Player::Render()
 		{
 			switch (mDirectionFacing)
 			{
-				case RIGHT:
+				case FACING_RIGHT:
 				{
 					mIdleAnimation->Play(mPosition, SDL_FLIP_HORIZONTAL);
 					break;
 				}
-				case LEFT:
+				case FACING_LEFT:
 				{
 					mIdleAnimation->Play(mPosition, SDL_FLIP_NONE);
 					break;
@@ -73,12 +73,12 @@ void Player::Render()
 		{
 			switch (mDirectionFacing)
 			{
-				case RIGHT:
+				case FACING_RIGHT:
 				{
 					mSleepAnimation->Play(mPosition, SDL_FLIP_HORIZONTAL);
 					break;
 				}
-				case LEFT:
+				case FACING_LEFT:
 				{
 					mSleepAnimation->Play(mPosition, SDL_FLIP_NONE);
 					break;
@@ -91,13 +91,13 @@ void Player::Render()
 		{
 			switch (mDirectionFacing)
 			{
-				case RIGHT:
+				case FACING_RIGHT:
 				{
 					mTexture->Render(mPosition, SDL_FLIP_HORIZONTAL, mRenderScale, 0.0f, mSourceRect);
 					break;
 				}
 
-				case LEFT:
+				case FACING_LEFT:
 				{	
 					mTexture->Render(mPosition, SDL_FLIP_NONE, mRenderScale, 0.0f, mSourceRect);
 					break;
@@ -272,7 +272,7 @@ void Player::MovementLogic(float deltaTime)
 	if (mMovingLeft)
 	{
 		mPosition.x -= mMovementSpeed;
-		mDirectionFacing = LEFT;
+		mDirectionFacing = FACING_LEFT;
 
 		if (!mJumping)
 		{
@@ -283,7 +283,7 @@ void Player::MovementLogic(float deltaTime)
 	else if (mMovingRight)
 	{
 		mPosition.x += mMovementSpeed;
-		mDirectionFacing = RIGHT;
+		mDirectionFacing = FACING_RIGHT;
 		if (!mJumping)
 		{
 			mPlayerState = WALK;

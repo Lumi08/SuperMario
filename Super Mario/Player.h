@@ -26,6 +26,7 @@ public:
 	void Update(float deltaTime, SDL_Event e);
 
 	void SetOnPlatform(bool isOnPlatform) { mOnPlatform = isOnPlatform; };
+	void SetJumpForce(float jumpForce) { mJumpForce = jumpForce; }
 	bool GetOnPlatform() { return mOnPlatform; }
 private:
 	enum PlayerState
