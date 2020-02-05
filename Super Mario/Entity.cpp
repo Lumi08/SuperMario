@@ -1,15 +1,15 @@
 #include "Entity.h"
 #include "Texture2D.h"
 
-Entity::Entity(SDL_Renderer* renderer, std::string imagePath, Vector2D startPosition, int width, int height, float renderScale)
+Entity::Entity(SDL_Renderer* renderer, std::string imagePath, Vector2D startPosition, int rawWidth, int rawHeight, float renderScale)
 {
 	mRenderer = renderer;
 	mTexture = new Texture2D(renderer);
 	mTexture->LoadFromFile(imagePath);
 	mPosition = startPosition;
 	mRenderScale = renderScale;
-	mWidth = width * mRenderScale;
-	mHeight = height * mRenderScale;
+	mWidth = rawWidth * mRenderScale;
+	mHeight = rawHeight * mRenderScale;
 	mHitbox = new SDL_Rect{ (int)mPosition.x, (int)mPosition.y, (int)(mWidth), (int)(mHeight) };
 }
 
@@ -25,7 +25,7 @@ void Entity::Render()
 
 }
 
-void Entity::Update()
+void Entity::Update(float deltaTime, SDL_Event)
 {
 
 }

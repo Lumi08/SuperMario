@@ -5,6 +5,7 @@
 #include <string>
 
 #include "Commons.h"
+#include "Texture2D.h"
 
 class Texture2D;
 class Entity
@@ -14,7 +15,7 @@ public:
 	~Entity();
 
 	virtual void Render();
-	virtual void Update();
+	virtual void Update(float deltaTime, SDL_Event e);
 	void UpdateHitbox(Vector2D position, int width, int height);
 
 	void Debug();

@@ -1,5 +1,3 @@
-#include "Entity.h"
-#include "Player.h"
 #include "Brick.h"
 #include "Texture2D.h"
 
@@ -10,16 +8,26 @@ Brick::Brick(SDL_Renderer* renderer, std::string imagePath, Vector2D position, f
 
 Brick::~Brick()
 {
+	delete mSourceRect;
 }
 
-void Brick::Update(float deltaTime, SDL_Event e)
+void Brick::Update(float deltaTime, SDL_Event e, Player* player, int numOfPlayers)
 {
-	
+	PlayerCollisions(player);
+	/*for (int i = 0; i < numOfPlayers; i++)
+	{
+	}*/
 }
 
 void Brick::Render()
 {
 	mTexture->Render(mPosition, SDL_FLIP_NONE, mRenderScale, 0.0f, mSourceRect);
+}
+
+void Brick::PlayerCollisions(Player* player)
+{
+	int sideHit;
+	
 }
 
 

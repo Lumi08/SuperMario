@@ -19,6 +19,12 @@ void GameScreenLevel1::Render()
 	mMario->Render();
 	mLuigi->Render();
 	mBrick->Render();
+	
+	if (mMushroomSpawned)
+	{
+		mMushroom->Render();
+	}
+
 	if (debug)
 	{
 		mBrick->Debug();
@@ -30,9 +36,13 @@ void GameScreenLevel1::Update(float deltaTime, SDL_Event e)
 {
 	mMario->Update(deltaTime, e);
 	mLuigi->Update(deltaTime, e);
-	mBrick->Update(deltaTime, e);
-	//int int1;
-	//std::cout << mMario->GetOnPlatform() << std::endl;
+	mBrick->Update(deltaTime, e, mMario, 2);
+	
+	if (mMushroomSpawned)
+	{
+		mMushroom->Update(deltaTime, e);
+	}
+
 	if (RectIntersects(mBrick->GetHitbox(), mMario->GetHitbox(), int1))
 	{
 		if (int1 == 4)
@@ -45,15 +55,17 @@ void GameScreenLevel1::Update(float deltaTime, SDL_Event e)
 			mMario->SetY(mBrick->GetY() + mBrick->GetHeight());
 			mMario->SetOnPlatform(false);
 			mMario->SetJumpForce(0);
+			mMushroom = new Mushroom(mRenderer, "Images/RedMushroom.png", Vector2D(mBrick->GetX(), mBrick->GetY() - mBrick->GetHeight()), 2, FACING_RIGHT);
+			mMushroomSpawned = true;
 		}
 		if (int1 == 2)
 		{
-			mMario->SetX(mBrick->GetX() - mMario->GetWidth());
+			mMario->SetX(mBrick->GetX() - mBrick->GetWidth());
 			mMario->SetOnPlatform(false);
 		}
 		if (int1 == 1)
 		{
-			mMario->SetX(mBrick->GetX() + mBrick->GetWidth());
+			mMario->SetX(mBrick->GetX() + mMario->GetWidth());
 			mMario->SetOnPlatform(false);
 		}
 	}
@@ -62,7 +74,6 @@ void GameScreenLevel1::Update(float deltaTime, SDL_Event e)
 	{
 		mMario->SetOnPlatform(false);
 	}
-	//std::cout << int1 << std::endl;
 
 	switch (e.type)
 	{
