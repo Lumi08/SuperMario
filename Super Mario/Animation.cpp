@@ -16,8 +16,6 @@ Animation::Animation(SDL_Renderer* renderer, Texture2D* texture, SDL_Rect* sourc
 Animation::~Animation()
 {
 	mRenderer = NULL;
-	delete mTexture;
-	mTexture = NULL;
 }
 
 void Animation::Play(Vector2D position, SDL_RendererFlip flip, double angle, int timesToLoop)

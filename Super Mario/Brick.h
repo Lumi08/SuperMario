@@ -7,19 +7,25 @@
 #include "Player.h"
 #include "Entity.h"
 #include "Mushroom.h"
+#include "Commons.h"
+#include "Constants.h"
 
 class Brick : public Entity
 {
 public:
-	Brick(SDL_Renderer* renderer, std::string imagePath, Vector2D position, float renderScale);
+	Brick(SDL_Renderer* renderer, std::string imagePath, Vector2D position);
 	~Brick();
 	
-	void Update(float deltaTime, SDL_Event e, Player* player, int numOfPlayers);
+	void Update(float deltaTime, SDL_Event e, Player* players[]);
 	void Render();
-	void PlayerCollisions(Player* player);
+	virtual void Debug() override;
 private:
+	void PlayerCollisions(Player* player, int playerNum);
+	void ItemCollisions();
 	SDL_Rect* mSourceRect;
-	Mushroom* mMushroom;
+	Mushroom* mItemInside;
+	bool mItemInsideSpawned;
+	SIDE mSidePlayerHit[MAXPLAYERCOUNT];
 };
 
 #endif // !_BRICK_H

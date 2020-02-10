@@ -7,6 +7,7 @@
 #include "Entity.h"
 #include "Commons.h"
 #include "Animation.h"
+#include "Constants.h"
 
 class Mushroom : public Entity
 {
@@ -17,10 +18,15 @@ public:
 	void Render();
 	void Update(float deltaTime, SDL_Event e);
 
+	void SetOnPlatform(bool isOnPlatform) { mOnPlatform = isOnPlatform; }
+	bool GetOnPlatform() { return mOnPlatform; }
 private:
 	SDL_Rect* mSourceRect;
 	FACING mDirectionFacing;
 	Animation* mMovingAnimation;
+	bool mSpawning,
+		mOnPlatform;
+	int mStartY;
 };
 
 

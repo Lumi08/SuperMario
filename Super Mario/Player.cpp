@@ -2,26 +2,23 @@
 #include "Player.h"
 #include "Texture2D.h"
 
-Player::Player(SDL_Renderer* renderer, std::string imagePath, Vector2D startPosition, float renderScale, int playerNum) 
-	: Entity(renderer, imagePath, startPosition, SMALLCHARACTERHEIGHT, SMALLCHARACTERWIDTH, renderScale)
+Player::Player(SDL_Renderer* renderer, std::string imagePath, Vector2D startPosition, int playerNum) 
+	: Entity(renderer, imagePath, startPosition, SMALLCHARACTERHEIGHT, SMALLCHARACTERWIDTH)
 {
 	mPlayerNumber = playerNum;
 	mMovementSpeed = 0.05;
 	mPlayerState = IDLE;
 	mDirectionFacing = FACING_RIGHT;
 	mSourceRect = new SDL_Rect{ 0, 0, 16, 16 };
-	mWalkAnimation = new Animation(renderer, mTexture, new SDL_Rect{ 0, 0, 16, 16 }, 2, 500, mRenderScale);
-	mIdleAnimation = new Animation(renderer, mTexture, new SDL_Rect{ 0, 32, 16, 16 }, 2, 5000, mRenderScale);
-	mSleepAnimation = new Animation(renderer, mTexture, new SDL_Rect{ 0, 16, 16, 16 }, 6, 1000, mRenderScale);
+	mWalkAnimation = new Animation(renderer, mTexture, new SDL_Rect{ 0, 0, 16, 16 }, 2, 500, RENDERSCALE);
+	mIdleAnimation = new Animation(renderer, mTexture, new SDL_Rect{ 0, 32, 16, 16 }, 2, 5000, RENDERSCALE);
+	mSleepAnimation = new Animation(renderer, mTexture, new SDL_Rect{ 0, 16, 16, 16 }, 6, 1000, RENDERSCALE);
 	mOnPlatform = false;
 	//mSleepAnimation->SetLoopStartSprite(4);
 }
 
 Player::~Player()
 {
-	mRenderer = NULL;
-	delete mTexture;
-	mTexture = NULL;
 	delete mWalkAnimation;
 	delete mIdleAnimation;
 	delete mSleepAnimation;
@@ -93,13 +90,13 @@ void Player::Render()
 			{
 				case FACING_RIGHT:
 				{
-					mTexture->Render(mPosition, SDL_FLIP_HORIZONTAL, mRenderScale, 0.0f, mSourceRect);
+					mTexture->Render(mPosition, SDL_FLIP_HORIZONTAL, RENDERSCALE, 0.0f, mSourceRect);
 					break;
 				}
 
 				case FACING_LEFT:
 				{	
-					mTexture->Render(mPosition, SDL_FLIP_NONE, mRenderScale, 0.0f, mSourceRect);
+					mTexture->Render(mPosition, SDL_FLIP_NONE, RENDERSCALE, 0.0f, mSourceRect);
 					break;
 				}
 			}
@@ -110,9 +107,9 @@ void Player::Render()
 
 void Player::Update(float deltaTime, SDL_Event e)
 {
-	/*if (mPlayerNumber == 2)
+	/*if (mPlayerNumber == 1)
 	{
-		std::cout << "Luigi : " << mPlayerState << std::endl;
+		std::cout << "Mario X:" << mPosition.x << " Y:" << mPosition.y << std::endl;
 	}*/
 	MovementLogic(deltaTime);
 	
@@ -122,7 +119,7 @@ void Player::Update(float deltaTime, SDL_Event e)
 		mJumpForce -= JUMP_FORCE_DECREMENT * deltaTime;
 	}
 	
-	if (mPosition.y < SCREEN_HEIGHT - mHeight && !mOnPlatform)
+	if (mPosition.y < SCREEN_HEIGHT - mRawHeight * RENDERSCALE && !mOnPlatform)
 	{
 		mJumping = true;
 		mPosition.y += GRAVITY * deltaTime;
@@ -320,7 +317,7 @@ void Player::MovementLogic(float deltaTime)
 		mPlayerState = SLEEP;
 	}
 
-	UpdateHitbox(mPosition, mWidth, mHeight);
+	UpdateHitbox();
 }
 
 void Player::Jump()

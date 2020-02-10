@@ -8,6 +8,7 @@
 #include "Player.h"
 #include "Brick.h"
 #include "Mushroom.h"
+#include "Constants.h"
 //#include "Character.h"
 
 class Texture2D;
@@ -24,13 +25,13 @@ private:
 	Texture2D* mBackgroundTexture;
 	Player* mMario;
 	Player*	mLuigi;
+	Player* mPlayers[MAXPLAYERCOUNT];
 	Brick* mBrick;
-	Mushroom* mMushroom;
+	Brick* mBrick2;
+
 	bool SetUpLevel();
 	//debug:
-	int int1;
 	bool debug = false;
-	bool mMushroomSpawned = false;
 };
 
 #endif // !_GAMESCREENLEVEL1_H

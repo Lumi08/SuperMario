@@ -7,19 +7,12 @@
 #include "Animation.h"
 #include "Entity.h"
 
-#define SMALLCHARACTERWIDTH 16
-#define SMALLCHARACTERHEIGHT 16
-#define BIGCHARACTERWIDTH 30
-#define BIGCHARACTERHEIGHT 27
-#define GRAVITY 100.0f
 
-#define JUMP_FORCE_DECREMENT 600.0f
-#define INITIAL_JUMP_FORCE 500.0f
 
 class Player : public Entity
 {
 public:
-	Player(SDL_Renderer* renderer, std::string imagepath, Vector2D startPosition, float renderScale, int playerNum);
+	Player(SDL_Renderer* renderer, std::string imagepath, Vector2D startPosition, int playerNum);
 	~Player();
 
 	void Render();
@@ -37,6 +30,14 @@ private:
 		SLEEP
 	};
 
+	enum PlayerHealthState
+	{
+		DEAD = 0,
+		SMALLMARIO,
+		BIGMARIO,
+		POWERUPMARIO
+	};
+
 	int mPlayerNumber,
 		mTimeIdle = 0;
 	float mMovementSpeed,
@@ -52,6 +53,7 @@ private:
 	Animation* mIdleAnimation;
 	SDL_Rect* mSourceRect;
 	PlayerState mPlayerState;
+	PlayerHealthState mPlayerHealthState;
 
 	void MovementLogic(float deltaTime);
 	void Jump();

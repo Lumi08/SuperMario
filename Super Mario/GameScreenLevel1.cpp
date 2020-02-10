@@ -11,69 +11,39 @@ GameScreenLevel1::GameScreenLevel1(SDL_Renderer* renderer) : GameScreen(renderer
 GameScreenLevel1::~GameScreenLevel1()
 {
 	mBackgroundTexture = NULL;
+	delete mMario;
+	delete mLuigi;
+	delete mBrick;
+	
 }
 
 void GameScreenLevel1::Render()
 {
 	//mBackgroundTexture->Render(Vector2D(), SDL_FLIP_NONE);
-	mMario->Render();
-	mLuigi->Render();
+	for (int i = 0; i < 2; i++)
+	{
+		mPlayers[i]->Render();
+	}
 	mBrick->Render();
 	
-	if (mMushroomSpawned)
-	{
-		mMushroom->Render();
-	}
-
+	
 	if (debug)
 	{
+		for (int i = 0; i < 2; i++)
+		{
+			mPlayers[i]->Debug();
+		}
 		mBrick->Debug();
-		mMario->Debug();
 	}
 }
 
 void GameScreenLevel1::Update(float deltaTime, SDL_Event e)
 {
-	mMario->Update(deltaTime, e);
-	mLuigi->Update(deltaTime, e);
-	mBrick->Update(deltaTime, e, mMario, 2);
-	
-	if (mMushroomSpawned)
+	for (int i = 0; i < 2; i++)
 	{
-		mMushroom->Update(deltaTime, e);
+		mPlayers[i]->Update(deltaTime, e);
 	}
-
-	if (RectIntersects(mBrick->GetHitbox(), mMario->GetHitbox(), int1))
-	{
-		if (int1 == 4)
-		{
-			mMario->SetY(mBrick->GetY() - mMario->GetHeight());
-			mMario->SetOnPlatform(true);
-		}
-		if (int1 == 3)
-		{
-			mMario->SetY(mBrick->GetY() + mBrick->GetHeight());
-			mMario->SetOnPlatform(false);
-			mMario->SetJumpForce(0);
-			mMushroom = new Mushroom(mRenderer, "Images/RedMushroom.png", Vector2D(mBrick->GetX(), mBrick->GetY() - mBrick->GetHeight()), 2, FACING_RIGHT);
-			mMushroomSpawned = true;
-		}
-		if (int1 == 2)
-		{
-			mMario->SetX(mBrick->GetX() - mBrick->GetWidth());
-			mMario->SetOnPlatform(false);
-		}
-		if (int1 == 1)
-		{
-			mMario->SetX(mBrick->GetX() + mMario->GetWidth());
-			mMario->SetOnPlatform(false);
-		}
-	}
-	if (mMario->GetX() > mBrick->GetX() + mBrick->GetWidth() ||
-		mMario->GetX() + mMario->GetWidth() < mBrick->GetX())
-	{
-		mMario->SetOnPlatform(false);
-	}
+	mBrick->Update(deltaTime, e, mPlayers);
 
 	switch (e.type)
 	{
@@ -83,13 +53,15 @@ void GameScreenLevel1::Update(float deltaTime, SDL_Event e)
 			{
 				case SDLK_i:
 				{
-					mMario->SetX(100);
-					mMario->SetY(100);
+					mPlayers[0]->SetX(100);
+					mPlayers[0]->SetY(300);
+					break;
 				}
 
 				case SDLK_F3:
 				{	
 					debug = !debug;
+					break;
 				}
 			}
 			break;
@@ -105,10 +77,12 @@ bool GameScreenLevel1::SetUpLevel()
 		std::cout << "Error: Failed to load background texture!" << std::endl;
 		return false;
 	}*/
-	mMario = new Player(mRenderer, "Images/Mario.png", Vector2D(64, 330), 2, 1);
-	mLuigi = new Player(mRenderer, "Images/Luigi.png", Vector2D(64, 250), 2, 2);
-	mBrick = new Brick(mRenderer, "Images/Brick.png", Vector2D(500, 850), 2);
-	SDL_SetRenderDrawColor(mRenderer, 255, 255, 255, 255);
+	mPlayers[0] = new Player(mRenderer, "Images/Mario.png", Vector2D(64, 330), 1);
+	mPlayers[1] = new Player(mRenderer, "Images/Luigi.png", Vector2D(64, 250), 2);
+	
+
+	mBrick = new Brick(mRenderer, "Images/Brick.png", Vector2D(500, 500));
+	//SDL_SetRenderDrawColor(mRenderer, 255, 255, 255, 255);
 	
 	return true;
 	//mCharacter = new Character(mRenderer, "Images/Mario.png", Vector2D(64, 330));

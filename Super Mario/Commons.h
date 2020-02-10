@@ -3,59 +3,6 @@
 
 #include <iostream>
 
-struct Vector2D
-{
-	float x;
-	float y;
-
-	Vector2D()
-	{
-		x = 0.0f;
-		y = 0.0f;
-	}
-
-	Vector2D(float x, float y)
-	{
-		this->x = x;
-		this->y = y;
-	}
-};
-
-//bool Overlapping(SDL_Rect* rect1, SDL_Rect* rect2)
-//{
-//	return true;
-//}
-SDL_FORCE_INLINE SDL_bool RectIntersects(const SDL_Rect* a, const SDL_Rect* b, int &sideHit)
-{
-	//Left
-	if (a->x > b->x + b->w)
-	{
-		sideHit = 2;
-	}
-	//Top
-	if (a->y > b->y + b->h)
-	{
-		sideHit = 4;
-	}
-	//Right
-	if (a->x + a->w < b->x)
-	{
-		sideHit = 1;
-	}
-	//Bottom
-	if (a->y + a->h < b->y)
-	{
-		sideHit = 3;
-	}
-
-	if (a->x + a->w > b->x && a->x < b->x + b->w && a->y + a->h > b->y && a->y < b->y + b->h)
-	{
-		return SDL_TRUE;
-	}
-
-	return SDL_FALSE;
-}
-
 enum SCREENS
 {
 	SCREEN_INTRO = 0,
@@ -79,5 +26,75 @@ enum SIDE
 	RIGHT,
 	BOTTOM
 };
+
+struct Vector2D
+{
+	float x;
+	float y;
+
+	Vector2D()
+	{
+		x = 0.0f;
+		y = 0.0f;
+	}
+
+	Vector2D(float x, float y)
+	{
+		this->x = x;
+		this->y = y;
+	}
+};
+
+
+
+
+
+//bool Overlapping(SDL_Rect* rect1, SDL_Rect* rect2)
+//{
+//	return true;
+//}
+SDL_FORCE_INLINE SDL_bool RectIntersects(const SDL_Rect* a, const SDL_Rect* b, SIDE& sideHit)
+{
+	//Left
+	if (a->x > b->x + b->w)
+	{
+		sideHit = LEFT;
+	}
+	
+	//Bottom
+	if (a->y + a->h < b->y)
+	{
+		sideHit = BOTTOM;
+	}
+	
+	//Right
+	if (a->x + a->w < b->x)
+	{
+		sideHit = RIGHT;
+	}
+
+	//Top
+	if (a->y > b->y + b->h)
+	{
+		sideHit = TOP;
+	}
+
+	if (a->x + a->w > b->x && a->x < b->x + b->w && a->y + a->h > b->y && a->y < b->y + b->h)
+	{
+		return SDL_TRUE;
+	}
+
+	return SDL_FALSE;
+}
+
+SDL_FORCE_INLINE SDL_bool RectIntersects(const SDL_Rect* a, const SDL_Rect* b)
+{
+	if (a->x + a->w > b->x && a->x < b->x + b->w && a->y + a->h > b->y && a->y < b->y + b->h)
+	{
+		return SDL_TRUE;
+	}
+
+	return SDL_FALSE;
+}
 
 #endif // !_COMMONS_H

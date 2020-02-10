@@ -1,6 +1,5 @@
 #include "Texture2D.h"
 
-
 using namespace std;
 
 Texture2D::Texture2D(SDL_Renderer* renderer)
@@ -39,7 +38,7 @@ bool Texture2D::LoadFromFile(std::string path)
 	}
 	else
 	{
-		cout << "Unable to create surface. Error: " << IMG_GetError() << endl;
+		cout << "Unable to create surface. Error: " << IMG_GetError() << " " << path << endl;
 	}
 
 	return mTexture != NULL;

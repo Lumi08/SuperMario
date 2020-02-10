@@ -1,16 +1,15 @@
 #include "Entity.h"
 #include "Texture2D.h"
 
-Entity::Entity(SDL_Renderer* renderer, std::string imagePath, Vector2D startPosition, int rawWidth, int rawHeight, float renderScale)
+Entity::Entity(SDL_Renderer* renderer, std::string imagePath, Vector2D startPosition, int rawWidth, int rawHeight)
 {
 	mRenderer = renderer;
 	mTexture = new Texture2D(renderer);
 	mTexture->LoadFromFile(imagePath);
 	mPosition = startPosition;
-	mRenderScale = renderScale;
-	mWidth = rawWidth * mRenderScale;
-	mHeight = rawHeight * mRenderScale;
-	mHitbox = new SDL_Rect{ (int)mPosition.x, (int)mPosition.y, (int)(mWidth), (int)(mHeight) };
+	mRawHeight = rawHeight;
+	mRawWidth = rawWidth;
+	mHitbox = new SDL_Rect{ (int)mPosition.x, (int)mPosition.y, (int)(mRawWidth * RENDERSCALE), (int)(mRawHeight * RENDERSCALE) };
 }
 
 Entity::~Entity()
@@ -30,12 +29,12 @@ void Entity::Update(float deltaTime, SDL_Event)
 
 }
 
-void Entity::UpdateHitbox(Vector2D position, int width, int height)
+void Entity::UpdateHitbox()
 {
-	mHitbox->x = position.x;
-	mHitbox->y = position.y;
-	mHitbox->w = width;
-	mHitbox->h = height;
+	mHitbox->x = mPosition.x;
+	mHitbox->y = mPosition.y;
+	mHitbox->w = mRawWidth * RENDERSCALE;
+	mHitbox->h = mRawHeight * RENDERSCALE;
 }
 
 void Entity::Debug()
