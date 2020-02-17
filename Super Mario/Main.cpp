@@ -31,10 +31,9 @@ void Render();
 
 void SetRandomWindowIcon();
 
-using namespace::std;
-
 int main(int argc, char* args[])
 {
+
 	if (InitSDL())
 	{
 		gameScreenManager = new GameScreenManager(gRenderer, SCREEN_LEVEL1);

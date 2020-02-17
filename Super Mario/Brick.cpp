@@ -46,15 +46,17 @@ void Brick::PlayerCollisions(Player* player, int playerNum)
 			mItemInsideSpawned = false;
 		}
 	}
-
+	//dstd::cout << mSidePlayerHit[0] << std::endl;
 	if (RectIntersects(mHitbox, player->GetHitbox(), mSidePlayerHit[playerNum]))
 	{
-		if (mSidePlayerHit[playerNum] == SIDE::TOP)
+		
+		if(mSidePlayerHit[playerNum] == TOP)
 		{
 			player->SetY(mPosition.y - player->GetHeight());
-			player->SetOnPlatform(true);
+				player->SetOnPlatform(true);
 		}
-		if (mSidePlayerHit[playerNum] == SIDE::BOTTOM)
+
+		if (mSidePlayerHit[playerNum] == BOTTOM)
 		{
 			player->SetY(mPosition.y + (mRawHeight * RENDERSCALE));
 			player->SetOnPlatform(false);
@@ -62,16 +64,17 @@ void Brick::PlayerCollisions(Player* player, int playerNum)
 			mItemInside = new Mushroom(mRenderer, "Images/RedMushroom.png", Vector2D(mPosition.x, mPosition.y), 2, FACING_RIGHT);
 			mItemInsideSpawned = true;
 		}
-		if (mSidePlayerHit[playerNum] == SIDE::LEFT)
+		if (mSidePlayerHit[playerNum] == LEFT)
 		{
 			player->SetX(mPosition.x - (mRawWidth * RENDERSCALE));
 			player->SetOnPlatform(false);
 		}
-		if (mSidePlayerHit[playerNum] == SIDE::RIGHT)
+		if (mSidePlayerHit[playerNum] == RIGHT)
 		{
 			player->SetX(mPosition.x + player->GetWidth());
 			player->SetOnPlatform(false);
 		}
+		
 	}
 	if (player->GetX() > mPosition.x + (mRawHeight * RENDERSCALE) ||
 		player->GetX() + player->GetWidth() < mPosition.x)

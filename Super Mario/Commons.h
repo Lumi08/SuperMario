@@ -45,38 +45,34 @@ struct Vector2D
 	}
 };
 
-
-
-
-
 //bool Overlapping(SDL_Rect* rect1, SDL_Rect* rect2)
 //{
 //	return true;
 //}
-SDL_FORCE_INLINE SDL_bool RectIntersects(const SDL_Rect* a, const SDL_Rect* b, SIDE& sideHit)
+SDL_FORCE_INLINE SDL_bool RectIntersects(const SDL_Rect* a, const SDL_Rect* b, SIDE &sideHit)
 {
-	//Left
-	if (a->x > b->x + b->w)
+	//Top
+	if (a->y > b->y + b->h)
 	{
-		sideHit = LEFT;
+		sideHit = TOP;
 	}
-	
+
 	//Bottom
 	if (a->y + a->h < b->y)
 	{
 		sideHit = BOTTOM;
 	}
-	
+
 	//Right
 	if (a->x + a->w < b->x)
 	{
 		sideHit = RIGHT;
 	}
 
-	//Top
-	if (a->y > b->y + b->h)
+	//Left
+	if (a->x > b->x + b->w)
 	{
-		sideHit = TOP;
+		sideHit = LEFT;
 	}
 
 	if (a->x + a->w > b->x && a->x < b->x + b->w && a->y + a->h > b->y && a->y < b->y + b->h)

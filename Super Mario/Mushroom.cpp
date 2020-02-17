@@ -1,18 +1,16 @@
 #include "Mushroom.h"
 
-Mushroom::Mushroom(SDL_Renderer* renderer, std::string imagePath, Vector2D spawnLocation, float renderScale, FACING startDirection) : Entity(renderer, imagePath, spawnLocation, 16, 16)
+Mushroom::Mushroom(SDL_Renderer* renderer, std::string imagePath, Vector2D spawnLocation, float renderScale, FACING startDirection) : PowerUp(renderer, imagePath, spawnLocation, 16, 16)
 {
-	mSourceRect = new SDL_Rect{ 0, 0, 16, 16 };
 	mDirectionFacing = startDirection;
-	mMovingAnimation = new Animation(renderer, mTexture, mSourceRect, 2, 10000, renderScale);
-	mSpawning = true;
-	mOnPlatform = true;
+	mMovingAnimation = new Animation(renderer, mTexture, new SDL_Rect{ 0, 0, 16, 16 }, 2, 10000, renderScale);
+	SetSpawning(true);
+	SetOnPlatform(true);
 	mStartY = spawnLocation.y;
 }
 
 Mushroom::~Mushroom()
 {
-	delete mSourceRect;
 	delete mMovingAnimation;
 }
 
@@ -23,20 +21,20 @@ void Mushroom::Render()
 
 void Mushroom::Update(float deltaTime, SDL_Event e)
 {
-	if (mSpawning)
+	if (GetSpawning())
 	{
-		if (mPosition.y >= mStartY - 16 * RENDERSCALE - 1)
+		if (mPosition.y >= mStartY - 16 * RENDERSCALE + 1)
 		{
 			mPosition.y -= 0.025;
 		}
 		else
 		{
-			mSpawning = false;
+			SetSpawning(false);
 		}
 	}
 	else
 	{
-		if (mPosition.y < SCREEN_HEIGHT - mRawHeight * RENDERSCALE && !mOnPlatform)
+		if (mPosition.y < SCREEN_HEIGHT - mRawHeight * RENDERSCALE && !GetOnPlatform())
 		{
 			mPosition.y += GRAVITY * deltaTime;
 		}

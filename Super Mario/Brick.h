@@ -6,6 +6,7 @@
 
 #include "Player.h"
 #include "Entity.h"
+#include "PowerUp.h"
 #include "Mushroom.h"
 #include "Commons.h"
 #include "Constants.h"
@@ -23,7 +24,7 @@ private:
 	void PlayerCollisions(Player* player, int playerNum);
 	void ItemCollisions();
 	SDL_Rect* mSourceRect;
-	Mushroom* mItemInside;
+	PowerUp* mItemInside;
 	bool mItemInsideSpawned;
 	SIDE mSidePlayerHit[MAXPLAYERCOUNT];
 };
