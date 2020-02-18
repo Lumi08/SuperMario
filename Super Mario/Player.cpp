@@ -3,16 +3,19 @@
 #include "Texture2D.h"
 
 Player::Player(SDL_Renderer* renderer, std::string imagePath, Vector2D startPosition, int playerNum) 
-	: Entity(renderer, imagePath, startPosition, SMALLCHARACTERHEIGHT, SMALLCHARACTERWIDTH)
+	: Entity(renderer, imagePath, startPosition, SMALLPLAYERWIDTH, SMALLPLAYERHEIGHT)
 {
 	mPlayerNumber = playerNum;
 	mMovementSpeed = 0.05;
+	mHealth = 1;
+	mFadeTime = 0;
+	mTimeIdle = 0;
 	mPlayerState = IDLE;
 	mDirectionFacing = FACING_RIGHT;
-	mSourceRect = new SDL_Rect{ 0, 0, 16, 16 };
-	mWalkAnimation = new Animation(renderer, mTexture, new SDL_Rect{ 0, 0, 16, 16 }, 2, 500, RENDERSCALE);
-	mIdleAnimation = new Animation(renderer, mTexture, new SDL_Rect{ 0, 32, 16, 16 }, 2, 5000, RENDERSCALE);
-	mSleepAnimation = new Animation(renderer, mTexture, new SDL_Rect{ 0, 16, 16, 16 }, 6, 1000, RENDERSCALE);
+	mSourceRect = new SDL_Rect{ 0, 0, SMALLPLAYERWIDTH, SMALLPLAYERHEIGHT };
+	mWalkAnimation = new Animation(renderer, mTexture, new SDL_Rect{ 0, 0, DEFAULTTILEWIDTH, DEFAULTTILEHEIGHT }, 2, 500, RENDERSCALE);
+	mIdleAnimation = new Animation(renderer, mTexture, new SDL_Rect{ 0, 32, DEFAULTTILEWIDTH, DEFAULTTILEHEIGHT }, 2, 5000, RENDERSCALE);
+	mSleepAnimation = new Animation(renderer, mTexture, new SDL_Rect{ 0, 16, DEFAULTTILEWIDTH, DEFAULTTILEHEIGHT }, 6, 1000, RENDERSCALE);
 	mOnPlatform = false;
 	//mSleepAnimation->SetLoopStartSprite(4);
 }
@@ -26,7 +29,6 @@ Player::~Player()
 
 void Player::Render()
 {
-	
 	switch (mPlayerState)
 	{
 		case WALK:
@@ -112,6 +114,7 @@ void Player::Update(float deltaTime, SDL_Event e)
 		std::cout << "Mario X:" << mPosition.x << " Y:" << mPosition.y << std::endl;
 	}*/
 	MovementLogic(deltaTime);
+	FadeLogic();
 	
 	if (mJumping)
 	{
@@ -119,7 +122,7 @@ void Player::Update(float deltaTime, SDL_Event e)
 		mJumpForce -= JUMP_FORCE_DECREMENT * deltaTime;
 	}
 	
-	if (mPosition.y < SCREEN_HEIGHT - mRawHeight * RENDERSCALE && !mOnPlatform)
+	if (mPosition.y < SCREEN_HEIGHT - mHitbox->h && !mOnPlatform)
 	{
 		mJumping = true;
 		mPosition.y += GRAVITY * deltaTime;
@@ -135,7 +138,11 @@ void Player::Update(float deltaTime, SDL_Event e)
 		{
 			switch (e.key.keysym.sym)
 			{
-				
+			case SDLK_u:
+			{
+				UpdateHealth(-1);
+				break;
+			}
 				case SDLK_a:
 				{
 					if (mPlayerNumber == 1)
@@ -300,11 +307,11 @@ void Player::MovementLogic(float deltaTime)
 	{
 		if (mJumpForce < 100)
 		{
-			mSourceRect->x = 64;
+			mSourceRect->x = 80;
 		}
 		else
 		{
-			mSourceRect->x = 48;
+			mSourceRect->x = 64;
 		}
 	}
 	else
@@ -328,6 +335,70 @@ void Player::Jump()
 		mPlayerState = JUMP;
 		mJumpForce = INITIAL_JUMP_FORCE;
 		mJumping = true;
+	}
+}
+
+void Player::UpdateHealth(int changeInHealth)
+{
+	mHealth = mHealth + changeInHealth;
+
+	switch (mHealth)
+	{
+		case 0:
+		{
+			break;
+		}
+
+		case 1:
+		{
+			mSourceRect->y = 0;
+			mSourceRect->h = 16;
+			mHitbox->h = 16 * RENDERSCALE;
+			mFading = true;
+			mPosition.y += 16 * RENDERSCALE;
+			mWalkAnimation = new Animation(mRenderer, mTexture, new SDL_Rect{ 0, 0, DEFAULTTILEWIDTH, DEFAULTTILEHEIGHT }, 2, 500, RENDERSCALE);
+			mIdleAnimation = new Animation(mRenderer, mTexture, new SDL_Rect{ 0, 32, DEFAULTTILEWIDTH, DEFAULTTILEHEIGHT }, 2, 5000, RENDERSCALE);
+			mSleepAnimation = new Animation(mRenderer, mTexture, new SDL_Rect{ 0, 16, DEFAULTTILEWIDTH, DEFAULTTILEHEIGHT }, 6, 1000, RENDERSCALE);
+			break;
+		}
+
+		case 2:
+		{
+			mSourceRect->y = 64;
+			mSourceRect->h = 32;
+			mPosition.y -= 16 * RENDERSCALE;
+			mWalkAnimation = new Animation(mRenderer, mTexture, new SDL_Rect{ 0, 64, DEFAULTTILEWIDTH, DEFAULTTILEHEIGHT * 2 }, 2, 500, RENDERSCALE);
+			mIdleAnimation = new Animation(mRenderer, mTexture, new SDL_Rect{ 0, 96, DEFAULTTILEWIDTH, DEFAULTTILEHEIGHT * 2}, 2, 5000, RENDERSCALE);
+			mSleepAnimation = new Animation(mRenderer, mTexture, new SDL_Rect{ 0, 16, DEFAULTTILEWIDTH, DEFAULTTILEHEIGHT }, 6, 1000, RENDERSCALE);
+			mHitbox->h = 32 * RENDERSCALE;
+			mFading = true;
+			break;
+		}
+	}
+}
+
+void Player::FadeLogic()
+{
+	if (mFading)
+	{
+		float result = ((0.5 * cos(mFadeDegrees * 3.14159265 / 180.0)) + 0.5) * 255;
+		mFadeDegrees += 0.15;
+
+		if (mFadeTime > 5000 && mFadeDegrees >= 360)
+		{
+			mFading = false;
+			mFadeTime = 0;
+		}
+		else
+		{
+			SDL_SetTextureAlphaMod(mTexture->GetTexture(), result);
+			mFadeTime++;
+		}
+
+		if (mFadeDegrees >= 360.0)
+		{
+			mFadeDegrees = 0.0;
+		}
 	}
 }
 

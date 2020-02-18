@@ -25,7 +25,8 @@ private:
 	void ItemCollisions();
 	SDL_Rect* mSourceRect;
 	PowerUp* mItemInside;
-	bool mItemInsideSpawned;
+	bool mItemInsideSpawned,
+		mBeenHit;
 	SIDE mSidePlayerHit[MAXPLAYERCOUNT];
 };
 

@@ -1,11 +1,6 @@
-﻿  Brick.cpp
-  GameScreenLevel1.cpp
-  GameScreenManager.cpp
-  Mushroom.cpp
-C:\Users\g014937j\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\Mushroom.cpp(9): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\g014937j\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\Mushroom.cpp(28): warning C4305: '-=': truncation from 'double' to 'float'
-C:\Users\g014937j\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\Mushroom.cpp(44): warning C4305: '+=': truncation from 'double' to 'float'
-C:\Users\g014937j\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\Mushroom.cpp(49): warning C4305: '-=': truncation from 'double' to 'float'
-  PowerUp.cpp
-  Generating Code...
-  Super Mario.vcxproj -> C:\Users\g014937j\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Debug\Super Mario.exe
+﻿  Player.cpp
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\Player.cpp(9,23): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\Player.cpp(384,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\Player.cpp(385,23): warning C4305: '+=': truncation from 'double' to 'float'
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\Player.cpp(394,51): warning C4244: 'argument': conversion from 'float' to 'Uint8', possible loss of data
+  Super Mario.vcxproj -> C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Debug\Super Mario.exe

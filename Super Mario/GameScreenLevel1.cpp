@@ -1,5 +1,4 @@
- #include "GameScreenLevel1.h"
-#include <iostream>
+#include "GameScreenLevel1.h"
 #include "Texture2D.h"
 
 
@@ -25,7 +24,6 @@ void GameScreenLevel1::Render()
 		mPlayers[i]->Render();
 	}
 	mBrick->Render();
-	
 	
 	if (debug)
 	{

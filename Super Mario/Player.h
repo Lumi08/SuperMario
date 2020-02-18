@@ -3,11 +3,10 @@
 
 #include <SDL.h>
 #include <string>
+#include <math.h>
 #include "Constants.h"
 #include "Animation.h"
 #include "Entity.h"
-
-
 
 class Player : public Entity
 {
@@ -18,6 +17,7 @@ public:
 	void Render();
 	void Update(float deltaTime, SDL_Event e);
 
+	void UpdateHealth(int changeInHealth);
 	void SetOnPlatform(bool isOnPlatform) { mOnPlatform = isOnPlatform; };
 	void SetJumpForce(float jumpForce) { mJumpForce = jumpForce; }
 	bool GetOnPlatform() { return mOnPlatform; }
@@ -30,31 +30,29 @@ private:
 		SLEEP
 	};
 
-	enum PlayerHealthState
-	{
-		DEAD = 0,
-		SMALLMARIO,
-		BIGMARIO,
-		POWERUPMARIO
-	};
+	
 
 	int mPlayerNumber,
-		mTimeIdle = 0;
+		mTimeIdle,
+		mHealth,
+		mFadeTime;
 	float mMovementSpeed,
-		mJumpForce;
+		mJumpForce,
+		mFadeDegrees;
 	bool mMovingLeft,
 		mMovingRight,
 		mJumpKeyPressed,
 		mJumping,
-		mOnPlatform;
+		mOnPlatform,
+		mFading;
 	FACING mDirectionFacing;
 	Animation* mWalkAnimation;
 	Animation* mSleepAnimation;
 	Animation* mIdleAnimation;
 	SDL_Rect* mSourceRect;
 	PlayerState mPlayerState;
-	PlayerHealthState mPlayerHealthState;
 
+	void FadeLogic();
 	void MovementLogic(float deltaTime);
 	void Jump();
 };

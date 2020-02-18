@@ -1,9 +1,9 @@
 #include "Mushroom.h"
 
-Mushroom::Mushroom(SDL_Renderer* renderer, std::string imagePath, Vector2D spawnLocation, float renderScale, FACING startDirection) : PowerUp(renderer, imagePath, spawnLocation, 16, 16)
+Mushroom::Mushroom(SDL_Renderer* renderer, std::string imagePath, Vector2D spawnLocation, float renderScale, FACING startDirection) : PowerUp(renderer, imagePath, spawnLocation, DEFAULTTILEWIDTH, DEFAULTTILEHEIGHT)
 {
 	mDirectionFacing = startDirection;
-	mMovingAnimation = new Animation(renderer, mTexture, new SDL_Rect{ 0, 0, 16, 16 }, 2, 10000, renderScale);
+	mMovingAnimation = new Animation(renderer, mTexture, new SDL_Rect{ 0, 0, DEFAULTTILEWIDTH, DEFAULTTILEHEIGHT }, 2, 10000, renderScale);
 	SetSpawning(true);
 	SetOnPlatform(true);
 	mStartY = spawnLocation.y;

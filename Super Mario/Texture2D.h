@@ -19,6 +19,7 @@ public:
 
 	int GetWidth() { return mWidth; }
 	int GetHeight() { return mHeight; }
+	SDL_Texture* GetTexture() { return mTexture; }
 
 private:
 	SDL_Renderer* mRenderer;

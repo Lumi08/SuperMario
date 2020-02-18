@@ -33,7 +33,6 @@ bool Texture2D::LoadFromFile(std::string path)
 			mWidth = pSurface->w;
 			mHeight = pSurface->h;
 		}
-
 		SDL_FreeSurface(pSurface);
 	}
 	else
@@ -57,7 +56,6 @@ void Texture2D::Free()
 
 void Texture2D::Render(Vector2D newPosition, SDL_RendererFlip flip, float renderScale, double angle, SDL_Rect* sourceRect)
 {
-
 	SDL_Rect renderLocation;
 	sourceRect != NULL ? renderLocation = {(int)newPosition.x, (int)newPosition.y, (int)(sourceRect->w * renderScale), (int)(sourceRect->h * renderScale)} : renderLocation = { (int)newPosition.x, (int)newPosition.y, mWidth, mHeight};
 

@@ -76,7 +76,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(PROJECTDIR)SDL\include;$(PROJECTDIR)SDL\image_include;$(PROJECTDIR)SDL\mixer_include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(PROJECTDIR)SDL\include;$(PROJECTDIR)SDL\image_include;$(PROJECTDIR)SDL\mixer_include;$(PROJECTDIR)SDL\ttf_include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

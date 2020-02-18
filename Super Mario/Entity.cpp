@@ -33,8 +33,6 @@ void Entity::UpdateHitbox()
 {
 	mHitbox->x = mPosition.x;
 	mHitbox->y = mPosition.y;
-	mHitbox->w = mRawWidth * RENDERSCALE;
-	mHitbox->h = mRawHeight * RENDERSCALE;
 }
 
 void Entity::Debug()
