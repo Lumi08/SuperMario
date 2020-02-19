@@ -1,12 +1,14 @@
 #include "Mushroom.h"
 
-Mushroom::Mushroom(SDL_Renderer* renderer, std::string imagePath, Vector2D spawnLocation, float renderScale, FACING startDirection) : PowerUp(renderer, imagePath, spawnLocation, DEFAULTTILEWIDTH, DEFAULTTILEHEIGHT)
+Mushroom::Mushroom(SDL_Renderer* renderer, std::string imagePath, Vector2D spawnLocation, float renderScale, FACING startDirection) 
+	: PowerUp(renderer, imagePath, spawnLocation, DEFAULTTILEWIDTH, DEFAULTTILEHEIGHT, MUSHROOM)
 {
 	mDirectionFacing = startDirection;
-	mMovingAnimation = new Animation(renderer, mTexture, new SDL_Rect{ 0, 0, DEFAULTTILEWIDTH, DEFAULTTILEHEIGHT }, 2, 10000, renderScale);
+	mMovingAnimation = new Animation(renderer, mTexture, new SDL_Rect{ 0, 0, DEFAULTTILEWIDTH, DEFAULTTILEHEIGHT }, 2, 7500, renderScale);
 	SetSpawning(true);
 	SetOnPlatform(true);
 	mStartY = spawnLocation.y;
+	mMovementSpeed = 0.03;
 }
 
 Mushroom::~Mushroom()
@@ -41,12 +43,12 @@ void Mushroom::Update(float deltaTime, SDL_Event e)
 
 		if (mDirectionFacing == FACING_RIGHT)
 		{
-			mPosition.x += 0.03;
+			mPosition.x += mMovementSpeed;
 		}
 
 		if (mDirectionFacing == FACING_LEFT)
 		{
-			mPosition.x -= 0.03;
+			mPosition.x -= mMovementSpeed;
 		}
 	}
 

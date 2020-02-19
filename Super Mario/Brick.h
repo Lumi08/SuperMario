@@ -8,6 +8,7 @@
 #include "Entity.h"
 #include "PowerUp.h"
 #include "Mushroom.h"
+#include "FireFlower.h"
 #include "Commons.h"
 #include "Constants.h"
 

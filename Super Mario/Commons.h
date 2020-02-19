@@ -27,6 +27,12 @@ enum SIDE
 	BOTTOM
 };
 
+enum PowerUpType
+{
+	MUSHROOM = 0,
+	FIREFLOWER
+};
+
 struct Vector2D
 {
 	float x;

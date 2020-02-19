@@ -23,6 +23,7 @@ private:
 	FACING mDirectionFacing;
 	Animation* mMovingAnimation;
 	int mStartY;
+	float mMovementSpeed;
 };
 
 

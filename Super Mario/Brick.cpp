@@ -43,7 +43,10 @@ void Brick::PlayerCollisions(Player* player, int playerNum)
 	{ 
 		if (RectIntersects(mItemInside->GetHitbox(), player->GetHitbox()))
 		{
-			player->UpdateHealth(+1);
+			if (player->GetHealth() < 2)
+			{
+				player->UpdateHealth(+1);
+			}
 			delete mItemInside;
 			mItemInsideSpawned = false;
 		}
@@ -65,7 +68,14 @@ void Brick::PlayerCollisions(Player* player, int playerNum)
 			player->SetJumpForce(0);
 			if (!mBeenHit)
 			{
-				mItemInside = new Mushroom(mRenderer, "Images/RedMushroom.png", Vector2D(mPosition.x, mPosition.y), 2, FACING_RIGHT);
+				if (player->GetHealth() == 1)
+				{
+					mItemInside = new Mushroom(mRenderer, "Images/RedMushroom.png", Vector2D(mPosition.x, mPosition.y), 2, FACING_RIGHT);
+				}
+				if (player->GetHealth() == 2)
+				{
+					mItemInside = new FireFlower(mRenderer, "Images/FireFlower.png", Vector2D(mPosition.x, mPosition.y), 2);
+				}
 				mItemInsideSpawned = true;
 				mSourceRect->x = DEFAULTTILEHEIGHT;
 			}

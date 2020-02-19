@@ -20,6 +20,8 @@ public:
 	void UpdateHealth(int changeInHealth);
 	void SetOnPlatform(bool isOnPlatform) { mOnPlatform = isOnPlatform; };
 	void SetJumpForce(float jumpForce) { mJumpForce = jumpForce; }
+
+	int GetHealth() { return mHealth; }
 	bool GetOnPlatform() { return mOnPlatform; }
 private:
 	enum PlayerState
