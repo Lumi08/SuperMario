@@ -13,7 +13,6 @@ GameScreenLevel1::~GameScreenLevel1()
 	delete mMario;
 	delete mLuigi;
 	delete mBrick;
-	
 }
 
 void GameScreenLevel1::Render()
@@ -79,7 +78,7 @@ bool GameScreenLevel1::SetUpLevel()
 	mPlayers[1] = new Player(mRenderer, "Images/Luigi.png", Vector2D(64, 250), 2);
 	
 
-	mBrick = new Brick(mRenderer, "Images/Brick.png", Vector2D(500, 500));
+	mBrick = new Brick(mRenderer, "Images/Brick.png", Vector2D(500, 650));
 	//SDL_SetRenderDrawColor(mRenderer, 255, 255, 255, 255);
 	
 	return true;

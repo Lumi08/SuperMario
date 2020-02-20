@@ -353,9 +353,9 @@ void Player::UpdateHealth(int changeInHealth)
 		{
 			mSourceRect->y = 0;
 			mSourceRect->h = 16;
-			mHitbox->h = 16 * RENDERSCALE;
+			mHitbox->h = DEFAULTTILEHEIGHT * RENDERSCALE;
 			mFading = true;
-			mPosition.y += 16 * RENDERSCALE;
+			mPosition.y += DEFAULTTILEHEIGHT * RENDERSCALE;
 			mWalkAnimation = new Animation(mRenderer, mTexture, new SDL_Rect{ 0, 0, DEFAULTTILEWIDTH, DEFAULTTILEHEIGHT }, 2, 500, RENDERSCALE);
 			mIdleAnimation = new Animation(mRenderer, mTexture, new SDL_Rect{ 0, 32, DEFAULTTILEWIDTH, DEFAULTTILEHEIGHT }, 2, 5000, RENDERSCALE);
 			mSleepAnimation = new Animation(mRenderer, mTexture, new SDL_Rect{ 0, 16, DEFAULTTILEWIDTH, DEFAULTTILEHEIGHT }, 6, 1000, RENDERSCALE);
@@ -365,12 +365,12 @@ void Player::UpdateHealth(int changeInHealth)
 		case 2:
 		{
 			mSourceRect->y = 64;
-			mSourceRect->h = 32;
-			mPosition.y -= 16 * RENDERSCALE;
+			mSourceRect->h = BIGPLAYERHEIGHT;
+			mPosition.y -= DEFAULTTILEHEIGHT * RENDERSCALE;
 			mWalkAnimation = new Animation(mRenderer, mTexture, new SDL_Rect{ 0, 64, DEFAULTTILEWIDTH, DEFAULTTILEHEIGHT * 2 }, 2, 500, RENDERSCALE);
 			mIdleAnimation = new Animation(mRenderer, mTexture, new SDL_Rect{ 0, 96, DEFAULTTILEWIDTH, DEFAULTTILEHEIGHT * 2}, 2, 5000, RENDERSCALE);
 			mSleepAnimation = new Animation(mRenderer, mTexture, new SDL_Rect{ 0, 16, DEFAULTTILEWIDTH, DEFAULTTILEHEIGHT }, 6, 1000, RENDERSCALE);
-			mHitbox->h = 32 * RENDERSCALE;
+			mHitbox->h = BIGPLAYERHEIGHT * RENDERSCALE;
 			mFading = true;
 			break;
 		}

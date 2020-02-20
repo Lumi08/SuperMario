@@ -57,18 +57,6 @@ struct Vector2D
 //}
 SDL_FORCE_INLINE SDL_bool RectIntersects(const SDL_Rect* a, const SDL_Rect* b, SIDE &sideHit)
 {
-	//Top
-	if (a->y > b->y + b->h)
-	{
-		sideHit = TOP;
-	}
-
-	//Bottom
-	if (a->y + a->h < b->y)
-	{
-		sideHit = BOTTOM;
-	}
-
 	//Right
 	if (a->x + a->w < b->x)
 	{
@@ -79,6 +67,18 @@ SDL_FORCE_INLINE SDL_bool RectIntersects(const SDL_Rect* a, const SDL_Rect* b, S
 	if (a->x > b->x + b->w)
 	{
 		sideHit = LEFT;
+	}
+
+	//Top
+	if (a->y > b->y + b->h)
+	{
+		sideHit = TOP;
+	}
+
+	//Bottom
+	if (a->y + a->h < b->y)
+	{
+		sideHit = BOTTOM;
 	}
 
 	if (a->x + a->w > b->x && a->x < b->x + b->w && a->y + a->h > b->y && a->y < b->y + b->h)

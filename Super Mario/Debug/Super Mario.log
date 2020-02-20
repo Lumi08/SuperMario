@@ -1,2 +1,29 @@
-﻿  Brick.cpp
-  Super Mario.vcxproj -> C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Debug\Super Mario.exe
+﻿  Animation.cpp
+C:\Users\g014937j\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\Animation.cpp(8): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\g014937j\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\Animation.cpp(38): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\g014937j\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\Animation.cpp(42): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\g014937j\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\Animation.cpp(45): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+  Brick.cpp
+  Entity.cpp
+C:\Users\g014937j\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\Entity.cpp(34): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\g014937j\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\Entity.cpp(35): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+  FireFlower.cpp
+C:\Users\g014937j\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\FireFlower.cpp(8): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\g014937j\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\FireFlower.cpp(27): warning C4305: '-=': truncation from 'double' to 'float'
+  GameScreen.cpp
+  GameScreenLevel1.cpp
+  GameScreenManager.cpp
+  Main.cpp
+  Mushroom.cpp
+C:\Users\g014937j\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\Mushroom.cpp(10): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\g014937j\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\Mushroom.cpp(11): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\g014937j\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\Mushroom.cpp(30): warning C4305: '-=': truncation from 'double' to 'float'
+  Player.cpp
+C:\Users\g014937j\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\Player.cpp(9): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\g014937j\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\Player.cpp(384): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\g014937j\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\Player.cpp(385): warning C4305: '+=': truncation from 'double' to 'float'
+C:\Users\g014937j\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\Player.cpp(394): warning C4244: 'argument': conversion from 'float' to 'Uint8', possible loss of data
+  PowerUp.cpp
+  Texture2D.cpp
+  Generating Code...
+  Super Mario.vcxproj -> C:\Users\g014937j\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Debug\Super Mario.exe

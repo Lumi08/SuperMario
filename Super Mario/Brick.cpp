@@ -66,7 +66,7 @@ void Brick::PlayerCollisions(Player* player, int playerNum)
 			player->SetY(mPosition.y + (mHitbox->h));
 			player->SetOnPlatform(false);
 			player->SetJumpForce(0);
-			if (!mBeenHit)
+			if (mBeenHit)
 			{
 				if (player->GetHealth() == 1)
 				{
