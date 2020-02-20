@@ -4,7 +4,10 @@
 #define SCREEN_WIDTH					1280
 #define SCREEN_HEIGHT					768
 
+#define RENDERSCALE						2
+
 #define MAXPLAYERCOUNT					2
+#define MAXBRICKCOUNT					400
 
 //Raw Image sizes
 #define DEFAULTTILEWIDTH				16
@@ -18,6 +21,9 @@
 #define GRAVITY							100.0f
 #define JUMP_FORCE_DECREMENT			600.0f
 #define INITIAL_JUMP_FORCE				500.0f
+
+#define MAXMAPTILEHEIGHT				48
+#define MAXMAPTILEWIDTH					800
 
 
 /*

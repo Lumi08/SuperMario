@@ -9,6 +9,7 @@
 #include "Brick.h"
 #include "Mushroom.h"
 #include "Constants.h"
+#include "MapLoader.h"
 //#include "Character.h"
 
 class Texture2D;
@@ -23,11 +24,10 @@ public:
 	void Update(float deltaTime, SDL_Event e);
 private:
 	Texture2D* mBackgroundTexture;
-	Player* mMario;
-	Player*	mLuigi;
 	Player* mPlayers[MAXPLAYERCOUNT];
-	Brick* mBrick;
-	Brick* mBrick2;
+	Brick* mBricks[MAXBRICKCOUNT];
+	int mBrickCount,
+		mPlayerCount;
 
 	bool SetUpLevel();
 	//debug:

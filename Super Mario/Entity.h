@@ -1,11 +1,11 @@
 #ifndef _ENTITY_H_
 #define _ENTITY_H_
 
-#define RENDERSCALE 2
 
 #include <SDL.h>
 #include <string>
 
+#include "Constants.h"
 #include "Commons.h"
 #include "Texture2D.h"
 

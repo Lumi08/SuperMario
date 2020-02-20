@@ -10,9 +10,6 @@ GameScreenLevel1::GameScreenLevel1(SDL_Renderer* renderer) : GameScreen(renderer
 GameScreenLevel1::~GameScreenLevel1()
 {
 	mBackgroundTexture = NULL;
-	delete mMario;
-	delete mLuigi;
-	delete mBrick;
 }
 
 void GameScreenLevel1::Render()
@@ -22,7 +19,10 @@ void GameScreenLevel1::Render()
 	{
 		mPlayers[i]->Render();
 	}
-	mBrick->Render();
+	for (int i = 0; i < mBrickCount; i++)
+	{
+		mBricks[i]->Render();
+	}
 	
 	if (debug)
 	{
@@ -30,7 +30,10 @@ void GameScreenLevel1::Render()
 		{
 			mPlayers[i]->Debug();
 		}
-		mBrick->Debug();
+		for (int i = 0; i < mBrickCount; i++)
+		{
+			mBricks[i]->Debug();
+		}
 	}
 }
 
@@ -40,7 +43,10 @@ void GameScreenLevel1::Update(float deltaTime, SDL_Event e)
 	{
 		mPlayers[i]->Update(deltaTime, e);
 	}
-	mBrick->Update(deltaTime, e, mPlayers);
+	for (int i = 0; i < mBrickCount; i++)
+	{
+		mBricks[i]->Update(deltaTime, e, mPlayers);
+	}
 
 	switch (e.type)
 	{
@@ -74,11 +80,13 @@ bool GameScreenLevel1::SetUpLevel()
 		std::cout << "Error: Failed to load background texture!" << std::endl;
 		return false;
 	}*/
+	MapLoader* map = new MapLoader((char*)"map1.txt", mRenderer);
+	map->LoadMapAssets(mPlayers, mBricks);
+
+	mBrickCount = map->GetActualBrickCount();
+
 	mPlayers[0] = new Player(mRenderer, "Images/Mario.png", Vector2D(64, 330), 1);
 	mPlayers[1] = new Player(mRenderer, "Images/Luigi.png", Vector2D(64, 250), 2);
-	
-
-	mBrick = new Brick(mRenderer, "Images/Brick.png", Vector2D(500, 650));
 	//SDL_SetRenderDrawColor(mRenderer, 255, 255, 255, 255);
 	
 	return true;
