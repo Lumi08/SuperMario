@@ -19,9 +19,12 @@ public:
 	virtual void Render();
 	virtual void Update(float deltaTime, SDL_Event e);
 	void UpdateHitbox();
+	void UpdateSensors();
+	
+	bool IsCollidingWith(Entity* entity);
+	SIDE GetSideCollidingWithEntity(Entity* entity);
 
 	virtual void Debug();
-	
 	SDL_Rect* GetHitbox() { return mHitbox; }
 	float GetX() { return mPosition.x; }
 	float GetY() { return mPosition.y; }
@@ -36,13 +39,23 @@ public:
 
 protected:
 	SDL_Renderer* mRenderer;
+
 	SDL_Rect* mHitbox;
+
+	int mSensorSize;
+	SDL_Rect* mSensorLeft;
+	SDL_Rect* mSensorRight;
+	SDL_Rect* mSensorTop;
+	SDL_Rect* mSensorBottom;
+
 	Texture2D* mTexture;
 	Vector2D mPosition;
 	int mWidth,
 		mHeight,
 		mRawWidth,
 		mRawHeight;
+
+	void InitSensors();
 };
 
 #endif // !_ENTITY_H_

@@ -22,13 +22,13 @@ public:
 	void Render();
 	virtual void Debug() override;
 private:
-	void PlayerCollisions(Player* player, int playerNum);
+	void PlayerCollisions(Player* player, int playerNum, float deltaTime);
 	void ItemCollisions();
 	SDL_Rect* mSourceRect;
 	PowerUp* mItemInside;
 	bool mItemInsideSpawned,
 		mBeenHit;
-	SIDE mSidePlayerHit[MAXPLAYERCOUNT];
+	SIDE mPreviousSideHit;
 };
 
 #endif // !_BRICK_H

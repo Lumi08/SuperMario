@@ -30,6 +30,7 @@ private:
 		mPlayerCount;
 
 	bool SetUpLevel();
+	void BrickCollisionsWithPlayer();
 	//debug:
 	bool debug = false;
 };

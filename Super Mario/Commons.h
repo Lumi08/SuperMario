@@ -24,7 +24,8 @@ enum SIDE
 	LEFT = 0,
 	TOP,
 	RIGHT,
-	BOTTOM
+	BOTTOM,
+	NONE
 };
 
 enum PowerUpType
@@ -57,29 +58,8 @@ struct Vector2D
 //}
 SDL_FORCE_INLINE SDL_bool RectIntersects(const SDL_Rect* a, const SDL_Rect* b, SIDE &sideHit)
 {
-	//Right
-	if (a->x + a->w < b->x)
-	{
-		sideHit = RIGHT;
-	}
 
-	//Left
-	if (a->x > b->x + b->w)
-	{
-		sideHit = LEFT;
-	}
-
-	//Top
-	if (a->y > b->y + b->h)
-	{
-		sideHit = TOP;
-	}
-
-	//Bottom
-	if (a->y + a->h < b->y)
-	{
-		sideHit = BOTTOM;
-	}
+	//std::cout << sideHit << std::endl;
 
 	if (a->x + a->w > b->x && a->x < b->x + b->w && a->y + a->h > b->y && a->y < b->y + b->h)
 	{
@@ -91,12 +71,47 @@ SDL_FORCE_INLINE SDL_bool RectIntersects(const SDL_Rect* a, const SDL_Rect* b, S
 
 SDL_FORCE_INLINE SDL_bool RectIntersects(const SDL_Rect* a, const SDL_Rect* b)
 {
-	if (a->x + a->w > b->x && a->x < b->x + b->w && a->y + a->h > b->y && a->y < b->y + b->h)
+	if (a->x + a->w >= b->x && a->x <= b->x + b->w && a->y + a->h >= b->y && a->y <= b->y + b->h)
 	{
 		return SDL_TRUE;
 	}
 
 	return SDL_FALSE;
 }
+
+SDL_FORCE_INLINE SIDE RectGetSideHit(const SDL_Rect* a, const SDL_Rect* b, float deltaTime, SDL_Renderer* renderer)
+{
+	int sensorsize = 5;
+	SDL_Rect* left = new SDL_Rect{ a->x - sensorsize, a->y - 1, sensorsize, a->h +1 };
+	SDL_Rect* right = new SDL_Rect{ a->x + a->w, a->y + 1, sensorsize, a->h + 1 };
+	SDL_Rect* top = new SDL_Rect{ a->x, a->y - sensorsize, a->w, sensorsize };
+	SDL_Rect* bottom = new SDL_Rect{ a->x + 1, a->y + a->h, a->w - 2, sensorsize };
+
+	if (RectIntersects(b, left))
+	{
+		//std::cerr << "Left" << std::endl;
+		return SIDE::LEFT;
+	}
+	if (RectIntersects(b, right))
+	{
+		//std::cerr << "Right" << std::endl;
+		return SIDE::RIGHT;
+	}
+	if (RectIntersects(b, top))
+	{
+		//std::cerr << "Top" << std::endl;
+		return SIDE::TOP;
+	}
+	if (RectIntersects(b, bottom))
+	{
+		//std::cerr << "Bottom" << std::endl;
+		return SIDE::BOTTOM;
+	}
+	
+	
+	return NONE;
+}
+
+
 
 #endif // !_COMMONS_H

@@ -32,8 +32,6 @@ private:
 		SLEEP
 	};
 
-	
-
 	int mPlayerNumber,
 		mTimeIdle,
 		mHealth,

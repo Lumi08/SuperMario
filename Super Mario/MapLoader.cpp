@@ -40,6 +40,13 @@ void MapLoader::LoadMapAssets(Player* players[], Brick* bricks[])
 					mBrickCount++;
 					break;
 				}
+
+				case '#':
+				{
+					bricks[mBrickCount] = new Brick(mRenderer, "Images/Floor.png", Vector2D(DEFAULTTILEWIDTH * RENDERSCALE * j, DEFAULTTILEHEIGHT * RENDERSCALE * i));
+					mBrickCount++;
+					break;
+				}
 			}
 		}
 	}

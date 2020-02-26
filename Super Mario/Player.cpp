@@ -109,10 +109,6 @@ void Player::Render()
 
 void Player::Update(float deltaTime, SDL_Event e)
 {
-	/*if (mPlayerNumber == 1)
-	{
-		std::cout << "Mario X:" << mPosition.x << " Y:" << mPosition.y << std::endl;
-	}*/
 	MovementLogic(deltaTime);
 	FadeLogic();
 	
@@ -122,7 +118,7 @@ void Player::Update(float deltaTime, SDL_Event e)
 		mJumpForce -= JUMP_FORCE_DECREMENT * deltaTime;
 	}
 	
-	if (mPosition.y < SCREEN_HEIGHT - mHitbox->h && !mOnPlatform)
+	if (!mOnPlatform)
 	{
 		mJumping = true;
 		mPosition.y += GRAVITY * deltaTime;
@@ -325,6 +321,7 @@ void Player::MovementLogic(float deltaTime)
 	}
 
 	UpdateHitbox();
+	UpdateSensors();
 }
 
 void Player::Jump()
