@@ -32,7 +32,10 @@ private:
 	bool SetUpLevel();
 	void BrickCollisionsWithPlayer();
 	//debug:
+	int debugType = 0;
 	bool debug = false;
+	bool f3Down = false, kp2Down = false;
+	bool topHit;
 };
 
 #endif // !_GAMESCREENLEVEL1_H

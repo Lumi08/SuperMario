@@ -5,7 +5,7 @@ Brick::Brick(SDL_Renderer* renderer, std::string imagePath, Vector2D position) :
 {
 	mSourceRect = new SDL_Rect{ 0, 0, DEFAULTTILEWIDTH, DEFAULTTILEHEIGHT };
 	mBeenHit = false;
-	mPreviousSideHit = NONE;
+	mSideHit = NONE;
 }
 
 Brick::~Brick()
@@ -61,17 +61,17 @@ void Brick::PlayerCollisions(Player* player, int playerNum, float deltaTime)
 		{
 			case SIDE::TOP:
 			{
-				if (sideHit != mPreviousSideHit)
-				{
+				
+				
 					player->SetY(mPosition.y - player->GetHitbox()->h);
 					player->SetOnPlatform(true);
-				}
+				
 				break;
 			}
 			case SIDE::BOTTOM:
 			{
-				if (sideHit != mPreviousSideHit)
-				{
+				
+				
 				player->SetY(mPosition.y + (mHitbox->h));
 				player->SetOnPlatform(false);
 				player->SetJumpForce(0);
@@ -89,7 +89,7 @@ void Brick::PlayerCollisions(Player* player, int playerNum, float deltaTime)
 					mSourceRect->x = DEFAULTTILEHEIGHT;
 				}
 				mBeenHit = true;
-				}
+				
 				break;
 			}
 			case SIDE::LEFT:
@@ -105,7 +105,7 @@ void Brick::PlayerCollisions(Player* player, int playerNum, float deltaTime)
 				break;
 			}
 		}
-		mPreviousSideHit = sideHit;
+		
 	}
 }
 
@@ -121,19 +121,21 @@ void Brick::ItemCollisions()
 	}
 }
 
-void Brick::Debug()
+void Brick::Debug(int type)
 {
 	SDL_SetRenderDrawColor(mRenderer, 255, 255, 255, 255);
 	SDL_RenderDrawRect(mRenderer, mHitbox);
 	
-	SDL_SetRenderDrawColor(mRenderer, 255, 0, 0, 255);
-	SDL_RenderDrawRect(mRenderer, mSensorLeft);
-	SDL_SetRenderDrawColor(mRenderer, 0, 255, 0, 255);
-	SDL_RenderDrawRect(mRenderer, mSensorRight);
-	SDL_SetRenderDrawColor(mRenderer, 0, 0, 255, 255);
-	SDL_RenderDrawRect(mRenderer, mSensorTop);
-	SDL_SetRenderDrawColor(mRenderer, 255, 255, 0, 255);
-	SDL_RenderDrawRect(mRenderer, mSensorBottom);
+	
+		SDL_SetRenderDrawColor(mRenderer, 255, 0, 0, 255);
+		SDL_RenderDrawRect(mRenderer, mSensorLeft);
+		SDL_SetRenderDrawColor(mRenderer, 0, 255, 0, 255);
+		SDL_RenderDrawRect(mRenderer, mSensorRight);
+		SDL_SetRenderDrawColor(mRenderer, 0, 0, 255, 255);
+		SDL_RenderDrawRect(mRenderer, mSensorTop);
+		SDL_SetRenderDrawColor(mRenderer, 255, 255, 0, 255);
+		SDL_RenderDrawRect(mRenderer, mSensorBottom);
+	
 
 	if (mItemInsideSpawned)
 	{

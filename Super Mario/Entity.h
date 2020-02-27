@@ -24,7 +24,7 @@ public:
 	bool IsCollidingWith(Entity* entity);
 	SIDE GetSideCollidingWithEntity(Entity* entity);
 
-	virtual void Debug();
+	virtual void Debug(int type);
 	SDL_Rect* GetHitbox() { return mHitbox; }
 	float GetX() { return mPosition.x; }
 	float GetY() { return mPosition.y; }

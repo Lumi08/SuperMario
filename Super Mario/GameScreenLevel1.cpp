@@ -14,7 +14,7 @@ GameScreenLevel1::~GameScreenLevel1()
 
 void GameScreenLevel1::Render()
 {
-	//mBackgroundTexture->Render(Vector2D(), SDL_FLIP_NONE);
+	mBackgroundTexture->Render(Vector2D(), SDL_FLIP_NONE, 0);
 	for (int i = 0; i < mPlayerCount; i++)
 	{
 		mPlayers[i]->Render();
@@ -28,11 +28,11 @@ void GameScreenLevel1::Render()
 	{
 		for (int i = 0; i < mPlayerCount; i++)
 		{
-			mPlayers[i]->Debug();
+			mPlayers[i]->Debug(debugType);
 		}
 		for (int i = 0; i < mBrickCount; i++)
 		{
-			mBricks[i]->Debug();
+			mBricks[i]->Debug(debugType);
 		}
 	}
 }
@@ -50,6 +50,7 @@ void GameScreenLevel1::Update(float deltaTime, SDL_Event e)
 
 	BrickCollisionsWithPlayer();
 
+	
 	switch (e.type)
 	{
 		case SDL_KEYDOWN:
@@ -68,6 +69,27 @@ void GameScreenLevel1::Update(float deltaTime, SDL_Event e)
 					debug = !debug;
 					break;
 				}
+
+				case SDLK_8:
+				{
+					for (int j = 0; j < mBrickCount; j++)
+					{
+						std::cout << "Brick " << j << ": " << mBricks[j]->GetSideHit() << std::endl;
+					}
+				}
+
+			}
+			break;
+		}
+		case SDL_KEYUP:
+		{
+			switch (e.key.keysym.sym)
+			{
+				case SDLK_F3:
+				{
+					f3Down = false;
+					break;
+				}
 			}
 			break;
 		}
@@ -76,12 +98,12 @@ void GameScreenLevel1::Update(float deltaTime, SDL_Event e)
 
 bool GameScreenLevel1::SetUpLevel()
 {
-	/*mBackgroundTexture = new Texture2D(mRenderer);
-	if (!mBackgroundTexture->LoadFromFile("Images/BackgroundMB.png"))
+	mBackgroundTexture = new Texture2D(mRenderer);
+	if (!mBackgroundTexture->LoadFromFile("Images/bkground.png"))
 	{
 		std::cout << "Error: Failed to load background texture!" << std::endl;
 		return false;
-	}*/
+	}
 	
 	mPlayerCount = 1;
 	MapLoader* map = new MapLoader((char*)"map1.txt", mRenderer);
@@ -103,35 +125,51 @@ void GameScreenLevel1::BrickCollisionsWithPlayer()
 	{
 		for (int j = 0; j < mBrickCount; j++)
 		{
-			if (mPlayers[i]->IsCollidingWith(mBricks[j]))
+			if (mBricks[j]->GetSideHit() == SIDE::TOP)
 			{
-				switch (mBricks[j]->GetSideCollidingWithEntity(mPlayers[i]))
+				if (mPlayers[i]->GetX() > mBricks[j]->GetX() + mBricks[j]->GetHitbox()->h ||
+					mPlayers[i]->GetX() + mPlayers[i]->GetWidth() < mBricks[j]->GetX())
 				{
-				case SIDE::TOP:
+					mPlayers[i]->SetOnPlatform(false);
+					mBricks[j]->SetSideHit(SIDE::NONE);
+				}
+			}
+
+			if (mBricks[j]->IsCollidingWith(mPlayers[i]))
+			{
+				mBricks[j]->SetSideHit(mBricks[j]->GetSideCollidingWithEntity(mPlayers[i]));
+
+				switch (mBricks[j]->GetSideHit())
+				{
+					case SIDE::TOP:
 					{
 						mPlayers[i]->SetY(mBricks[j]->GetY() - mPlayers[i]->GetHitbox()->h);
 						mPlayers[i]->SetOnPlatform(true);
+
 						break;
 					}
 					case SIDE::BOTTOM:
 					{
 
 						mPlayers[i]->SetY(mBricks[j]->GetY() + (mPlayers[i]->GetHitbox()->h));
-						mPlayers[i]->SetOnPlatform(false);
+						//mPlayers[i]->SetOnPlatform(false);
 						mPlayers[i]->SetJumpForce(0);
+
 						//DO MUSHROOM LOGIC
 						break;
 					}
 					case SIDE::LEFT:
 					{
 						mPlayers[i]->SetX(mBricks[j]->GetX() - (mPlayers[i]->GetHitbox()->w));
-						mPlayers[i]->SetOnPlatform(false);
+						//mPlayers[i]->SetOnPlatform(false);
+
 						break;
 					}
 					case SIDE::RIGHT:
 					{
 						mPlayers[i]->SetX(mBricks[j]->GetX() + mPlayers[i]->GetHitbox()->w);
-						mPlayers[i]->SetOnPlatform(false);
+						//mPlayers[i]->SetOnPlatform(false);
+
 						break;
 					}
 				}

@@ -20,15 +20,18 @@ public:
 	
 	void Update(float deltaTime, SDL_Event e, Player* players[]);
 	void Render();
-	virtual void Debug() override;
+	virtual void Debug(int type) override;
+
+	SIDE GetSideHit() { return mSideHit; }
+	void SetSideHit(SIDE side) { mSideHit = side; }
 private:
 	void PlayerCollisions(Player* player, int playerNum, float deltaTime);
 	void ItemCollisions();
 	SDL_Rect* mSourceRect;
 	PowerUp* mItemInside;
+	SIDE mSideHit;
 	bool mItemInsideSpawned,
 		mBeenHit;
-	SIDE mPreviousSideHit;
 };
 
 #endif // !_BRICK_H

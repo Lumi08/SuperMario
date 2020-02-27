@@ -118,6 +118,7 @@ void Player::Update(float deltaTime, SDL_Event e)
 		mJumpForce -= JUMP_FORCE_DECREMENT * deltaTime;
 	}
 	
+	//std::cout << mOnPlatform << std::endl;
 	if (!mOnPlatform)
 	{
 		mJumping = true;
