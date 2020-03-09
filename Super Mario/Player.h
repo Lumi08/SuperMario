@@ -20,9 +20,13 @@ public:
 	void UpdateHealth(int changeInHealth);
 	void SetOnPlatform(bool isOnPlatform) { mOnPlatform = isOnPlatform; };
 	void SetJumpForce(float jumpForce) { mJumpForce = jumpForce; }
+	void SetJumping(bool jumping) { mJumping = jumping; }
 
 	int GetHealth() { return mHealth; }
 	bool GetOnPlatform() { return mOnPlatform; }
+
+	SIDE GetSideHit() { return mSideHit; }
+	void SetSideHit(SIDE side) { mSideHit = side; }
 private:
 	enum PlayerState
 	{
@@ -51,6 +55,7 @@ private:
 	Animation* mIdleAnimation;
 	SDL_Rect* mSourceRect;
 	PlayerState mPlayerState;
+	SIDE mSideHit;
 
 	void FadeLogic();
 	void MovementLogic(float deltaTime);

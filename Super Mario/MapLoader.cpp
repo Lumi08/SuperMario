@@ -20,6 +20,7 @@ MapLoader::MapLoader(char* path, SDL_Renderer* renderer)
 			}
 		}
 	}
+	map.close();
 }
 
 MapLoader::~MapLoader()
@@ -34,16 +35,23 @@ void MapLoader::LoadMapAssets(Player* players[], Brick* bricks[])
 		{
 			switch (mapArray[i][j])
 			{
-				case 'b':
+				case '@':
 				{
-					bricks[mBrickCount] = new Brick(mRenderer, "Images/Brick.png", Vector2D(DEFAULTTILEWIDTH * RENDERSCALE * j, DEFAULTTILEHEIGHT * RENDERSCALE * i));
+					bricks[mBrickCount] = new Brick(mRenderer, "Images/Brick.png", Vector2D(DEFAULTTILEWIDTH * RENDERSCALE * j, DEFAULTTILEHEIGHT * RENDERSCALE * i), BREAKABLEBLOCK);
+					mBrickCount++;
+					break;
+				}
+
+				case '?':
+				{
+					bricks[mBrickCount] = new Brick(mRenderer, "Images/QuestionBlock.png", Vector2D(DEFAULTTILEWIDTH * RENDERSCALE * j, DEFAULTTILEHEIGHT * RENDERSCALE * i), QUESTIONBLOCK);
 					mBrickCount++;
 					break;
 				}
 
 				case '#':
 				{
-					bricks[mBrickCount] = new Brick(mRenderer, "Images/Floor.png", Vector2D(DEFAULTTILEWIDTH * RENDERSCALE * j, DEFAULTTILEHEIGHT * RENDERSCALE * i));
+					bricks[mBrickCount] = new Brick(mRenderer, "Images/Floor.png", Vector2D(DEFAULTTILEWIDTH * RENDERSCALE * j, DEFAULTTILEHEIGHT * RENDERSCALE * i), FLOORBLOCK);
 					mBrickCount++;
 					break;
 				}

@@ -1,11 +1,17 @@
 #include "Brick.h"
 #include "Texture2D.h"
 
-Brick::Brick(SDL_Renderer* renderer, std::string imagePath, Vector2D position) : Entity(renderer, imagePath, position, 16, 16)
+Brick::Brick(SDL_Renderer* renderer, std::string imagePath, Vector2D position, BrickType brickType) : Entity(renderer, imagePath, position, 16, 16)
 {
 	mSourceRect = new SDL_Rect{ 0, 0, DEFAULTTILEWIDTH, DEFAULTTILEHEIGHT };
 	mBeenHit = false;
 	mSideHit = NONE;
+	mBrickType = brickType;
+
+	if (brickType == BrickType::QUESTIONBLOCK)
+	{
+		mIdleAnimation = new Animation(mRenderer, mTexture, mSourceRect, 2 ,5000, RENDERSCALE);
+	}
 }
 
 Brick::~Brick()
@@ -13,7 +19,7 @@ Brick::~Brick()
 	delete mSourceRect;
 }
 
-void Brick::Update(float deltaTime, SDL_Event e, Player* players[])
+void Brick::Update(float deltaTime, SDL_Event e, Player* players[], int playerCount)
 {
 	for (int i = 0; i < 1; i++)
 	{
@@ -23,7 +29,10 @@ void Brick::Update(float deltaTime, SDL_Event e, Player* players[])
 	if (mItemInsideSpawned)
 	{
 		mItemInside->Update(deltaTime, e);
-		//ItemCollisions();
+		for (int i = 0; i < playerCount; i++)
+		{
+			ItemCollisions(players[i]);
+		}
 	}
 	//PlayerCollisions(players[0]);
 }
@@ -34,89 +43,25 @@ void Brick::Render()
 	{
 		mItemInside->Render();
 	}
-	mTexture->Render(mPosition, SDL_FLIP_NONE, RENDERSCALE, 0.0f, mSourceRect);
-}
-
-void Brick::PlayerCollisions(Player* player, int playerNum, float deltaTime)
-{
-	//ItemCollisions
-	if(mItemInsideSpawned)
-	{ 
-		if (RectIntersects(mItemInside->GetHitbox(), player->GetHitbox()))
-		{
-			if (player->GetHealth() < 2)
-			{
-				player->UpdateHealth(+1);
-			}
-			delete mItemInside;
-			mItemInsideSpawned = false;
-		}
-	}
-	
-
-	if (RectIntersects(mHitbox, player->GetHitbox()))
+	switch (mBrickType)
 	{
-		SIDE sideHit = RectGetSideHit(mHitbox, player->GetHitbox(), deltaTime, mRenderer);
-		switch (sideHit)
+		case QUESTIONBLOCK:
 		{
-			case SIDE::TOP:
+			if (!mBeenHit)
 			{
-				
-				
-					player->SetY(mPosition.y - player->GetHitbox()->h);
-					player->SetOnPlatform(true);
-				
-				break;
+				mIdleAnimation->Play(mPosition, SDL_FLIP_NONE);
 			}
-			case SIDE::BOTTOM:
+			else
 			{
-				
-				
-				player->SetY(mPosition.y + (mHitbox->h));
-				player->SetOnPlatform(false);
-				player->SetJumpForce(0);
-				if (!mBeenHit)
-				{
-					if (player->GetHealth() == 1)
-					{
-						mItemInside = new Mushroom(mRenderer, "Images/RedMushroom.png", Vector2D(mPosition.x, mPosition.y), 2, FACING_RIGHT);
-					}
-					if (player->GetHealth() == 2)
-					{
-						mItemInside = new FireFlower(mRenderer, "Images/FireFlower.png", Vector2D(mPosition.x, mPosition.y), 2);
-					}
-					mItemInsideSpawned = true;
-					mSourceRect->x = DEFAULTTILEHEIGHT;
-				}
-				mBeenHit = true;
-				
-				break;
+				mTexture->Render(mPosition, SDL_FLIP_NONE, RENDERSCALE, 0.0f, mSourceRect);
 			}
-			case SIDE::LEFT:
-			{
-				player->SetX(mPosition.x - (player->GetHitbox()->w));
-				player->SetOnPlatform(false);
-				break;
-			}
-			case SIDE::RIGHT:
-			{
-				player->SetX(mPosition.x + player->GetWidth());
-				player->SetOnPlatform(false);
-				break;
-			}
+			break;
 		}
-		
-	}
-}
-
-void Brick::ItemCollisions()
-{
-	if (mItemInside->GetOnPlatform() != false)
-	{
-		if (mItemInside->GetX() > mPosition.x + (mRawHeight * RENDERSCALE) ||
-			mItemInside->GetX() + mItemInside->GetWidth() < mPosition.x)
+		default:
 		{
-			mItemInside->SetOnPlatform(false);
+
+			mTexture->Render(mPosition, SDL_FLIP_NONE, RENDERSCALE, 0.0f, mSourceRect);
+			break;
 		}
 	}
 }
@@ -126,20 +71,76 @@ void Brick::Debug(int type)
 	SDL_SetRenderDrawColor(mRenderer, 255, 255, 255, 255);
 	SDL_RenderDrawRect(mRenderer, mHitbox);
 	
-	
-		SDL_SetRenderDrawColor(mRenderer, 255, 0, 0, 255);
-		SDL_RenderDrawRect(mRenderer, mSensorLeft);
-		SDL_SetRenderDrawColor(mRenderer, 0, 255, 0, 255);
-		SDL_RenderDrawRect(mRenderer, mSensorRight);
-		SDL_SetRenderDrawColor(mRenderer, 0, 0, 255, 255);
-		SDL_RenderDrawRect(mRenderer, mSensorTop);
-		SDL_SetRenderDrawColor(mRenderer, 255, 255, 0, 255);
-		SDL_RenderDrawRect(mRenderer, mSensorBottom);
+	SDL_SetRenderDrawColor(mRenderer, 255, 0, 0, 255);
+	SDL_RenderDrawRect(mRenderer, mSensorLeft);
+	SDL_SetRenderDrawColor(mRenderer, 0, 255, 0, 255);
+	SDL_RenderDrawRect(mRenderer, mSensorRight);
+	SDL_SetRenderDrawColor(mRenderer, 0, 0, 255, 255);
+	SDL_RenderDrawRect(mRenderer, mSensorTop);
+	SDL_SetRenderDrawColor(mRenderer, 255, 255, 0, 255);
+	SDL_RenderDrawRect(mRenderer, mSensorBottom);
 	
 
 	if (mItemInsideSpawned)
 	{
+		SDL_SetRenderDrawColor(mRenderer, 255, 255, 255, 255);
 		SDL_RenderDrawRect(mRenderer, mItemInside->GetHitbox());
+	}
+} 
+
+void Brick::ItemCollisions(Player* player)
+{
+	if (mItemInsideSpawned)
+	{
+		if (RectIntersects(mItemInside->GetHitbox(), player->GetHitbox()))
+		{
+			player->UpdateHealth(1);
+			delete mItemInside;
+			std::cerr << "test" << std::endl;
+			mItemInsideSpawned = false;
+		}
+	}
+}
+
+void Brick::Hit(int playerHealth)
+{
+	if (!mBeenHit)
+	{
+		switch (mBrickType)
+		{
+			case QUESTIONBLOCK:
+			{
+				if (playerHealth == 1)
+				{
+					mItemInside = new Mushroom(mRenderer, "Images/RedMushroom.png", Vector2D(mPosition.x, mPosition.y), RENDERSCALE, FACING_RIGHT);
+				}
+				if (playerHealth == 2)
+				{
+					mItemInside = new FireFlower(mRenderer, "Images/RedMushroom.png", Vector2D(mPosition.x, mPosition.y + mHitbox->h), RENDERSCALE);
+				}
+				mSourceRect->y = 16;
+				mSourceRect->x = 0;
+				mBeenHit = true;
+				mItemInsideSpawned = true;
+				break;
+			}
+
+			case SECRETBLOCK:
+			{
+				if (playerHealth == 1)
+				{
+					mItemInside = new Mushroom(mRenderer, "Images/RedMushroom.png", Vector2D(mPosition.x, mPosition.y), RENDERSCALE, FACING_RIGHT);
+				}
+				if (playerHealth == 2)
+				{
+					mItemInside = new FireFlower(mRenderer, "Images/RedMushroom.png", Vector2D(mPosition.x, mPosition.y + mHitbox->h), RENDERSCALE);
+				}
+				mSourceRect->x = 16;
+				mBeenHit = true;
+				mItemInsideSpawned = true;
+				break;
+			}
+		}
 	}
 }
 

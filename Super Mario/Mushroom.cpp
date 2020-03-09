@@ -1,10 +1,10 @@
 #include "Mushroom.h"
 
 Mushroom::Mushroom(SDL_Renderer* renderer, std::string imagePath, Vector2D spawnLocation, float renderScale, FACING startDirection) 
-	: PowerUp(renderer, imagePath, spawnLocation, DEFAULTTILEWIDTH, DEFAULTTILEHEIGHT, MUSHROOM)
+	: PowerUp(renderer, imagePath, Vector2D(spawnLocation.x, spawnLocation.y -1), DEFAULTTILEWIDTH, DEFAULTTILEHEIGHT, MUSHROOM)
 {
-	mDirectionFacing = startDirection;
-	mMovingAnimation = new Animation(renderer, mTexture, new SDL_Rect{ 0, 0, DEFAULTTILEWIDTH, DEFAULTTILEHEIGHT }, 2, 7500, renderScale);
+	SetDirectionFacing(startDirection);
+	mMovingAnimation = new Animation(renderer, mTexture, new SDL_Rect{ 0, 0, DEFAULTTILEWIDTH, DEFAULTTILEHEIGHT }, 2, 5000, renderScale);
 	SetSpawning(true);
 	SetOnPlatform(true);
 	mStartY = spawnLocation.y;
@@ -41,16 +41,16 @@ void Mushroom::Update(float deltaTime, SDL_Event e)
 			mPosition.y += GRAVITY * deltaTime;
 		}
 
-		if (mDirectionFacing == FACING_RIGHT)
+		if (GetDirectionFacing() == FACING_RIGHT)
 		{
 			mPosition.x += mMovementSpeed;
 		}
 
-		if (mDirectionFacing == FACING_LEFT)
+		if (GetDirectionFacing() == FACING_LEFT)
 		{
 			mPosition.x -= mMovementSpeed;
 		}
+		UpdateHitbox();
+		UpdateSensors();
 	}
-
-	UpdateHitbox();
 }

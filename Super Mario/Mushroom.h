@@ -19,8 +19,8 @@ public:
 	void Update(float deltaTime, SDL_Event e);
 
 	
+	
 private:
-	FACING mDirectionFacing;
 	Animation* mMovingAnimation;
 	int mStartY;
 	float mMovementSpeed;

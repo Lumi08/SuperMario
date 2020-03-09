@@ -31,6 +31,7 @@ private:
 
 	bool SetUpLevel();
 	void BrickCollisionsWithPlayer();
+	void BrickCollisionsWithSpawnedItem(PowerUp* powerup);
 	//debug:
 	int debugType = 0;
 	bool debug = false;

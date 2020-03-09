@@ -39,30 +39,13 @@ void Entity::UpdateHitbox()
 
 bool Entity::IsCollidingWith(Entity* entity)
 {
-	if (mPosition.x + mHitbox->w > entity->GetX() &&
-		mPosition.x < entity->GetX() + entity->GetWidth() &&
-		mPosition.y + mHitbox->h > entity->GetY() &&
-		mPosition.y < entity->GetY() + entity->GetHeight())
-	{
-		return true;
-	}
-	return false;
+	return RectIntersects(this->GetHitbox(), entity->GetHitbox());
 }
 
 SIDE Entity::GetSideCollidingWithEntity(Entity* entity)
 {
 	if (IsCollidingWith(entity))
 	{
-		if (RectIntersects(mSensorTop, entity->GetHitbox()))
-		{
-			//std::cerr << "Top" << std::endl;
-			return SIDE::TOP;
-		}
-		if (RectIntersects(mSensorBottom, entity->GetHitbox()))
-		{
-			//std::cerr << "Bottom" << std::endl;
-			return SIDE::BOTTOM;
-		}
 		if (RectIntersects(mSensorLeft, entity->GetHitbox()))
 		{
 			//std::cerr << "Left" << std::endl;
@@ -72,6 +55,16 @@ SIDE Entity::GetSideCollidingWithEntity(Entity* entity)
 		{
 			//std::cerr << "Right" << std::endl;
 			return SIDE::RIGHT;
+		}
+		if (RectIntersects(mSensorTop, entity->GetHitbox()))
+		{
+			//std::cerr << "Top" << std::endl;
+			return SIDE::TOP;
+		}
+		if (RectIntersects(mSensorBottom, entity->GetHitbox()))
+		{
+			//std::cerr << "Bottom" << std::endl;
+			return SIDE::BOTTOM;
 		}
 	}
 
@@ -108,8 +101,24 @@ void Entity::UpdateSensors()
 	mSensorLeft->y = mPosition.y + 1;
 	mSensorRight->x = mPosition.x + mHitbox->w;
 	mSensorRight->y = mPosition.y + 1;
-	mSensorTop->x = mPosition.x + 1;
+	mSensorTop->x = mPosition.x + 2;
 	mSensorTop->y = mPosition.y - mSensorSize;
-	mSensorBottom->x = mPosition.x + 1;
+	mSensorBottom->x = mPosition.x + 2;
 	mSensorBottom->y = mPosition.y + mHitbox->h;
+}
+
+void Entity::FullUpdateSensors()
+{
+	mSensorLeft->x = mPosition.x - mSensorSize;
+	mSensorLeft->y = mPosition.y + 1;
+	mSensorLeft->h = mHitbox->h - 2;
+	mSensorRight->x = mPosition.x + mHitbox->w;
+	mSensorRight->y = mPosition.y + 1;
+	mSensorRight->h = mHitbox->h - 2;
+	mSensorTop->x = mPosition.x + 2;
+	mSensorTop->y = mPosition.y - mSensorSize;
+	mSensorTop->w = mHitbox->w;
+	mSensorBottom->x = mPosition.x + 2;
+	mSensorBottom->y = mPosition.y + mHitbox->h;
+	mSensorBottom->w = mHitbox->w;
 }

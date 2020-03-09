@@ -20,7 +20,11 @@ public:
 
 	void Render();
 	void Update(float deltaTime, SDL_Event e);
+
+	void SetDirectionFacing(FACING direction) { mDirectionFacing = direction; }
+	FACING GetDirectionFacing() { return mDirectionFacing; }
 private:
+	FACING mDirectionFacing;
 	bool mSpawning,
 		mOnPlatform;
 	PowerUpType mType;

@@ -45,11 +45,16 @@ void GameScreenLevel1::Update(float deltaTime, SDL_Event e)
 	}
 	for (int i = 0; i < mBrickCount; i++)
 	{
-		mBricks[i]->Update(deltaTime, e, mPlayers);
+		mBricks[i]->Update(deltaTime, e, mPlayers, mPlayerCount);
+
+		if (mBricks[i]->GetItemInsideSpawned())
+		{
+			BrickCollisionsWithSpawnedItem(mBricks[i]->GetItemInside());
+		}
 	}
 
 	BrickCollisionsWithPlayer();
-
+	
 	
 	switch (e.type)
 	{
@@ -105,75 +110,110 @@ bool GameScreenLevel1::SetUpLevel()
 		return false;
 	}
 	
-	mPlayerCount = 1;
+	mPlayerCount = 2;
 	MapLoader* map = new MapLoader((char*)"map1.txt", mRenderer);
 	map->LoadMapAssets(mPlayers, mBricks);
 
 	mBrickCount = map->GetActualBrickCount();
 
 	mPlayers[0] = new Player(mRenderer, "Images/Mario.png", Vector2D(4, 4), 1);
-	//mPlayers[1] = new Player(mRenderer, "Images/Luigi.png", Vector2D(64, 250), 2);
+	mPlayers[1] = new Player(mRenderer, "Images/Luigi.png", Vector2D(64, 250), 2);
 	//SDL_SetRenderDrawColor(mRenderer, 255, 255, 255, 255);
 	
 	return true;
 	//mCharacter = new Character(mRenderer, "Images/Mario.png", Vector2D(64, 330));
 }
 
+//Use the players bottom sensor to detect wether it is on a platform or not
 void GameScreenLevel1::BrickCollisionsWithPlayer()
 {
 	for (int i = 0; i < mPlayerCount; i++)
 	{
+		bool botCollided = false;
 		for (int j = 0; j < mBrickCount; j++)
 		{
-			if (mBricks[j]->GetSideHit() == SIDE::TOP)
+			if (mPlayers[i]->IsCollidingWith(mBricks[j]))
 			{
-				if (mPlayers[i]->GetX() > mBricks[j]->GetX() + mBricks[j]->GetHitbox()->h ||
-					mPlayers[i]->GetX() + mPlayers[i]->GetWidth() < mBricks[j]->GetX())
+				mPlayers[i]->SetSideHit(mPlayers[i]->GetSideCollidingWithEntity(mBricks[j]));
+				switch (mPlayers[i]->GetSideHit())
 				{
-					mPlayers[i]->SetOnPlatform(false);
-					mBricks[j]->SetSideHit(SIDE::NONE);
-				}
-			}
-
-			if (mBricks[j]->IsCollidingWith(mPlayers[i]))
-			{
-				mBricks[j]->SetSideHit(mBricks[j]->GetSideCollidingWithEntity(mPlayers[i]));
-
-				switch (mBricks[j]->GetSideHit())
-				{
-					case SIDE::TOP:
+					case SIDE::BOTTOM:
 					{
 						mPlayers[i]->SetY(mBricks[j]->GetY() - mPlayers[i]->GetHitbox()->h);
 						mPlayers[i]->SetOnPlatform(true);
-
 						break;
 					}
-					case SIDE::BOTTOM:
+					case SIDE::TOP:
 					{
-
-						mPlayers[i]->SetY(mBricks[j]->GetY() + (mPlayers[i]->GetHitbox()->h));
-						//mPlayers[i]->SetOnPlatform(false);
+						mPlayers[i]->SetY(mBricks[j]->GetY() + (mBricks[j]->GetHitbox()->h));
 						mPlayers[i]->SetJumpForce(0);
-
-						//DO MUSHROOM LOGIC
-						break;
-					}
-					case SIDE::LEFT:
-					{
-						mPlayers[i]->SetX(mBricks[j]->GetX() - (mPlayers[i]->GetHitbox()->w));
-						//mPlayers[i]->SetOnPlatform(false);
-
+						mBricks[j]->Hit(mPlayers[i]->GetHealth());
 						break;
 					}
 					case SIDE::RIGHT:
 					{
+						mPlayers[i]->SetX(mBricks[j]->GetX() - (mPlayers[i]->GetHitbox()->w));
+						break;
+					}
+					case SIDE::LEFT:
+					{
 						mPlayers[i]->SetX(mBricks[j]->GetX() + mPlayers[i]->GetHitbox()->w);
-						//mPlayers[i]->SetOnPlatform(false);
-
 						break;
 					}
 				}
 			}
+
+			if (RectIntersects(mPlayers[i]->GetBottomSensorBox(), mBricks[j]->GetHitbox()))
+			{
+				botCollided = true;
+			}
+
+			
 		}
+		if (!botCollided)
+		{
+			mPlayers[i]->SetOnPlatform(false);
+		}
+	}
+}
+
+void GameScreenLevel1::BrickCollisionsWithSpawnedItem(PowerUp* powerup)
+{
+	bool botCollided = false;
+	for (int i = 0; i < mBrickCount; i++)
+	{
+		if (powerup->IsCollidingWith(mBricks[i]))
+		{
+			switch (powerup->GetSideCollidingWithEntity(mBricks[i]))
+			{
+				case SIDE::BOTTOM:
+				{
+					powerup->SetOnPlatform(true);
+					break;
+				}
+
+				case SIDE::RIGHT:
+				{
+					powerup->SetDirectionFacing(FACING_LEFT);
+					break;
+				}
+
+				case SIDE::LEFT:
+				{
+					powerup->SetDirectionFacing(FACING_RIGHT);
+					break;
+				}
+			}
+		}
+
+		if (RectIntersects(powerup->GetBottomSensorBox(), mBricks[i]->GetHitbox()))
+		{
+			botCollided = true;
+		}
+	}
+	
+	if (!botCollided)
+	{
+		powerup->SetOnPlatform(false);
 	}
 }

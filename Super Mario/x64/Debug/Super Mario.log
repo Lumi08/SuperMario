@@ -1,2 +1,29 @@
-﻿  Main.cpp
-C:\Users\g014937j\OneDrive - Staffordshire University\Github\SuperMario\Super Mario\Main.cpp(1): fatal error C1083: Cannot open include file: 'SDL.h': No such file or directory
+﻿  Animation.cpp
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\Animation.h(4,10): fatal error C1083: Cannot open include file: 'SDL.h': No such file or directory
+  Brick.cpp
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\Brick.h(4,10): fatal error C1083: Cannot open include file: 'SDL.h': No such file or directory
+  Enemy.cpp
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\Enemy.h(4,10): fatal error C1083: Cannot open include file: 'SDL.h': No such file or directory
+  Entity.cpp
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\Entity.h(5,10): fatal error C1083: Cannot open include file: 'SDL.h': No such file or directory
+  FireFlower.cpp
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\FireFlower.h(4,10): fatal error C1083: Cannot open include file: 'SDL.h': No such file or directory
+  GameScreen.cpp
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\GameScreen.h(4,10): fatal error C1083: Cannot open include file: 'SDL.h': No such file or directory
+  GameScreenLevel1.cpp
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\GameScreenLevel1.h(4,10): fatal error C1083: Cannot open include file: 'SDL.h': No such file or directory
+  GameScreenManager.cpp
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\GameScreenManager.h(4,10): fatal error C1083: Cannot open include file: 'SDL.h': No such file or directory
+  Main.cpp
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\Main.cpp(1,10): fatal error C1083: Cannot open include file: 'SDL.h': No such file or directory
+  MapLoader.cpp
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\MapLoader.h(4,10): fatal error C1083: Cannot open include file: 'SDL.h': No such file or directory
+  Mushroom.cpp
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\Mushroom.h(4,10): fatal error C1083: Cannot open include file: 'SDL.h': No such file or directory
+  Player.cpp
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\Entity.h(5,10): fatal error C1083: Cannot open include file: 'SDL.h': No such file or directory
+  PowerUp.cpp
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\Entity.h(5,10): fatal error C1083: Cannot open include file: 'SDL.h': No such file or directory
+  Texture2D.cpp
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\Texture2D.h(4,10): fatal error C1083: Cannot open include file: 'SDL.h': No such file or directory
+  Generating Code...

@@ -11,13 +11,13 @@ Player::Player(SDL_Renderer* renderer, std::string imagePath, Vector2D startPosi
 	mFadeTime = 0;
 	mTimeIdle = 0;
 	mPlayerState = IDLE;
+	mSideHit = NONE;
 	mDirectionFacing = FACING_RIGHT;
 	mSourceRect = new SDL_Rect{ 0, 0, SMALLPLAYERWIDTH, SMALLPLAYERHEIGHT };
 	mWalkAnimation = new Animation(renderer, mTexture, new SDL_Rect{ 0, 0, DEFAULTTILEWIDTH, DEFAULTTILEHEIGHT }, 2, 500, RENDERSCALE);
 	mIdleAnimation = new Animation(renderer, mTexture, new SDL_Rect{ 0, 32, DEFAULTTILEWIDTH, DEFAULTTILEHEIGHT }, 2, 5000, RENDERSCALE);
 	mSleepAnimation = new Animation(renderer, mTexture, new SDL_Rect{ 0, 16, DEFAULTTILEWIDTH, DEFAULTTILEHEIGHT }, 6, 1000, RENDERSCALE);
 	mOnPlatform = false;
-	//mSleepAnimation->SetLoopStartSprite(4);
 }
 
 Player::~Player()
@@ -111,16 +111,16 @@ void Player::Update(float deltaTime, SDL_Event e)
 {
 	MovementLogic(deltaTime);
 	FadeLogic();
-	
+
 	if (mJumping)
 	{
 		mPosition.y -= mJumpForce * deltaTime;
 		mJumpForce -= JUMP_FORCE_DECREMENT * deltaTime;
 	}
 	
-	//std::cout << mOnPlatform << std::endl;
 	if (!mOnPlatform)
 	{
+		//std::cerr << "adding gravity" << std::endl;
 		mJumping = true;
 		mPosition.y += GRAVITY * deltaTime;
 	}
@@ -193,8 +193,7 @@ void Player::Update(float deltaTime, SDL_Event e)
 					}
 					break;
 				}
-				
-				
+	
 			}
 			break;
 		}
@@ -333,6 +332,7 @@ void Player::Jump()
 		mPlayerState = JUMP;
 		mJumpForce = INITIAL_JUMP_FORCE;
 		mJumping = true;
+		mSideHit = NONE;
 	}
 }
 
@@ -357,6 +357,7 @@ void Player::UpdateHealth(int changeInHealth)
 			mWalkAnimation = new Animation(mRenderer, mTexture, new SDL_Rect{ 0, 0, DEFAULTTILEWIDTH, DEFAULTTILEHEIGHT }, 2, 500, RENDERSCALE);
 			mIdleAnimation = new Animation(mRenderer, mTexture, new SDL_Rect{ 0, 32, DEFAULTTILEWIDTH, DEFAULTTILEHEIGHT }, 2, 5000, RENDERSCALE);
 			mSleepAnimation = new Animation(mRenderer, mTexture, new SDL_Rect{ 0, 16, DEFAULTTILEWIDTH, DEFAULTTILEHEIGHT }, 6, 1000, RENDERSCALE);
+			FullUpdateSensors();
 			break;
 		}
 
@@ -369,6 +370,7 @@ void Player::UpdateHealth(int changeInHealth)
 			mIdleAnimation = new Animation(mRenderer, mTexture, new SDL_Rect{ 0, 96, DEFAULTTILEWIDTH, DEFAULTTILEHEIGHT * 2}, 2, 5000, RENDERSCALE);
 			mSleepAnimation = new Animation(mRenderer, mTexture, new SDL_Rect{ 0, 16, DEFAULTTILEWIDTH, DEFAULTTILEHEIGHT }, 6, 1000, RENDERSCALE);
 			mHitbox->h = BIGPLAYERHEIGHT * RENDERSCALE;
+			FullUpdateSensors();
 			mFading = true;
 			break;
 		}

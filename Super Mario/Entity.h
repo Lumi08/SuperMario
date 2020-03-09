@@ -18,8 +18,11 @@ public:
 
 	virtual void Render();
 	virtual void Update(float deltaTime, SDL_Event e);
+	
 	void UpdateHitbox();
 	void UpdateSensors();
+	void FullUpdateSensors();
+
 	
 	bool IsCollidingWith(Entity* entity);
 	SIDE GetSideCollidingWithEntity(Entity* entity);
@@ -36,6 +39,7 @@ public:
 	void SetWidth(int width) { mWidth = width; }
 	void SetHeight(int height) { mHeight = height; }
 	
+	SDL_Rect* GetBottomSensorBox() { return mSensorBottom; }
 
 protected:
 	SDL_Renderer* mRenderer;
