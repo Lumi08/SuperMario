@@ -36,7 +36,7 @@ void Mushroom::Update(float deltaTime, SDL_Event e)
 	}
 	else
 	{
-		if (mPosition.y < SCREEN_HEIGHT - mRawHeight * RENDERSCALE && !GetOnPlatform())
+		if (!GetOnPlatform())
 		{
 			mPosition.y += GRAVITY * deltaTime;
 		}

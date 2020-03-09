@@ -19,20 +19,21 @@ public:
 	Brick(SDL_Renderer* renderer, std::string imagePath, Vector2D position, BrickType brickType);
 	~Brick();
 
-	
+	void Destroy();
 	void Hit(int playerHealth);
 
-	
 	void Update(float deltaTime, SDL_Event e, Player* players[], int playerCount);
 	void Render();
 	virtual void Debug(int type) override;
 
+	BrickType GetBrickType() { return mBrickType; }
 	SIDE GetSideHit() { return mSideHit; }
 	void SetSideHit(SIDE side) { mSideHit = side; }
 	PowerUp* GetItemInside() { return mItemInside; }
 	void SetItemInside(PowerUp* itemInside) { mItemInside = itemInside; }
 	bool GetItemInsideSpawned() { return mItemInsideSpawned; }
 	void SetItemInsideSpawned(bool spawned) { mItemInsideSpawned = spawned; }
+	bool GetDestroyed() { return mDestroyed; }
 private:
 	SDL_Rect* mSourceRect;
 	PowerUp* mItemInside;
@@ -40,8 +41,11 @@ private:
 	SIDE mSideHit;
 	Animation* mIdleAnimation = NULL;
 	bool mItemInsideSpawned,
-		mBeenHit;
-
+		mBeenHit,
+		mDestroyed;
+	float mDestroyFallForce,
+		mDestroySeperation,
+		mDestroyAngle;
 	void ItemCollisions(Player* player);
 };
 

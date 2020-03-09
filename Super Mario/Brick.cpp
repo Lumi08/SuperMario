@@ -7,7 +7,9 @@ Brick::Brick(SDL_Renderer* renderer, std::string imagePath, Vector2D position, B
 	mBeenHit = false;
 	mSideHit = NONE;
 	mBrickType = brickType;
-
+	mDestroyFallForce = 300;
+	mDestroySeperation = 0;
+	mDestroyAngle = 0;
 	if (brickType == BrickType::QUESTIONBLOCK)
 	{
 		mIdleAnimation = new Animation(mRenderer, mTexture, mSourceRect, 2 ,5000, RENDERSCALE);
@@ -21,20 +23,24 @@ Brick::~Brick()
 
 void Brick::Update(float deltaTime, SDL_Event e, Player* players[], int playerCount)
 {
-	for (int i = 0; i < 1; i++)
+	if (!mDestroyed)
 	{
-		//PlayerCollisions(players[i], i, deltaTime);
-	}
-
-	if (mItemInsideSpawned)
-	{
-		mItemInside->Update(deltaTime, e);
-		for (int i = 0; i < playerCount; i++)
+		if (mItemInsideSpawned)
 		{
-			ItemCollisions(players[i]);
+			mItemInside->Update(deltaTime, e);
+			for (int i = 0; i < playerCount; i++)
+			{
+				ItemCollisions(players[i]);
+			}
 		}
 	}
-	//PlayerCollisions(players[0]);
+	else
+	{
+		mPosition.y -= mDestroyFallForce * deltaTime;
+		mDestroyFallForce -= JUMP_FORCE_DECREMENT * deltaTime;
+		mDestroySeperation += 0.01;
+		mDestroyAngle += 0.025;
+	}
 }
 
 void Brick::Render()
@@ -43,26 +49,36 @@ void Brick::Render()
 	{
 		mItemInside->Render();
 	}
-	switch (mBrickType)
+	if (!mDestroyed)
 	{
-		case QUESTIONBLOCK:
+		switch (mBrickType)
 		{
-			if (!mBeenHit)
+			case QUESTIONBLOCK:
 			{
-				mIdleAnimation->Play(mPosition, SDL_FLIP_NONE);
+				if (!mBeenHit)
+				{
+					mIdleAnimation->Play(mPosition, SDL_FLIP_NONE);
+				}
+				else
+				{
+					mTexture->Render(mPosition, SDL_FLIP_NONE, RENDERSCALE, 0.0f, mSourceRect);
+				}
+				break;
 			}
-			else
+			default:
 			{
-				mTexture->Render(mPosition, SDL_FLIP_NONE, RENDERSCALE, 0.0f, mSourceRect);
-			}
-			break;
-		}
-		default:
-		{
 
-			mTexture->Render(mPosition, SDL_FLIP_NONE, RENDERSCALE, 0.0f, mSourceRect);
-			break;
+				mTexture->Render(mPosition, SDL_FLIP_NONE, RENDERSCALE, 0.0f, mSourceRect);
+				break;
+			}
 		}
+	}
+	else 
+	{
+		mTexture->Render(Vector2D(mPosition.x - mDestroySeperation, mPosition.y - mDestroySeperation), SDL_FLIP_NONE, 1, mDestroyAngle, mSourceRect);
+		mTexture->Render(Vector2D((mPosition.x + mHitbox->w / 2) + mDestroySeperation, mPosition.y - mDestroySeperation), SDL_FLIP_NONE, 1, mDestroyAngle, mSourceRect);
+		mTexture->Render(Vector2D(mPosition.x - mDestroySeperation, mPosition.y + mHitbox->h / 2), SDL_FLIP_NONE, 1, mDestroyAngle, mSourceRect);
+		mTexture->Render(Vector2D((mPosition.x + mHitbox->w / 2) + mDestroySeperation, mPosition.y + mHitbox->h / 2), SDL_FLIP_NONE, 1, mDestroyAngle, mSourceRect);
 	}
 }
 
@@ -142,6 +158,13 @@ void Brick::Hit(int playerHealth)
 			}
 		}
 	}
+}
+
+void Brick::Destroy()
+{
+	mDestroyed = true;
+	mHitbox->x = -1;
+	mHitbox->y = -1;
 }
 
 

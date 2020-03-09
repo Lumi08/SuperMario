@@ -5,6 +5,7 @@
 #include <fstream>
 #include <iostream>
 #include <string>
+#include <vector>
 
 #include "Constants.h"
 #include "Player.h"
@@ -16,7 +17,7 @@ public:
 	MapLoader(char* path, SDL_Renderer* renderer);
 	~MapLoader();
 
-	void LoadMapAssets(Player* players[], Brick* bricks[]);
+	void LoadMapAssets(Player* players[], std::vector<Brick*>& bricks);
 
 	int GetActualBrickCount() { return mBrickCount; }
 

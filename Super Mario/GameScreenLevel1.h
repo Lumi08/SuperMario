@@ -25,12 +25,15 @@ public:
 private:
 	Texture2D* mBackgroundTexture;
 	Player* mPlayers[MAXPLAYERCOUNT];
-	Brick* mBricks[MAXBRICKCOUNT];
+	//Brick* mBricks[MAXBRICKCOUNT];
+	std::vector<Brick*> mBricks;
 	int mBrickCount,
 		mPlayerCount;
 
 	bool SetUpLevel();
 	void BrickCollisionsWithPlayer();
+	void BrickCollisionsWithPlayer(Brick* brick, int brickNum);
+	void RemoveDestroyedBricks(Brick* brick, int brickNum);
 	void BrickCollisionsWithSpawnedItem(PowerUp* powerup);
 	//debug:
 	int debugType = 0;
