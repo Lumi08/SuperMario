@@ -16,6 +16,22 @@ Brick::Brick(SDL_Renderer* renderer, std::string imagePath, Vector2D position, B
 	}
 }
 
+Brick::Brick(SDL_Renderer* renderer, std::string imagePath, Vector2D position, BrickType brickType, PowerUp* itemInside) : Entity(renderer, imagePath, position, 16, 16)
+{
+	mSourceRect = new SDL_Rect{ 0, 0, DEFAULTTILEWIDTH, DEFAULTTILEHEIGHT };
+	mBeenHit = false;
+	mSideHit = NONE;
+	mBrickType = brickType;
+	mDestroyFallForce = 300;
+	mDestroySeperation = 0;
+	mDestroyAngle = 0;
+	if (brickType == BrickType::QUESTIONBLOCK)
+	{
+		mIdleAnimation = new Animation(mRenderer, mTexture, mSourceRect, 2, 5000, RENDERSCALE);
+	}
+	mItemInside = itemInside;
+}
+
 Brick::~Brick()
 {
 	delete mSourceRect;
@@ -60,6 +76,14 @@ void Brick::Render()
 					mIdleAnimation->Play(mPosition, SDL_FLIP_NONE);
 				}
 				else
+				{
+					mTexture->Render(mPosition, SDL_FLIP_NONE, RENDERSCALE, 0.0f, mSourceRect);
+				}
+				break;
+			}
+			case SECRETBLOCK:
+			{
+				if (mBeenHit)
 				{
 					mTexture->Render(mPosition, SDL_FLIP_NONE, RENDERSCALE, 0.0f, mSourceRect);
 				}
@@ -112,7 +136,7 @@ void Brick::ItemCollisions(Player* player)
 		{
 			player->UpdateHealth(1);
 			delete mItemInside;
-			std::cerr << "test" << std::endl;
+			//std::cerr << "test" << std::endl;
 			mItemInsideSpawned = false;
 		}
 	}
@@ -132,7 +156,7 @@ void Brick::Hit(int playerHealth)
 				}
 				if (playerHealth == 2)
 				{
-					mItemInside = new FireFlower(mRenderer, "Images/RedMushroom.png", Vector2D(mPosition.x, mPosition.y + mHitbox->h), RENDERSCALE);
+					mItemInside = new FireFlower(mRenderer, "Images/FireFlower.png", Vector2D(mPosition.x, mPosition.y), RENDERSCALE);
 				}
 				mSourceRect->y = 16;
 				mSourceRect->x = 0;
@@ -143,17 +167,15 @@ void Brick::Hit(int playerHealth)
 
 			case SECRETBLOCK:
 			{
-				if (playerHealth == 1)
-				{
-					mItemInside = new Mushroom(mRenderer, "Images/RedMushroom.png", Vector2D(mPosition.x, mPosition.y), RENDERSCALE, FACING_RIGHT);
-				}
-				if (playerHealth == 2)
-				{
-					mItemInside = new FireFlower(mRenderer, "Images/RedMushroom.png", Vector2D(mPosition.x, mPosition.y + mHitbox->h), RENDERSCALE);
-				}
 				mSourceRect->x = 16;
 				mBeenHit = true;
 				mItemInsideSpawned = true;
+				break;
+			}
+
+			case BREAKABLEBLOCK:
+			{
+
 				break;
 			}
 		}

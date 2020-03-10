@@ -19,12 +19,9 @@ public:
 
 	void LoadMapAssets(Player* players[], std::vector<Brick*>& bricks);
 
-	int GetActualBrickCount() { return mBrickCount; }
-
 private:
 	SDL_Renderer* mRenderer;
 	char mapArray[MAXMAPTILEHEIGHT][MAXMAPTILEWIDTH];
-	int mBrickCount;
 };
 
 #endif // !_MAPLOADER_H

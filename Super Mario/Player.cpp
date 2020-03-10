@@ -140,6 +140,11 @@ void Player::Update(float deltaTime, SDL_Event e)
 				UpdateHealth(-1);
 				break;
 			}
+			case SDLK_y:
+			{
+				UpdateHealth(1);
+				break;
+			}
 				case SDLK_a:
 				{
 					if (mPlayerNumber == 1)
@@ -344,6 +349,7 @@ void Player::UpdateHealth(int changeInHealth)
 	{
 		case 0:
 		{
+
 			break;
 		}
 
@@ -352,7 +358,7 @@ void Player::UpdateHealth(int changeInHealth)
 			mSourceRect->y = 0;
 			mSourceRect->h = 16;
 			mHitbox->h = DEFAULTTILEHEIGHT * RENDERSCALE;
-			mFading = true;
+			mFading = true; 
 			mPosition.y += DEFAULTTILEHEIGHT * RENDERSCALE;
 			mWalkAnimation = new Animation(mRenderer, mTexture, new SDL_Rect{ 0, 0, DEFAULTTILEWIDTH, DEFAULTTILEHEIGHT }, 2, 500, RENDERSCALE);
 			mIdleAnimation = new Animation(mRenderer, mTexture, new SDL_Rect{ 0, 32, DEFAULTTILEWIDTH, DEFAULTTILEHEIGHT }, 2, 5000, RENDERSCALE);
@@ -371,6 +377,16 @@ void Player::UpdateHealth(int changeInHealth)
 			mSleepAnimation = new Animation(mRenderer, mTexture, new SDL_Rect{ 0, 16, DEFAULTTILEWIDTH, DEFAULTTILEHEIGHT }, 6, 1000, RENDERSCALE);
 			mHitbox->h = BIGPLAYERHEIGHT * RENDERSCALE;
 			FullUpdateSensors();
+			mFading = true;
+			break;
+		}
+
+		case 3:
+		{
+			mSourceRect->y = 128;
+			mWalkAnimation = new Animation(mRenderer, mTexture, new SDL_Rect{ 0, 128, DEFAULTTILEWIDTH, DEFAULTTILEHEIGHT * 2 }, 2, 500, RENDERSCALE);
+			mIdleAnimation = new Animation(mRenderer, mTexture, new SDL_Rect{ 0, 160, DEFAULTTILEWIDTH, DEFAULTTILEHEIGHT * 2 }, 2, 5000, RENDERSCALE);
+			mSleepAnimation = new Animation(mRenderer, mTexture, new SDL_Rect{ 0, 16, DEFAULTTILEWIDTH, DEFAULTTILEHEIGHT }, 6, 1000, RENDERSCALE);
 			mFading = true;
 			break;
 		}

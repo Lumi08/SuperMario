@@ -17,6 +17,7 @@ class Brick : public Entity
 {
 public:
 	Brick(SDL_Renderer* renderer, std::string imagePath, Vector2D position, BrickType brickType);
+	Brick(SDL_Renderer* renderer, std::string imagePath, Vector2D position, BrickType brickType, PowerUp* itemInside);
 	~Brick();
 
 	void Destroy();
@@ -42,10 +43,12 @@ private:
 	Animation* mIdleAnimation = NULL;
 	bool mItemInsideSpawned,
 		mBeenHit,
-		mDestroyed;
+		mDestroyed,
+		mBouncing;
 	float mDestroyFallForce,
 		mDestroySeperation,
 		mDestroyAngle;
+
 	void ItemCollisions(Player* player);
 };
 

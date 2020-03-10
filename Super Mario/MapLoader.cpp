@@ -3,7 +3,6 @@
 MapLoader::MapLoader(char* path, SDL_Renderer* renderer)
 {
 	mRenderer = renderer;
-	mBrickCount = 0;
 
 	std::string currentLine;
 	std::ifstream map(path);
@@ -38,21 +37,32 @@ void MapLoader::LoadMapAssets(Player* players[], std::vector<Brick*>& bricks)
 				case '@':
 				{
 					bricks.push_back(new Brick(mRenderer, "Images/Brick.png", Vector2D(DEFAULTTILEWIDTH * RENDERSCALE * j, DEFAULTTILEHEIGHT * RENDERSCALE * i), BREAKABLEBLOCK));
-					mBrickCount++;
 					break;
 				}
 
 				case '?':
 				{
 					bricks.push_back(new Brick(mRenderer, "Images/QuestionBlock.png", Vector2D(DEFAULTTILEWIDTH * RENDERSCALE * j, DEFAULTTILEHEIGHT * RENDERSCALE * i), QUESTIONBLOCK));
-					mBrickCount++;
+					break;
+				}
+
+				case '+':
+				{
+					bricks.push_back(new Brick(mRenderer, "Images/Brick.png", Vector2D(DEFAULTTILEWIDTH * RENDERSCALE * j, DEFAULTTILEHEIGHT * RENDERSCALE * i), SECRETBLOCK, 
+						new Mushroom(mRenderer, "Images/RedMushroom.png", Vector2D(DEFAULTTILEWIDTH * RENDERSCALE * j, DEFAULTTILEHEIGHT * RENDERSCALE * i), RENDERSCALE, FACING_RIGHT)));
 					break;
 				}
 
 				case '#':
 				{
 					bricks.push_back(new Brick(mRenderer, "Images/Floor.png", Vector2D(DEFAULTTILEWIDTH * RENDERSCALE * j, DEFAULTTILEHEIGHT * RENDERSCALE * i), FLOORBLOCK));
-					mBrickCount++;
+					break;
+				}
+
+				case 'M':
+				{
+					players[0]->SetX(DEFAULTTILEWIDTH * RENDERSCALE * j);
+					players[0]->SetY(DEFAULTTILEHEIGHT * RENDERSCALE * i);
 					break;
 				}
 			}

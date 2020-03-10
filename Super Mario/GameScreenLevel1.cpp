@@ -116,13 +116,13 @@ bool GameScreenLevel1::SetUpLevel()
 	
 	mPlayerCount = 2;
 	MapLoader* map = new MapLoader((char*)"map1.txt", mRenderer);
-	map->LoadMapAssets(mPlayers, mBricks);
 
 	mBrickCount = mBricks.size();
 
 	mPlayers[0] = new Player(mRenderer, "Images/Mario.png", Vector2D(4, 4), 1);
 	mPlayers[1] = new Player(mRenderer, "Images/Luigi.png", Vector2D(64, 250), 2);
 	mPlayers[0]->UpdateHealth(1);
+	map->LoadMapAssets(mPlayers, mBricks);
 	//SDL_SetRenderDrawColor(mRenderer, 255, 255, 255, 255);
 	
 	return true;
