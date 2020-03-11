@@ -15,9 +15,9 @@ public:
 	Mushroom(SDL_Renderer* renderer, std::string imagePath, Vector2D spawnLocation, float renderScale, FACING startDirection);
 	~Mushroom();
 
-	void Render(SDL_Rect* camera);
+	void Render(SDL_Rect* camera) override;
 	
-	void Update(float deltaTime, SDL_Event e);
+	void Update(float deltaTime, SDL_Event e) override;
 	
 private:
 	Animation* mMovingAnimation;

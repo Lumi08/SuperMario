@@ -215,21 +215,6 @@ void GameScreenLevel1::BrickCollisionsWithPlayer()
 						break;
 					}
 				}
-
-				switch (mBricks[j]->GetSideCollidingWithEntity(mPlayers[i]))
-				{
-					case SIDE::BOTTOM:
-					{
-						if (mBricks[j]->GetBrickType() == BrickType::BREAKABLEBLOCK)
-						{
-							if (mPlayers[i]->GetHealth() > 1)
-							{
-								mBricks[j]->Destroy();
-							}
-						}
-						break;
-					}
-				}
 			}
 
 			if (RectIntersects(mPlayers[i]->GetBottomSensorBox(), mBricks[j]->GetHitbox()))

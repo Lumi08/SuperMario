@@ -7,11 +7,11 @@ PowerUp::PowerUp(SDL_Renderer* renderer, std::string imgPath, Vector2D spawnLoca
 
 PowerUp::~PowerUp()
 {
+
 }
 
-void PowerUp::Render()
+void PowerUp::Render(SDL_Rect* camera)
 {
-	
 }
 
 void PowerUp::Update(float deltaTime, SDL_Event e)

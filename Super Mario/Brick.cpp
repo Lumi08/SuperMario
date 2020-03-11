@@ -49,6 +49,7 @@ void Brick::Update(float deltaTime, SDL_Event e, Player* players[], int playerCo
 				ItemCollisions(players[i]);
 			}
 		}
+		UpdateHitbox();
 	}
 	else
 	{
@@ -57,14 +58,13 @@ void Brick::Update(float deltaTime, SDL_Event e, Player* players[], int playerCo
 		mDestroySeperation += 0.01;
 		mDestroyAngle += 0.025;
 	}
-	UpdateHitbox();
 }
 
 void Brick::Render(SDL_Rect* camera)
 {
 	if (mItemInsideSpawned)
 	{
-		mItemInside->Render();
+		mItemInside->Render(camera);
 	}
 	if (!mDestroyed)
 	{
@@ -124,8 +124,7 @@ void Brick::Debug(SDL_Rect* camera)
 
 	if (mItemInsideSpawned)
 	{
-		SDL_SetRenderDrawColor(mRenderer, 255, 255, 255, 255);
-		SDL_RenderDrawRect(mRenderer, mItemInside->GetHitbox());
+		mItemInside->Debug(camera);
 	}
 } 
 
@@ -176,7 +175,10 @@ void Brick::Hit(int playerHealth)
 
 			case BREAKABLEBLOCK:
 			{
-
+				if (playerHealth > 1)
+				{
+					Destroy();
+				}
 				break;
 			}
 		}

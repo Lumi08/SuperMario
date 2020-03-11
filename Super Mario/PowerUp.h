@@ -18,8 +18,8 @@ public:
 
 	PowerUpType GetType() { return mType; }
 
-	void Render();
-	void Update(float deltaTime, SDL_Event e);
+	virtual void Render(SDL_Rect* camera);
+	virtual void Update(float deltaTime, SDL_Event e);
 
 	void SetDirectionFacing(FACING direction) { mDirectionFacing = direction; }
 	FACING GetDirectionFacing() { return mDirectionFacing; }
