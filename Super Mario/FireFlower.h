@@ -12,7 +12,8 @@ public:
 	FireFlower(SDL_Renderer* renderer, std::string imagePath, Vector2D spawnLocation, float renderScale);
 	~FireFlower();
 
-	void Render();
+	void Render(SDL_Rect* camera);
+
 	void Update(float deltaTime, SDL_Event e);
 
 private:

@@ -14,11 +14,10 @@ class Mushroom : public PowerUp
 public:
 	Mushroom(SDL_Renderer* renderer, std::string imagePath, Vector2D spawnLocation, float renderScale, FACING startDirection);
 	~Mushroom();
-	
-	void Render();
-	void Update(float deltaTime, SDL_Event e);
 
+	void Render(SDL_Rect* camera);
 	
+	void Update(float deltaTime, SDL_Event e);
 	
 private:
 	Animation* mMovingAnimation;

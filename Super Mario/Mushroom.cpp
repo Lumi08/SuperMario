@@ -16,9 +16,9 @@ Mushroom::~Mushroom()
 	delete mMovingAnimation;
 }
 
-void Mushroom::Render()
+void Mushroom::Render(SDL_Rect* camera)
 {
-	mMovingAnimation->Play(mPosition, SDL_FLIP_NONE);
+	mMovingAnimation->Play(mPosition, SDL_FLIP_NONE, camera);
 }
 
 void Mushroom::Update(float deltaTime, SDL_Event e)

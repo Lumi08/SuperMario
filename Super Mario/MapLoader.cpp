@@ -55,7 +55,7 @@ void MapLoader::LoadMapAssets(Player* players[], std::vector<Brick*>& bricks)
 
 				case '#':
 				{
-					bricks.push_back(new Brick(mRenderer, "Images/Floor.png", Vector2D(DEFAULTTILEWIDTH * RENDERSCALE * j, DEFAULTTILEHEIGHT * RENDERSCALE * i), FLOORBLOCK));
+					bricks.push_back(new Brick(mRenderer, "Images/Floor.png", Vector2D(DEFAULTTILEWIDTH * RENDERSCALE * j, DEFAULTTILEHEIGHT * RENDERSCALE * i), SOLIDBLOCK));
 					break;
 				}
 

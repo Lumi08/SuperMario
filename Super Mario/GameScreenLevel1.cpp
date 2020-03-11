@@ -14,31 +14,51 @@ GameScreenLevel1::~GameScreenLevel1()
 
 void GameScreenLevel1::Render()
 {
-	mBackgroundTexture->Render(Vector2D(), SDL_FLIP_NONE, 0);
+	mBackgroundTexture->Render(Vector2D(), SDL_FLIP_NONE, 0, mCamera);
 	for (int i = 0; i < mPlayerCount; i++)
 	{
-		mPlayers[i]->Render();
+		mPlayers[i]->Render(mCamera);
 	}
 	for (int i = 0; i < mBricks.size(); i++)
 	{
-		mBricks[i]->Render();
+		mBricks[i]->Render(mCamera);
 	}
 	
 	if (debug)
 	{
 		for (int i = 0; i < mPlayerCount; i++)
 		{
-			mPlayers[i]->Debug(debugType);
+			mPlayers[i]->Debug(mCamera);
 		}
 		for (int i = 0; i < mBricks.size(); i++)
 		{
-			mBricks[i]->Debug(debugType);
+			mBricks[i]->Debug(mCamera);
 		}
 	}
 }
 
 void GameScreenLevel1::Update(float deltaTime, SDL_Event e)
 {
+	mCamera->x = mPlayers[0]->GetX() - (SCREEN_WIDTH / 2);
+	mCamera->y = mPlayers[0]->GetY() - (SCREEN_WIDTH / 2);
+
+	if (mCamera->x < 0)
+	{
+		mCamera->x = 0;
+	}
+	if (mCamera->y < 0)
+	{
+		mCamera->y = 0;
+	}
+	if (mCamera->x > mCamera->w)
+	{
+		mCamera->x = mCamera->w;
+	}
+	if (mCamera->y < mCamera->h)
+	{
+		mCamera->y = mCamera->h;
+	}
+
 	for (int i = 0; i < mPlayerCount; i++)
 	{
 		mPlayers[i]->Update(deltaTime, e);
@@ -125,6 +145,8 @@ bool GameScreenLevel1::SetUpLevel()
 	map->LoadMapAssets(mPlayers, mBricks);
 	//SDL_SetRenderDrawColor(mRenderer, 255, 255, 255, 255);
 	
+	mCamera = new SDL_Rect{ 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
+
 	return true;
 }
 
@@ -138,30 +160,58 @@ void GameScreenLevel1::BrickCollisionsWithPlayer()
 		{
 			if (mPlayers[i]->IsCollidingWith(mBricks[j]))
 			{
-				mPlayers[i]->SetSideHit(mPlayers[i]->GetSideCollidingWithEntity(mBricks[j]));
-				switch (mPlayers[i]->GetSideHit())
+				switch (mBricks[j]->GetBrickType())
 				{
-					case SIDE::BOTTOM:
+					case BrickType::SECRETBLOCK:
 					{
-						mPlayers[i]->SetY(mBricks[j]->GetY() - mPlayers[i]->GetHitbox()->h);
-						mPlayers[i]->SetOnPlatform(true);
+						mPlayers[i]->SetSideHit(mPlayers[i]->GetSideCollidingWithEntity(mBricks[j]));
+						switch (mPlayers[i]->GetSideHit())
+						{
+							case SIDE::TOP:
+							{
+								if (mPlayers[i]->GetJumpForce() > 0)
+								{
+									mPlayers[i]->SetY(mBricks[j]->GetY() + (mBricks[j]->GetHitbox()->h));
+									mPlayers[i]->SetJumpForce(0);
+									mBricks[j]->Hit(mPlayers[i]->GetHealth());
+									mBricks[j]->SetBrickType(BrickType::SOLIDBLOCK);
+								}
+								break;
+							}
+						}
 						break;
 					}
-					case SIDE::TOP:
+
+					default:
 					{
-						mPlayers[i]->SetY(mBricks[j]->GetY() + (mBricks[j]->GetHitbox()->h));
-						mPlayers[i]->SetJumpForce(0);
-						mBricks[j]->Hit(mPlayers[i]->GetHealth());
-						break;
-					}
-					case SIDE::RIGHT:
-					{
-						mPlayers[i]->SetX(mBricks[j]->GetX() - (mPlayers[i]->GetHitbox()->w));
-						break;
-					}
-					case SIDE::LEFT:
-					{
-						mPlayers[i]->SetX(mBricks[j]->GetX() + mPlayers[i]->GetHitbox()->w);
+						mPlayers[i]->SetSideHit(mPlayers[i]->GetSideCollidingWithEntity(mBricks[j]));
+						switch (mPlayers[i]->GetSideHit())
+						{
+						case SIDE::BOTTOM:
+						{
+							mPlayers[i]->SetY(mBricks[j]->GetY() - mPlayers[i]->GetHitbox()->h);
+							mPlayers[i]->SetOnPlatform(true);
+							break;
+						}
+						case SIDE::TOP:
+						{
+							//if(mPlayers[i].GetJumpf)
+							mPlayers[i]->SetY(mBricks[j]->GetY() + (mBricks[j]->GetHitbox()->h));
+							mPlayers[i]->SetJumpForce(0);
+							mBricks[j]->Hit(mPlayers[i]->GetHealth());
+							break;
+						}
+						case SIDE::RIGHT:
+						{
+							mPlayers[i]->SetX(mBricks[j]->GetX() - (mPlayers[i]->GetHitbox()->w));
+							break;
+						}
+						case SIDE::LEFT:
+						{
+							mPlayers[i]->SetX(mBricks[j]->GetX() + mPlayers[i]->GetHitbox()->w);
+							break;
+						}
+						}
 						break;
 					}
 				}

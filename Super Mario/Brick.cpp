@@ -57,9 +57,10 @@ void Brick::Update(float deltaTime, SDL_Event e, Player* players[], int playerCo
 		mDestroySeperation += 0.01;
 		mDestroyAngle += 0.025;
 	}
+	UpdateHitbox();
 }
 
-void Brick::Render()
+void Brick::Render(SDL_Rect* camera)
 {
 	if (mItemInsideSpawned)
 	{
@@ -73,11 +74,11 @@ void Brick::Render()
 			{
 				if (!mBeenHit)
 				{
-					mIdleAnimation->Play(mPosition, SDL_FLIP_NONE);
+					mIdleAnimation->Play(mPosition, SDL_FLIP_NONE, camera);
 				}
 				else
 				{
-					mTexture->Render(mPosition, SDL_FLIP_NONE, RENDERSCALE, 0.0f, mSourceRect);
+					mTexture->Render(mPosition, SDL_FLIP_NONE, RENDERSCALE, camera, 0.0f, mSourceRect);
 				}
 				break;
 			}
@@ -85,28 +86,28 @@ void Brick::Render()
 			{
 				if (mBeenHit)
 				{
-					mTexture->Render(mPosition, SDL_FLIP_NONE, RENDERSCALE, 0.0f, mSourceRect);
+					mTexture->Render(mPosition, SDL_FLIP_NONE, RENDERSCALE, camera, 0.0f, mSourceRect);
 				}
 				break;
 			}
 			default:
 			{
 
-				mTexture->Render(mPosition, SDL_FLIP_NONE, RENDERSCALE, 0.0f, mSourceRect);
+				mTexture->Render(mPosition, SDL_FLIP_NONE, RENDERSCALE, camera, 0.0f, mSourceRect);
 				break;
 			}
 		}
 	}
 	else 
 	{
-		mTexture->Render(Vector2D(mPosition.x - mDestroySeperation, mPosition.y - mDestroySeperation), SDL_FLIP_NONE, 1, mDestroyAngle, mSourceRect);
-		mTexture->Render(Vector2D((mPosition.x + mHitbox->w / 2) + mDestroySeperation, mPosition.y - mDestroySeperation), SDL_FLIP_NONE, 1, mDestroyAngle, mSourceRect);
-		mTexture->Render(Vector2D(mPosition.x - mDestroySeperation, mPosition.y + mHitbox->h / 2), SDL_FLIP_NONE, 1, mDestroyAngle, mSourceRect);
-		mTexture->Render(Vector2D((mPosition.x + mHitbox->w / 2) + mDestroySeperation, mPosition.y + mHitbox->h / 2), SDL_FLIP_NONE, 1, mDestroyAngle, mSourceRect);
+		mTexture->Render(Vector2D(mPosition.x - mDestroySeperation, mPosition.y - mDestroySeperation), SDL_FLIP_NONE, 1, camera, mDestroyAngle, mSourceRect);
+		mTexture->Render(Vector2D((mPosition.x + mHitbox->w / 2) + mDestroySeperation, mPosition.y - mDestroySeperation), SDL_FLIP_NONE, 1, camera, mDestroyAngle, mSourceRect);
+		mTexture->Render(Vector2D(mPosition.x - mDestroySeperation, mPosition.y + mHitbox->h / 2), SDL_FLIP_NONE, 1, camera, mDestroyAngle, mSourceRect);
+		mTexture->Render(Vector2D((mPosition.x + mHitbox->w / 2) + mDestroySeperation, mPosition.y + mHitbox->h / 2), SDL_FLIP_NONE, 1, camera, mDestroyAngle, mSourceRect);
 	}
 }
 
-void Brick::Debug(int type)
+void Brick::Debug(SDL_Rect* camera)
 {
 	SDL_SetRenderDrawColor(mRenderer, 255, 255, 255, 255);
 	SDL_RenderDrawRect(mRenderer, mHitbox);
@@ -154,7 +155,7 @@ void Brick::Hit(int playerHealth)
 				{
 					mItemInside = new Mushroom(mRenderer, "Images/RedMushroom.png", Vector2D(mPosition.x, mPosition.y), RENDERSCALE, FACING_RIGHT);
 				}
-				if (playerHealth == 2)
+				if (playerHealth >= 2)
 				{
 					mItemInside = new FireFlower(mRenderer, "Images/FireFlower.png", Vector2D(mPosition.x, mPosition.y), RENDERSCALE);
 				}

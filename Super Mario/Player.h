@@ -14,11 +14,13 @@ public:
 	Player(SDL_Renderer* renderer, std::string imagepath, Vector2D startPosition, int playerNum);
 	~Player();
 
-	void Render();
+	void Render(SDL_Rect* camera);
+
 	void Update(float deltaTime, SDL_Event e);
 
 	void UpdateHealth(int changeInHealth);
 	void SetOnPlatform(bool isOnPlatform) { mOnPlatform = isOnPlatform; };
+	float GetJumpForce() { return mJumpForce; }
 	void SetJumpForce(float jumpForce) { mJumpForce = jumpForce; }
 	void SetJumping(bool jumping) { mJumping = jumping; }
 

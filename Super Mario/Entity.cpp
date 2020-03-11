@@ -71,19 +71,19 @@ SIDE Entity::GetSideCollidingWithEntity(Entity* entity)
 	return SIDE::NONE;
 }
 
-void Entity::Debug(int type)
+void Entity::Debug(SDL_Rect* camera)
 {
 	SDL_SetRenderDrawColor(mRenderer, 255, 255, 255, 255);
-	SDL_RenderDrawRect(mRenderer, mHitbox);
+	SDL_RenderDrawRect(mRenderer, new SDL_Rect { mHitbox->x - camera->x, mHitbox->y, mHitbox->w, mHitbox->h });
 	
-		SDL_SetRenderDrawColor(mRenderer, 255, 0, 0, 255);
-		SDL_RenderDrawRect(mRenderer, mSensorLeft);
-		SDL_SetRenderDrawColor(mRenderer, 0, 255, 0, 255);
-		SDL_RenderDrawRect(mRenderer, mSensorRight);
-		SDL_SetRenderDrawColor(mRenderer, 0, 0, 255, 255);
-		SDL_RenderDrawRect(mRenderer, mSensorTop);
-		SDL_SetRenderDrawColor(mRenderer, 255, 255, 0, 255);
-		SDL_RenderDrawRect(mRenderer, mSensorBottom);
+	SDL_SetRenderDrawColor(mRenderer, 255, 0, 0, 255);
+	SDL_RenderDrawRect(mRenderer, mSensorLeft);
+	SDL_SetRenderDrawColor(mRenderer, 0, 255, 0, 255);
+	SDL_RenderDrawRect(mRenderer, mSensorRight);
+	SDL_SetRenderDrawColor(mRenderer, 0, 0, 255, 255);
+	SDL_RenderDrawRect(mRenderer, mSensorTop);
+	SDL_SetRenderDrawColor(mRenderer, 255, 255, 0, 255);
+	SDL_RenderDrawRect(mRenderer, mSensorBottom);
 	
 }
 
@@ -117,8 +117,8 @@ void Entity::FullUpdateSensors()
 	mSensorRight->h = mHitbox->h - 2;
 	mSensorTop->x = mPosition.x + 2;
 	mSensorTop->y = mPosition.y - mSensorSize;
-	mSensorTop->w = mHitbox->w;
+	mSensorTop->w = mHitbox->w - 4;
 	mSensorBottom->x = mPosition.x + 2;
 	mSensorBottom->y = mPosition.y + mHitbox->h;
-	mSensorBottom->w = mHitbox->w;
+	mSensorBottom->w = mHitbox->w - 4;
 }

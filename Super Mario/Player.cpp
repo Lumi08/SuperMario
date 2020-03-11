@@ -27,7 +27,7 @@ Player::~Player()
 	delete mSleepAnimation;
 }
 
-void Player::Render()
+void Player::Render(SDL_Rect* camera)
 {
 	switch (mPlayerState)
 	{
@@ -37,13 +37,13 @@ void Player::Render()
 			{
 				case FACING_RIGHT:
 				{
-					mWalkAnimation->Play(mPosition, SDL_FLIP_HORIZONTAL);
+					mWalkAnimation->Play(mPosition, SDL_FLIP_HORIZONTAL, camera);
 					break;
 				}
 
 				case FACING_LEFT:
 				{
-					mWalkAnimation->Play(mPosition, SDL_FLIP_NONE);
+					mWalkAnimation->Play(mPosition, SDL_FLIP_NONE, camera);
 					break;
 				}
 			}
@@ -56,12 +56,12 @@ void Player::Render()
 			{
 				case FACING_RIGHT:
 				{
-					mIdleAnimation->Play(mPosition, SDL_FLIP_HORIZONTAL);
+					mIdleAnimation->Play(mPosition, SDL_FLIP_HORIZONTAL, camera);
 					break;
 				}
 				case FACING_LEFT:
 				{
-					mIdleAnimation->Play(mPosition, SDL_FLIP_NONE);
+					mIdleAnimation->Play(mPosition, SDL_FLIP_NONE, camera);
 					break;
 				}
 			}
@@ -74,12 +74,12 @@ void Player::Render()
 			{
 				case FACING_RIGHT:
 				{
-					mSleepAnimation->Play(mPosition, SDL_FLIP_HORIZONTAL);
+					mSleepAnimation->Play(mPosition, SDL_FLIP_HORIZONTAL, camera);
 					break;
 				}
 				case FACING_LEFT:
 				{
-					mSleepAnimation->Play(mPosition, SDL_FLIP_NONE);
+					mSleepAnimation->Play(mPosition, SDL_FLIP_NONE, camera);
 					break;
 				}
 			}
@@ -92,13 +92,13 @@ void Player::Render()
 			{
 				case FACING_RIGHT:
 				{
-					mTexture->Render(mPosition, SDL_FLIP_HORIZONTAL, RENDERSCALE, 0.0f, mSourceRect);
+					mTexture->Render(mPosition, SDL_FLIP_HORIZONTAL, RENDERSCALE, camera, 0.0f, mSourceRect);
 					break;
 				}
 
 				case FACING_LEFT:
 				{	
-					mTexture->Render(mPosition, SDL_FLIP_NONE, RENDERSCALE, 0.0f, mSourceRect);
+					mTexture->Render(mPosition, SDL_FLIP_NONE, RENDERSCALE, camera, 0.0f, mSourceRect);
 					break;
 				}
 			}

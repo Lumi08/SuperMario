@@ -24,10 +24,15 @@ public:
 	void Hit(int playerHealth);
 
 	void Update(float deltaTime, SDL_Event e, Player* players[], int playerCount);
-	void Render();
-	virtual void Debug(int type) override;
+	void Render(SDL_Rect* camera);
+
+	
+
+	
+	virtual void Debug(SDL_Rect* camera) override;
 
 	BrickType GetBrickType() { return mBrickType; }
+	void SetBrickType(BrickType type) { mBrickType = type; }
 	SIDE GetSideHit() { return mSideHit; }
 	void SetSideHit(SIDE side) { mSideHit = side; }
 	PowerUp* GetItemInside() { return mItemInside; }

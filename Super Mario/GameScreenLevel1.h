@@ -24,8 +24,9 @@ public:
 	void Update(float deltaTime, SDL_Event e);
 private:
 	Texture2D* mBackgroundTexture;
+	SDL_Rect* mCamera;
 	Player* mPlayers[MAXPLAYERCOUNT];
-	//Brick* mBricks[MAXBRICKCOUNT];
+	
 	std::vector<Brick*> mBricks;
 	int mBrickCount,
 		mPlayerCount;

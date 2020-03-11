@@ -13,9 +13,9 @@ FireFlower::~FireFlower()
 	delete mIdleAnimation;
 }
 
-void FireFlower::Render()
+void FireFlower::Render(SDL_Rect* camera)
 {
-	mIdleAnimation->Play(mPosition, SDL_FLIP_NONE);
+	mIdleAnimation->Play(mPosition, SDL_FLIP_NONE, camera);
 }
 
 void FireFlower::Update(float deltaTime, SDL_Event e)
