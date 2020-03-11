@@ -134,7 +134,40 @@ void Brick::ItemCollisions(Player* player)
 	{
 		if (RectIntersects(mItemInside->GetHitbox(), player->GetHitbox()))
 		{
-			player->UpdateHealth(1);
+			switch (mItemInside->GetType())
+			{
+				case PowerUpType::MUSHROOM:
+				{
+					if (player->GetHealth() == 1)
+					{
+						player->UpdateHealth(+1);
+					}
+					else
+					{
+						//Score goes up
+					}
+					break;
+				}
+
+				case PowerUpType::FIREFLOWER:
+				{
+					if (player->GetHealth() == 1)
+					{
+						player->UpdateHealth(+2);
+					}
+					else if (player->GetHealth() == 2)
+					{
+						player->UpdateHealth(+1);
+					}
+					else
+					{
+						//Score goes up
+					}
+					break;
+				}
+			}
+			
+			
 			delete mItemInside;
 			//std::cerr << "test" << std::endl;
 			mItemInsideSpawned = false;

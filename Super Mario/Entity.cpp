@@ -73,8 +73,10 @@ SIDE Entity::GetSideCollidingWithEntity(Entity* entity)
 
 void Entity::Debug(SDL_Rect* camera)
 {
+	
+
 	SDL_SetRenderDrawColor(mRenderer, 255, 255, 255, 255);
-	SDL_RenderDrawRect(mRenderer, new SDL_Rect { mHitbox->x - camera->x, mHitbox->y, mHitbox->w, mHitbox->h });
+	SDL_RenderDrawRect(mRenderer, mHitbox);
 	
 	SDL_SetRenderDrawColor(mRenderer, 255, 0, 0, 255);
 	SDL_RenderDrawRect(mRenderer, mSensorLeft);

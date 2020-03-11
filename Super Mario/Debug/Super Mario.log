@@ -1,4 +1,6 @@
-﻿  Brick.cpp
-C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\Brick.cpp(58,29): warning C4305: '+=': truncation from 'double' to 'float'
-C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\Brick.cpp(59,25): warning C4305: '+=': truncation from 'double' to 'float'
+﻿  Player.cpp
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\Player.cpp(9,24): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\Player.cpp(408,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\Player.cpp(409,23): warning C4305: '+=': truncation from 'double' to 'float'
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\Player.cpp(418,51): warning C4244: 'argument': conversion from 'float' to 'Uint8', possible loss of data
   Super Mario.vcxproj -> C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Debug\Super Mario.exe

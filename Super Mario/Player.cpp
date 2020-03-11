@@ -6,7 +6,7 @@ Player::Player(SDL_Renderer* renderer, std::string imagePath, Vector2D startPosi
 	: Entity(renderer, imagePath, startPosition, SMALLPLAYERWIDTH, SMALLPLAYERHEIGHT)
 {
 	mPlayerNumber = playerNum;
-	mMovementSpeed = 0.05;
+	mMovementSpeed = 0.075;
 	mHealth = 1;
 	mFadeTime = 0;
 	mTimeIdle = 0;
@@ -383,11 +383,19 @@ void Player::UpdateHealth(int changeInHealth)
 
 		case 3:
 		{
+			if (changeInHealth == 2)
+			{
+				mPosition.y -= DEFAULTTILEHEIGHT * RENDERSCALE;
+			}
 			mSourceRect->y = 128;
 			mWalkAnimation = new Animation(mRenderer, mTexture, new SDL_Rect{ 0, 128, DEFAULTTILEWIDTH, DEFAULTTILEHEIGHT * 2 }, 2, 500, RENDERSCALE);
 			mIdleAnimation = new Animation(mRenderer, mTexture, new SDL_Rect{ 0, 160, DEFAULTTILEWIDTH, DEFAULTTILEHEIGHT * 2 }, 2, 5000, RENDERSCALE);
 			mSleepAnimation = new Animation(mRenderer, mTexture, new SDL_Rect{ 0, 16, DEFAULTTILEWIDTH, DEFAULTTILEHEIGHT }, 6, 1000, RENDERSCALE);
 			mFading = true;
+			mSourceRect->h = BIGPLAYERHEIGHT;
+			mHitbox->h = BIGPLAYERHEIGHT * RENDERSCALE;
+			FullUpdateSensors();
+			break;
 			break;
 		}
 	}
@@ -400,7 +408,7 @@ void Player::FadeLogic()
 		float result = ((0.5 * cos(mFadeDegrees * 3.14159265 / 180.0)) + 0.5) * 255;
 		mFadeDegrees += 0.15;
 
-		if (mFadeTime > 5000 && mFadeDegrees >= 360)
+		if (mFadeTime > 3000 && mFadeDegrees >= 360)
 		{
 			mFading = false;
 			mFadeTime = 0;

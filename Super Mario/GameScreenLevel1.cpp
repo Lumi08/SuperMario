@@ -127,8 +127,9 @@ void GameScreenLevel1::Update(float deltaTime, SDL_Event e)
 
 bool GameScreenLevel1::SetUpLevel()
 {
+	mCamera = new SDL_Rect{ 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
 	mBackgroundTexture = new Texture2D(mRenderer);
-	if (!mBackgroundTexture->LoadFromFile("Images/bkground.png"))
+	if (!mBackgroundTexture->LoadFromFile("Images/unnamed.png"))
 	{
 		std::cout << "Error: Failed to load background texture!" << std::endl;
 		return false;
@@ -145,7 +146,6 @@ bool GameScreenLevel1::SetUpLevel()
 	map->LoadMapAssets(mPlayers, mBricks);
 	//SDL_SetRenderDrawColor(mRenderer, 255, 255, 255, 255);
 	
-	mCamera = new SDL_Rect{ 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
 
 	return true;
 }
@@ -221,7 +221,6 @@ void GameScreenLevel1::BrickCollisionsWithPlayer()
 			{
 				botCollided = true;
 			}
-
 			
 		}
 		if (!botCollided)

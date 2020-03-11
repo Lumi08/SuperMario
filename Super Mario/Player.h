@@ -24,6 +24,7 @@ public:
 	void SetJumpForce(float jumpForce) { mJumpForce = jumpForce; }
 	void SetJumping(bool jumping) { mJumping = jumping; }
 
+	void SetHealth(int health) { mHealth = health; }
 	int GetHealth() { return mHealth; }
 	bool GetOnPlatform() { return mOnPlatform; }
 
