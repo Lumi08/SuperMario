@@ -6,7 +6,7 @@ Player::Player(SDL_Renderer* renderer, std::string imagePath, Vector2D startPosi
 	: Entity(renderer, imagePath, startPosition, SMALLPLAYERWIDTH, SMALLPLAYERHEIGHT)
 {
 	mPlayerNumber = playerNum;
-	mMovementSpeed = 0.075;
+	mMovementSpeed = 0.575;
 	mHealth = 1;
 	mFadeTime = 0;
 	mTimeIdle = 0;

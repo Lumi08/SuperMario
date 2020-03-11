@@ -24,6 +24,7 @@ public:
 	void Update(float deltaTime, SDL_Event e);
 private:
 	Texture2D* mBackgroundTexture;
+	Vector2D mBackgroundPosition;
 	SDL_Rect* mCamera;
 	Player* mPlayers[MAXPLAYERCOUNT];
 	

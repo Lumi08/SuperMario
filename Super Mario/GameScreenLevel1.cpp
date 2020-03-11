@@ -14,7 +14,8 @@ GameScreenLevel1::~GameScreenLevel1()
 
 void GameScreenLevel1::Render()
 {
-	mBackgroundTexture->Render(Vector2D(), SDL_FLIP_NONE, 0, mCamera);
+	mBackgroundTexture->Render(mBackgroundPosition, SDL_FLIP_NONE, 0, mCamera);
+
 	for (int i = 0; i < mPlayerCount; i++)
 	{
 		mPlayers[i]->Render(mCamera);
@@ -50,7 +51,7 @@ void GameScreenLevel1::Update(float deltaTime, SDL_Event e)
 	{
 		mCamera->y = 0;
 	}
-	if (mCamera->x > mCamera->w)
+	if (mCamera->x > 5000)
 	{
 		mCamera->x = mCamera->w;
 	}
@@ -58,6 +59,13 @@ void GameScreenLevel1::Update(float deltaTime, SDL_Event e)
 	{
 		mCamera->y = mCamera->h;
 	}
+
+	if (mCamera->x % 1024 == 0)
+	{
+		mBackgroundPosition.x = mCamera->x - 1024;
+	}
+
+	
 
 	for (int i = 0; i < mPlayerCount; i++)
 	{
@@ -134,7 +142,7 @@ bool GameScreenLevel1::SetUpLevel()
 		std::cout << "Error: Failed to load background texture!" << std::endl;
 		return false;
 	}
-	
+	mBackgroundPosition = Vector2D(0, 0);
 	mPlayerCount = 2;
 	MapLoader* map = new MapLoader((char*)"map1.txt", mRenderer);
 
