@@ -24,6 +24,7 @@
 
 #define MAXMAPTILEHEIGHT				48
 #define MAXMAPTILEWIDTH					800
+#define MAPWIDTHPIXELS					5000
 
 
 /*

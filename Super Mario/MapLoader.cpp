@@ -26,7 +26,7 @@ MapLoader::~MapLoader()
 {
 }
 
-void MapLoader::LoadMapAssets(Player* players[], std::vector<Brick*>& bricks)
+void MapLoader::LoadMapAssets(Player* players[], std::vector<Brick*>& bricks, std::vector<Pipe*>& pipes)
 {
 	for (int i = 0; i < MAXMAPTILEHEIGHT / RENDERSCALE; i++)
 	{
@@ -65,7 +65,49 @@ void MapLoader::LoadMapAssets(Player* players[], std::vector<Brick*>& bricks)
 					players[0]->SetY(DEFAULTTILEHEIGHT * RENDERSCALE * i);
 					break;
 				}
+
+				case 'P':
+				{
+					pipes.push_back(new Pipe(mRenderer, "Images/Pipe.png", Vector2D(DEFAULTTILEWIDTH * RENDERSCALE * j, DEFAULTTILEHEIGHT * RENDERSCALE * i)));
+					FixPipeTexture(pipes[pipes.size() - 1], j, i);
+					break;
+				}
 			}
 		}
+	}
+}
+
+void MapLoader::FixPipeTexture(Pipe* pipe, int widthPos, int heightPos)
+{
+	bool pipeAbove = false,
+		pipeBelow = false,
+		pipeLeft = false,
+		pipeRight = false;
+
+	if (mapArray[heightPos - 1][widthPos] == 'P')
+	{
+		pipeAbove = true;
+	}
+	if (mapArray[heightPos + 1][widthPos] == 'P')
+	{
+		pipeBelow = true;
+	}
+	if (mapArray[heightPos][widthPos - 1] == 'P')
+	{
+		pipeLeft = true;
+	}
+	if (mapArray[heightPos][widthPos + 1] == 'P')
+	{
+		pipeRight = true;
+	}
+	
+	if (pipeAbove)
+	{
+		pipe->SetSourceRectPosY(16);
+	}
+	
+	if (pipeLeft)
+	{
+		pipe->SetSourceRectPosX(16);
 	}
 }

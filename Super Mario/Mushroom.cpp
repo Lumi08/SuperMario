@@ -8,7 +8,7 @@ Mushroom::Mushroom(SDL_Renderer* renderer, std::string imagePath, Vector2D spawn
 	SetSpawning(true);
 	SetOnPlatform(true);
 	mStartY = spawnLocation.y;
-	mMovementSpeed = 0.03;
+	mMovementSpeed = 0.075;
 }
 
 Mushroom::~Mushroom()
@@ -27,7 +27,7 @@ void Mushroom::Update(float deltaTime, SDL_Event e)
 	{
 		if (mPosition.y >= mStartY - 16 * RENDERSCALE + 1)
 		{
-			mPosition.y -= 0.025;
+			mPosition.y -= 0.1;
 		}
 		else
 		{

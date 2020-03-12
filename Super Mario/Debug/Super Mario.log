@@ -1,10 +1,74 @@
-﻿  GameScreenLevel1.cpp
+﻿  Brick.cpp
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\Brick.cpp(13,28): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\Brick.cpp(29,28): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\Brick.cpp(66,29): warning C4305: '+=': truncation from 'double' to 'float'
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\Brick.cpp(67,25): warning C4305: '+=': truncation from 'double' to 'float'
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\Brick.cpp(173,21): warning C4305: '-=': truncation from 'double' to 'float'
+  Enemy.cpp
+  Entity.cpp
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\Brick.cpp(181,21): warning C4305: '+=': truncation from 'double' to 'float'
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\Entity.cpp(36,24): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\Entity.cpp(37,24): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\Entity.cpp(116,31): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\Entity.cpp(117,31): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\Entity.cpp(118,32): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\Entity.cpp(119,32): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\Entity.cpp(120,30): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\Entity.cpp(121,30): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\Entity.cpp(122,33): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\Entity.cpp(123,33): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\Entity.cpp(128,31): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\Entity.cpp(129,31): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\Entity.cpp(131,32): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\Entity.cpp(132,32): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\Entity.cpp(134,30): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\Entity.cpp(135,30): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\Entity.cpp(137,33): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+  FireFlower.cpp
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\Entity.cpp(138,33): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\FireFlower.cpp(8,25): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+  GameScreenLevel1.cpp
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\FireFlower.cpp(27,22): warning C4305: '-=': truncation from 'double' to 'float'
 C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\GameScreenLevel1.cpp(23,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\GameScreenLevel1.cpp(34,21): warning C4018: '<': signed/unsigned mismatch
-C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\GameScreenLevel1.cpp(43,35): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\GameScreenLevel1.cpp(44,35): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\GameScreenLevel1.cpp(65,38): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\GameScreenLevel1.cpp(74,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\GameScreenLevel1.cpp(167,21): warning C4018: '<': signed/unsigned mismatch
-C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\GameScreenLevel1.cpp(252,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\GameScreenLevel1.cpp(27,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\GameScreenLevel1.cpp(38,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\GameScreenLevel1.cpp(42,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\GameScreenLevel1.cpp(53,35): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\GameScreenLevel1.cpp(54,35): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\GameScreenLevel1.cpp(75,38): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\GameScreenLevel1.cpp(93,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\GameScreenLevel1.cpp(106,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\GameScreenLevel1.cpp(176,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\GameScreenLevel1.cpp(248,20): warning C4018: '<': signed/unsigned mismatch
+  GameScreenManager.cpp
+  Main.cpp
+  MapLoader.cpp
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\GameScreenLevel1.cpp(291,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\MapLoader.cpp(16,22): warning C4018: '<': signed/unsigned mismatch
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\MapLoader.cpp(39,141): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\MapLoader.cpp(39,104): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\MapLoader.cpp(45,149): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\MapLoader.cpp(45,112): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\MapLoader.cpp(51,141): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\MapLoader.cpp(51,104): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\MapLoader.cpp(52,134): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\MapLoader.cpp(52,97): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\MapLoader.cpp(58,141): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\MapLoader.cpp(58,104): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\MapLoader.cpp(64,54): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\MapLoader.cpp(65,55): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\MapLoader.cpp(71,138): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  Mushroom.cpp
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\MapLoader.cpp(71,101): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\Mushroom.cpp(10,25): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\Mushroom.cpp(11,24): warning C4305: '=': truncation from 'double' to 'float'
+  Pipe.cpp
+  Player.cpp
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\Mushroom.cpp(30,22): warning C4305: '-=': truncation from 'double' to 'float'
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\Player.cpp(329,47): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\Player.cpp(417,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\Player.cpp(418,23): warning C4305: '+=': truncation from 'double' to 'float'
+  PowerUp.cpp
+  Generating Code...
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\Player.cpp(427,51): warning C4244: 'argument': conversion from 'float' to 'Uint8', possible loss of data
   Super Mario.vcxproj -> C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Debug\Super Mario.exe

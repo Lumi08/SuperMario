@@ -28,17 +28,18 @@ private:
 	SDL_Rect* mCamera;
 	Player* mPlayers[MAXPLAYERCOUNT];
 	
+	std::vector<Pipe*> mPipes;
 	std::vector<Brick*> mBricks;
-	int mBrickCount,
-		mPlayerCount;
+
+	int mPlayerCount;
 
 	bool SetUpLevel();
-	void BrickCollisionsWithPlayer();
-	void BrickCollisionsWithPlayer(Brick* brick, int brickNum);
+	void BrickCollisionsWithPlayer(Player* player, bool& botCollided);
+	void PipeCollisionsWithPlayer(Player* player, bool& botCollided);
 	void RemoveDestroyedBricks(Brick* brick, int brickNum);
 	void BrickCollisionsWithSpawnedItem(PowerUp* powerup);
 	//debug:
-	int debugType = 0;
+	int mDebugType = 0;
 	bool debug = false;
 	bool f3Down = false, kp2Down = false;
 	bool topHit;

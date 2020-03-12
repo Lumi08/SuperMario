@@ -10,6 +10,7 @@ Brick::Brick(SDL_Renderer* renderer, std::string imagePath, Vector2D position, B
 	mDestroyFallForce = 300;
 	mDestroySeperation = 0;
 	mDestroyAngle = 0;
+	mBouncingStartY = position.y;
 	if (brickType == BrickType::QUESTIONBLOCK)
 	{
 		mIdleAnimation = new Animation(mRenderer, mTexture, mSourceRect, 2 ,5000, RENDERSCALE);
@@ -25,6 +26,7 @@ Brick::Brick(SDL_Renderer* renderer, std::string imagePath, Vector2D position, B
 	mDestroyFallForce = 300;
 	mDestroySeperation = 0;
 	mDestroyAngle = 0;
+	mBouncingStartY = position.y;
 	if (brickType == BrickType::QUESTIONBLOCK)
 	{
 		mIdleAnimation = new Animation(mRenderer, mTexture, mSourceRect, 2, 5000, RENDERSCALE);
@@ -49,6 +51,12 @@ void Brick::Update(float deltaTime, SDL_Event e, Player* players[], int playerCo
 				ItemCollisions(players[i]);
 			}
 		}
+
+		if (mBouncing)
+		{
+			PerformBrickBounce();
+		}
+
 		UpdateHitbox();
 	}
 	else
@@ -107,27 +115,6 @@ void Brick::Render(SDL_Rect* camera)
 	}
 }
 
-void Brick::Debug(SDL_Rect* camera)
-{
-	SDL_SetRenderDrawColor(mRenderer, 255, 255, 255, 255);
-	SDL_RenderDrawRect(mRenderer, mHitbox);
-	
-	SDL_SetRenderDrawColor(mRenderer, 255, 0, 0, 255);
-	SDL_RenderDrawRect(mRenderer, mSensorLeft);
-	SDL_SetRenderDrawColor(mRenderer, 0, 255, 0, 255);
-	SDL_RenderDrawRect(mRenderer, mSensorRight);
-	SDL_SetRenderDrawColor(mRenderer, 0, 0, 255, 255);
-	SDL_RenderDrawRect(mRenderer, mSensorTop);
-	SDL_SetRenderDrawColor(mRenderer, 255, 255, 0, 255);
-	SDL_RenderDrawRect(mRenderer, mSensorBottom);
-	
-
-	if (mItemInsideSpawned)
-	{
-		mItemInside->Debug(camera);
-	}
-} 
-
 void Brick::ItemCollisions(Player* player)
 {
 	if (mItemInsideSpawned)
@@ -175,6 +162,26 @@ void Brick::ItemCollisions(Player* player)
 	}
 }
 
+void Brick::PerformBrickBounce()
+{
+	if (mBouncingStartY - 10 > mPosition.y)
+	{
+		mBouncingUp = false;
+	}
+	if (mBouncingUp)
+	{
+		mPosition.y -= 0.1;
+	}
+	else
+	{
+		if (mPosition.y == mBouncingStartY)
+		{
+			mBouncing = false;
+		}
+		mPosition.y += 0.1;
+	}
+}
+
 void Brick::Hit(int playerHealth)
 {
 	if (!mBeenHit)
@@ -191,6 +198,13 @@ void Brick::Hit(int playerHealth)
 				{
 					mItemInside = new FireFlower(mRenderer, "Images/FireFlower.png", Vector2D(mPosition.x, mPosition.y), RENDERSCALE);
 				}
+
+				if (!mBeenHit)
+				{
+					mBouncing = true;
+					mBouncingUp = true;
+				}
+
 				mSourceRect->y = 16;
 				mSourceRect->x = 0;
 				mBeenHit = true;
@@ -212,6 +226,11 @@ void Brick::Hit(int playerHealth)
 				{
 					Destroy();
 				}
+				else
+				{
+					mBouncing = true;
+					mBouncingUp = true;
+				}
 				break;
 			}
 		}
@@ -223,6 +242,43 @@ void Brick::Destroy()
 	mDestroyed = true;
 	mHitbox->x = -1;
 	mHitbox->y = -1;
+}
+
+void Brick::Debug(SDL_Rect* camera, int type)
+{
+	SDL_Rect* mDebugHitbox = new SDL_Rect{ mHitbox->x - camera->x, mHitbox->y, mHitbox->w, mHitbox->h };
+
+	SDL_SetRenderDrawColor(mRenderer, 255, 255, 255, 255);
+	SDL_RenderDrawRect(mRenderer, mDebugHitbox);
+
+	if (type == 2)
+	{
+		SDL_Rect* mDebugHitboxLeft = new SDL_Rect{ mSensorLeft->x - camera->x, mSensorLeft->y, mSensorLeft->w, mSensorLeft->h };
+		SDL_Rect* mDebugHitboxRight = new SDL_Rect{ mSensorRight->x - camera->x, mSensorRight->y, mSensorRight->w, mSensorRight->h };
+		SDL_Rect* mDebugHitboxTop = new SDL_Rect{ mSensorTop->x - camera->x, mSensorTop->y, mSensorTop->w, mSensorTop->h };
+		SDL_Rect* mDebugHitboxBottom = new SDL_Rect{ mSensorBottom->x - camera->x, mSensorBottom->y, mSensorBottom->w, mSensorBottom->h };
+
+		SDL_SetRenderDrawColor(mRenderer, 255, 0, 0, 255);
+		SDL_RenderDrawRect(mRenderer, mDebugHitboxLeft);
+		SDL_SetRenderDrawColor(mRenderer, 0, 255, 0, 255);
+		SDL_RenderDrawRect(mRenderer, mDebugHitboxRight);
+		SDL_SetRenderDrawColor(mRenderer, 0, 0, 255, 255);
+		SDL_RenderDrawRect(mRenderer, mDebugHitboxTop);
+		SDL_SetRenderDrawColor(mRenderer, 255, 255, 0, 255);
+		SDL_RenderDrawRect(mRenderer, mDebugHitboxBottom);
+
+		delete mDebugHitboxLeft;
+		delete mDebugHitboxRight;
+		delete mDebugHitboxTop;
+		delete mDebugHitboxBottom;
+	}
+
+	delete mDebugHitbox;
+
+	if (mItemInsideSpawned)
+	{
+		mItemInside->Debug(camera, type);
+	}
 }
 
 

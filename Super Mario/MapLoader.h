@@ -10,6 +10,7 @@
 #include "Constants.h"
 #include "Player.h"
 #include "Brick.h"
+#include "Pipe.h"
 
 class MapLoader
 {
@@ -17,11 +18,12 @@ public:
 	MapLoader(char* path, SDL_Renderer* renderer);
 	~MapLoader();
 
-	void LoadMapAssets(Player* players[], std::vector<Brick*>& bricks);
-
+	void LoadMapAssets(Player* players[], std::vector<Brick*>& bricks, std::vector<Pipe*>& pipes);
 private:
 	SDL_Renderer* mRenderer;
 	char mapArray[MAXMAPTILEHEIGHT][MAXMAPTILEWIDTH];
+
+	void FixPipeTexture(Pipe* pipe, int widthPos, int heightPos);
 };
 
 #endif // !_MAPLOADER_H

@@ -136,6 +136,7 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MapLoader.cpp" />
     <ClCompile Include="Mushroom.cpp" />
+    <ClCompile Include="Pipe.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PowerUp.cpp" />
     <ClCompile Include="Texture2D.cpp" />
@@ -159,6 +160,7 @@
     <ClInclude Include="GameScreenManager.h" />
     <ClInclude Include="MapLoader.h" />
     <ClInclude Include="Mushroom.h" />
+    <ClInclude Include="Pipe.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PowerUp.h" />
     <ClInclude Include="Texture2D.h" />

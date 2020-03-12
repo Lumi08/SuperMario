@@ -71,22 +71,36 @@ SIDE Entity::GetSideCollidingWithEntity(Entity* entity)
 	return SIDE::NONE;
 }
 
-void Entity::Debug(SDL_Rect* camera)
+void Entity::Debug(SDL_Rect* camera, int type)
 {
+	SDL_Rect* mDebugHitbox = new SDL_Rect {mHitbox->x - camera->x, mHitbox->y, mHitbox->w, mHitbox->h};
 	
-
 	SDL_SetRenderDrawColor(mRenderer, 255, 255, 255, 255);
-	SDL_RenderDrawRect(mRenderer, mHitbox);
+	SDL_RenderDrawRect(mRenderer, mDebugHitbox);
 	
-	SDL_SetRenderDrawColor(mRenderer, 255, 0, 0, 255);
-	SDL_RenderDrawRect(mRenderer, mSensorLeft);
-	SDL_SetRenderDrawColor(mRenderer, 0, 255, 0, 255);
-	SDL_RenderDrawRect(mRenderer, mSensorRight);
-	SDL_SetRenderDrawColor(mRenderer, 0, 0, 255, 255);
-	SDL_RenderDrawRect(mRenderer, mSensorTop);
-	SDL_SetRenderDrawColor(mRenderer, 255, 255, 0, 255);
-	SDL_RenderDrawRect(mRenderer, mSensorBottom);
+	if (type == 2)
+	{
+		SDL_Rect* mDebugHitboxLeft = new SDL_Rect{ mSensorLeft->x - camera->x, mSensorLeft->y, mSensorLeft->w, mSensorLeft->h };
+		SDL_Rect* mDebugHitboxRight = new SDL_Rect{ mSensorRight->x - camera->x, mSensorRight->y, mSensorRight->w, mSensorRight->h };
+		SDL_Rect* mDebugHitboxTop = new SDL_Rect{ mSensorTop->x - camera->x, mSensorTop->y, mSensorTop->w, mSensorTop->h };
+		SDL_Rect* mDebugHitboxBottom = new SDL_Rect{ mSensorBottom->x - camera->x, mSensorBottom->y, mSensorBottom->w, mSensorBottom->h };
+
+		SDL_SetRenderDrawColor(mRenderer, 255, 0, 0, 255);
+		SDL_RenderDrawRect(mRenderer, mDebugHitboxLeft);
+		SDL_SetRenderDrawColor(mRenderer, 0, 255, 0, 255);
+		SDL_RenderDrawRect(mRenderer, mDebugHitboxRight);
+		SDL_SetRenderDrawColor(mRenderer, 0, 0, 255, 255);
+		SDL_RenderDrawRect(mRenderer, mDebugHitboxTop);
+		SDL_SetRenderDrawColor(mRenderer, 255, 255, 0, 255);
+		SDL_RenderDrawRect(mRenderer, mDebugHitboxBottom);
+
+		delete mDebugHitboxLeft;
+		delete mDebugHitboxRight;
+		delete mDebugHitboxTop;
+		delete mDebugHitboxBottom;
+	}
 	
+	delete mDebugHitbox;
 }
 
 void Entity::InitSensors()

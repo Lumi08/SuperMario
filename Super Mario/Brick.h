@@ -29,7 +29,7 @@ public:
 	
 
 	
-	virtual void Debug(SDL_Rect* camera) override;
+	virtual void Debug(SDL_Rect* camera, int type) override;
 
 	BrickType GetBrickType() { return mBrickType; }
 	void SetBrickType(BrickType type) { mBrickType = type; }
@@ -49,12 +49,15 @@ private:
 	bool mItemInsideSpawned,
 		mBeenHit,
 		mDestroyed,
-		mBouncing;
+		mBouncing,
+		mBouncingUp;
 	float mDestroyFallForce,
 		mDestroySeperation,
 		mDestroyAngle;
+	int mBouncingStartY;
 
 	void ItemCollisions(Player* player);
+	void PerformBrickBounce();
 };
 
 #endif // !_BRICK_H

@@ -24,22 +24,32 @@ void GameScreenLevel1::Render()
 	{
 		mBricks[i]->Render(mCamera);
 	}
+	for (int i = 0; i < mPipes.size(); i++)
+	{
+		mPipes[i]->Render(mCamera);
+	}
 	
 	if (debug)
 	{
 		for (int i = 0; i < mPlayerCount; i++)
 		{
-			mPlayers[i]->Debug(mCamera);
+			mPlayers[i]->Debug(mCamera, mDebugType);
 		}
 		for (int i = 0; i < mBricks.size(); i++)
 		{
-			mBricks[i]->Debug(mCamera);
+			mBricks[i]->Debug(mCamera, mDebugType);
+		}
+		for (int i = 0; i < mPipes.size(); i++)
+		{
+			mPipes[i]->Debug(mCamera, mDebugType);
 		}
 	}
 }
 
 void GameScreenLevel1::Update(float deltaTime, SDL_Event e)
 {
+	std::cerr << deltaTime << std::endl;
+
 	mCamera->x = mPlayers[0]->GetX() - (SCREEN_WIDTH / 2);
 	mCamera->y = mPlayers[0]->GetY() - (SCREEN_WIDTH / 2);
 
@@ -51,9 +61,9 @@ void GameScreenLevel1::Update(float deltaTime, SDL_Event e)
 	{
 		mCamera->y = 0;
 	}
-	if (mCamera->x > 5000)
+	if (mCamera->x > MAPWIDTHPIXELS)
 	{
-		mCamera->x = mCamera->w;
+		mCamera->x = MAPWIDTHPIXELS;
 	}
 	if (mCamera->y < mCamera->h)
 	{
@@ -70,11 +80,20 @@ void GameScreenLevel1::Update(float deltaTime, SDL_Event e)
 	for (int i = 0; i < mPlayerCount; i++)
 	{
 		mPlayers[i]->Update(deltaTime, e);
+		bool playerBotCollided = false;
+		BrickCollisionsWithPlayer(mPlayers[i], playerBotCollided);
+		PipeCollisionsWithPlayer(mPlayers[i], playerBotCollided);
+
+		if (!playerBotCollided)
+		{
+			mPlayers[i]->SetOnPlatform(false);
+			mPlayers[i]->SetJumping(true);
+		}
 	}
 	for (int i = 0; i < mBricks.size(); i++)
 	{
 		mBricks[i]->Update(deltaTime, e, mPlayers, mPlayerCount);
-
+			
 		if (mBricks[i]->GetItemInsideSpawned())
 		{
 			BrickCollisionsWithSpawnedItem(mBricks[i]->GetItemInside());
@@ -84,9 +103,12 @@ void GameScreenLevel1::Update(float deltaTime, SDL_Event e)
 			RemoveDestroyedBricks(mBricks[i], i);
 		}
 	}
+	for (int i = 0; i < mPipes.size(); i++)
+	{
+		mPipes[i]->Update(deltaTime, e);
+	}
 
-	BrickCollisionsWithPlayer();
-	
+
 	
 	switch (e.type)
 	{
@@ -102,17 +124,9 @@ void GameScreenLevel1::Update(float deltaTime, SDL_Event e)
 				}
 
 				case SDLK_F3:
-				{	
+				{
 					debug = !debug;
 					break;
-				}
-
-				case SDLK_8:
-				{
-					for (int j = 0; j < mBrickCount; j++)
-					{
-						std::cout << "Brick " << j << ": " << mBricks[j]->GetSideHit() << std::endl;
-					}
 				}
 
 			}
@@ -146,12 +160,10 @@ bool GameScreenLevel1::SetUpLevel()
 	mPlayerCount = 2;
 	MapLoader* map = new MapLoader((char*)"map1.txt", mRenderer);
 
-	mBrickCount = mBricks.size();
-
 	mPlayers[0] = new Player(mRenderer, "Images/Mario.png", Vector2D(4, 4), 1);
 	mPlayers[1] = new Player(mRenderer, "Images/Luigi.png", Vector2D(64, 250), 2);
-	mPlayers[0]->UpdateHealth(1);
-	map->LoadMapAssets(mPlayers, mBricks);
+	//mPlayers[0]->UpdateHealth(1);
+	map->LoadMapAssets(mPlayers, mBricks, mPipes);
 	//SDL_SetRenderDrawColor(mRenderer, 255, 255, 255, 255);
 	
 
@@ -159,81 +171,108 @@ bool GameScreenLevel1::SetUpLevel()
 }
 
 //Use the players bottom sensor to detect wether it is on a platform or not
-void GameScreenLevel1::BrickCollisionsWithPlayer()
+void GameScreenLevel1::BrickCollisionsWithPlayer(Player* player, bool& botCollided)
 {
-	for (int i = 0; i < mPlayerCount; i++)
+	for (int j = 0; j < mBricks.size(); j++)
 	{
-		bool botCollided = false;
-		for (int j = 0; j < mBricks.size(); j++)
+		if (player->IsCollidingWith(mBricks[j]))
 		{
-			if (mPlayers[i]->IsCollidingWith(mBricks[j]))
+			switch (mBricks[j]->GetBrickType())
 			{
-				switch (mBricks[j]->GetBrickType())
+				case BrickType::SECRETBLOCK:
 				{
-					case BrickType::SECRETBLOCK:
+					//player->SetSideHit(player->GetSideCollidingWithEntity(mBricks[j]));
+					switch (player->GetSideCollidingWithEntity(mBricks[j]))
 					{
-						mPlayers[i]->SetSideHit(mPlayers[i]->GetSideCollidingWithEntity(mBricks[j]));
-						switch (mPlayers[i]->GetSideHit())
+						case SIDE::TOP:
 						{
-							case SIDE::TOP:
+							if (player->GetJumpForce() > 0)
 							{
-								if (mPlayers[i]->GetJumpForce() > 0)
-								{
-									mPlayers[i]->SetY(mBricks[j]->GetY() + (mBricks[j]->GetHitbox()->h));
-									mPlayers[i]->SetJumpForce(0);
-									mBricks[j]->Hit(mPlayers[i]->GetHealth());
-									mBricks[j]->SetBrickType(BrickType::SOLIDBLOCK);
-								}
-								break;
+								player->SetY(mBricks[j]->GetY() + (mBricks[j]->GetHitbox()->h));
+								player->SetJumpForce(0);
+								mBricks[j]->Hit(player->GetHealth());
+								mBricks[j]->SetBrickType(BrickType::SOLIDBLOCK);
 							}
+							break;
 						}
-						break;
 					}
+					break;
+				}
 
-					default:
+				default:
+				{
+					player->SetSideHit(player->GetSideCollidingWithEntity(mBricks[j]));
+					switch (player->GetSideHit())
 					{
-						mPlayers[i]->SetSideHit(mPlayers[i]->GetSideCollidingWithEntity(mBricks[j]));
-						switch (mPlayers[i]->GetSideHit())
-						{
 						case SIDE::BOTTOM:
 						{
-							mPlayers[i]->SetY(mBricks[j]->GetY() - mPlayers[i]->GetHitbox()->h);
-							mPlayers[i]->SetOnPlatform(true);
+							player->SetY(mBricks[j]->GetY() - player->GetHitbox()->h);
+							player->SetOnPlatform(true);
 							break;
 						}
 						case SIDE::TOP:
 						{
 							//if(mPlayers[i].GetJumpf)
-							mPlayers[i]->SetY(mBricks[j]->GetY() + (mBricks[j]->GetHitbox()->h));
-							mPlayers[i]->SetJumpForce(0);
-							mBricks[j]->Hit(mPlayers[i]->GetHealth());
+							player->SetY(mBricks[j]->GetY() + (mBricks[j]->GetHitbox()->h));
+							player->SetJumpForce(0);
+							mBricks[j]->Hit(player->GetHealth());
 							break;
 						}
 						case SIDE::RIGHT:
 						{
-							mPlayers[i]->SetX(mBricks[j]->GetX() - (mPlayers[i]->GetHitbox()->w));
+							player->SetX(mBricks[j]->GetX() - (player->GetHitbox()->w));
 							break;
 						}
 						case SIDE::LEFT:
 						{
-							mPlayers[i]->SetX(mBricks[j]->GetX() + mPlayers[i]->GetHitbox()->w);
+							player->SetX(mBricks[j]->GetX() + player->GetHitbox()->w);
 							break;
 						}
-						}
-						break;
 					}
+					break;
 				}
 			}
-
-			if (RectIntersects(mPlayers[i]->GetBottomSensorBox(), mBricks[j]->GetHitbox()))
+		}	
+		if (RectIntersects(player->GetBottomSensorBox(), mBricks[j]->GetHitbox()))
+		{
+			if (mBricks[j]->GetBrickType() != BrickType::SECRETBLOCK)
 			{
 				botCollided = true;
 			}
-			
 		}
-		if (!botCollided)
+	}
+}
+
+void GameScreenLevel1::PipeCollisionsWithPlayer(Player* player, bool& botCollided)
+{
+	for (int j = 0; j < mPipes.size(); j++)
+	{
+		if (player->IsCollidingWith(mPipes[j]))
 		{
-			mPlayers[i]->SetOnPlatform(false);
+			//player->SetSideHit(player->GetSideCollidingWithEntity(mPipes[j]));
+			switch (player->GetSideCollidingWithEntity(mPipes[j]))
+			{
+				case SIDE::BOTTOM:
+				{
+					player->SetY(mPipes[j]->GetY() - player->GetHitbox()->h);
+					player->SetOnPlatform(true);
+					break;
+				}
+				case SIDE::RIGHT:
+				{
+					player->SetX(mPipes[j]->GetX() - (player->GetHitbox()->w));
+					break;
+				}
+				case SIDE::LEFT:
+				{
+					player->SetX(mPipes[j]->GetX() + player->GetHitbox()->w);
+					break;
+				}
+			}
+		}
+		if (RectIntersects(player->GetBottomSensorBox(), mPipes[j]->GetHitbox()))
+		{
+			botCollided = true;
 		}
 	}
 }

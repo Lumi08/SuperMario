@@ -24,7 +24,7 @@ void FireFlower::Update(float deltaTime, SDL_Event e)
 	{
 		if (mPosition.y >= mStartY - 16 * RENDERSCALE + 1)
 		{
-			mPosition.y -= 0.025;
+			mPosition.y -= 0.1;
 		}
 		else
 		{
