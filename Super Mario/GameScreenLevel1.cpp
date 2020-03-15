@@ -1,5 +1,6 @@
 #include "GameScreenLevel1.h"
 #include "Texture2D.h"
+#include <SDL_ttf.h>
 
 
 GameScreenLevel1::GameScreenLevel1(SDL_Renderer* renderer) : GameScreen(renderer)
@@ -15,6 +16,9 @@ GameScreenLevel1::~GameScreenLevel1()
 void GameScreenLevel1::Render()
 {
 	mBackgroundTexture->Render(mBackgroundPosition, SDL_FLIP_NONE, 0, mCamera);
+	//mScoreText->Render("Score", Vector2D(10, 10), SDL_FLIP_NONE, RENDERSCALE, mCamera, 0.0f);
+
+	mScoreText->Render(Vector2D(10, 10), SDL_FLIP_NONE, RENDERSCALE, mCamera, 0.0f);
 
 	for (int i = 0; i < mPlayerCount; i++)
 	{
@@ -22,7 +26,7 @@ void GameScreenLevel1::Render()
 	}
 	for (int i = 0; i < mBricks.size(); i++)
 	{
-		mBricks[i]->Render(mCamera);
+		mBricks[i]->Render(mCamera);	
 	}
 	for (int i = 0; i < mPipes.size(); i++)
 	{
@@ -48,7 +52,9 @@ void GameScreenLevel1::Render()
 
 void GameScreenLevel1::Update(float deltaTime, SDL_Event e)
 {
-	std::cerr << deltaTime << std::endl;
+	std::cerr << mScore << std::endl;
+	
+	mScoreText->CreateTextureFromText("Score: " + std::to_string(mScore));
 
 	mCamera->x = mPlayers[0]->GetX() - (SCREEN_WIDTH / 2);
 	mCamera->y = mPlayers[0]->GetY() - (SCREEN_WIDTH / 2);
@@ -75,8 +81,6 @@ void GameScreenLevel1::Update(float deltaTime, SDL_Event e)
 		mBackgroundPosition.x = mCamera->x - 1024;
 	}
 
-	
-
 	for (int i = 0; i < mPlayerCount; i++)
 	{
 		mPlayers[i]->Update(deltaTime, e);
@@ -92,16 +96,18 @@ void GameScreenLevel1::Update(float deltaTime, SDL_Event e)
 	}
 	for (int i = 0; i < mBricks.size(); i++)
 	{
-		mBricks[i]->Update(deltaTime, e, mPlayers, mPlayerCount);
-			
+		
+		mBricks[i]->Update(deltaTime, e, mPlayers, mPlayerCount, mScore);
+
 		if (mBricks[i]->GetItemInsideSpawned())
 		{
-			BrickCollisionsWithSpawnedItem(mBricks[i]->GetItemInside());
+			SpawnedItemSolidBlockCollisions(mBricks[i]->GetItemInside());
 		}
 		if (mBricks[i]->GetDestroyed())
 		{
 			RemoveDestroyedBricks(mBricks[i], i);
 		}
+		
 	}
 	for (int i = 0; i < mPipes.size(); i++)
 	{
@@ -150,12 +156,18 @@ void GameScreenLevel1::Update(float deltaTime, SDL_Event e)
 bool GameScreenLevel1::SetUpLevel()
 {
 	mCamera = new SDL_Rect{ 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
+	
+	mScoreText = new Text(mRenderer, "Font/OpenSans-Regular.ttf", SDL_Color{ 255, 0, 0, 255 }, 20);
 	mBackgroundTexture = new Texture2D(mRenderer);
 	if (!mBackgroundTexture->LoadFromFile("Images/unnamed.png"))
 	{
 		std::cout << "Error: Failed to load background texture!" << std::endl;
 		return false;
 	}
+	
+	mScore = 0;
+	mScoreText = new Text(mRenderer, "Font/OpenSans-Regular.ttf", SDL_Color{ 255 , 0, 0, 255 }, 20);
+
 	mBackgroundPosition = Vector2D(0, 0);
 	mPlayerCount = 2;
 	MapLoader* map = new MapLoader((char*)"map1.txt", mRenderer);
@@ -165,7 +177,6 @@ bool GameScreenLevel1::SetUpLevel()
 	//mPlayers[0]->UpdateHealth(1);
 	map->LoadMapAssets(mPlayers, mBricks, mPipes);
 	//SDL_SetRenderDrawColor(mRenderer, 255, 255, 255, 255);
-	
 
 	return true;
 }
@@ -179,60 +190,61 @@ void GameScreenLevel1::BrickCollisionsWithPlayer(Player* player, bool& botCollid
 		{
 			switch (mBricks[j]->GetBrickType())
 			{
-				case BrickType::SECRETBLOCK:
+			case BrickType::SECRETBLOCK:
+			{
+				//player->SetSideHit(player->GetSideCollidingWithEntity(mBricks[j]));
+				switch (player->GetSideCollidingWithEntity(mBricks[j]))
 				{
-					//player->SetSideHit(player->GetSideCollidingWithEntity(mBricks[j]));
-					switch (player->GetSideCollidingWithEntity(mBricks[j]))
+					case SIDE::TOP:
 					{
-						case SIDE::TOP:
+						if (player->GetJumpForce() > 0)
 						{
-							if (player->GetJumpForce() > 0)
-							{
-								player->SetY(mBricks[j]->GetY() + (mBricks[j]->GetHitbox()->h));
-								player->SetJumpForce(0);
-								mBricks[j]->Hit(player->GetHealth());
-								mBricks[j]->SetBrickType(BrickType::SOLIDBLOCK);
-							}
-							break;
-						}
-					}
-					break;
-				}
-
-				default:
-				{
-					player->SetSideHit(player->GetSideCollidingWithEntity(mBricks[j]));
-					switch (player->GetSideHit())
-					{
-						case SIDE::BOTTOM:
-						{
-							player->SetY(mBricks[j]->GetY() - player->GetHitbox()->h);
-							player->SetOnPlatform(true);
-							break;
-						}
-						case SIDE::TOP:
-						{
-							//if(mPlayers[i].GetJumpf)
 							player->SetY(mBricks[j]->GetY() + (mBricks[j]->GetHitbox()->h));
 							player->SetJumpForce(0);
 							mBricks[j]->Hit(player->GetHealth());
-							break;
+							mBricks[j]->SetBrickType(BrickType::SOLIDBLOCK);
 						}
-						case SIDE::RIGHT:
-						{
-							player->SetX(mBricks[j]->GetX() - (player->GetHitbox()->w));
-							break;
-						}
-						case SIDE::LEFT:
-						{
-							player->SetX(mBricks[j]->GetX() + player->GetHitbox()->w);
-							break;
-						}
+						break;
 					}
-					break;
 				}
+				break;
 			}
-		}	
+
+			default:
+			{
+				player->SetSideHit(player->GetSideCollidingWithEntity(mBricks[j]));
+				switch (player->GetSideHit())
+				{
+					case SIDE::BOTTOM:
+					{
+						player->SetY(mBricks[j]->GetY() - player->GetHitbox()->h);
+						player->SetOnPlatform(true);
+						break;
+					}
+					case SIDE::TOP:
+					{
+						//if(mPlayers[i].GetJumpf)
+						player->SetY(mBricks[j]->GetY() + (mBricks[j]->GetHitbox()->h));
+						player->SetJumpForce(0);
+						mBricks[j]->Hit(player->GetHealth());
+						break;
+					}
+					case SIDE::RIGHT:
+					{
+						player->SetX(mBricks[j]->GetX() - (player->GetHitbox()->w));
+						break;
+					}
+					case SIDE::LEFT:
+					{
+						player->SetX(mBricks[j]->GetX() + player->GetHitbox()->w);
+						break;
+					}
+				}
+				break;
+			}
+			}
+		}
+
 		if (RectIntersects(player->GetBottomSensorBox(), mBricks[j]->GetHitbox()))
 		{
 			if (mBricks[j]->GetBrickType() != BrickType::SECRETBLOCK)
@@ -240,6 +252,7 @@ void GameScreenLevel1::BrickCollisionsWithPlayer(Player* player, bool& botCollid
 				botCollided = true;
 			}
 		}
+		
 	}
 }
 
@@ -285,7 +298,7 @@ void GameScreenLevel1::RemoveDestroyedBricks(Brick* brick, int brickNum)
 	}
 }
 
-void GameScreenLevel1::BrickCollisionsWithSpawnedItem(PowerUp* powerup)
+void GameScreenLevel1::SpawnedItemSolidBlockCollisions(PowerUp* powerup)
 {
 	bool botCollided = false;
 	for (int i = 0; i < mBricks.size(); i++)
@@ -315,6 +328,36 @@ void GameScreenLevel1::BrickCollisionsWithSpawnedItem(PowerUp* powerup)
 		}
 
 		if (RectIntersects(powerup->GetBottomSensorBox(), mBricks[i]->GetHitbox()))
+		{
+			botCollided = true;
+		}
+	}
+
+	for (int j = 0; j < mPipes.size(); j++)
+	{
+		if (powerup->IsCollidingWith(mPipes[j]))
+		{
+			//player->SetSideHit(player->GetSideCollidingWithEntity(mPipes[j]));
+			switch (powerup->GetSideCollidingWithEntity(mPipes[j]))
+			{
+				case SIDE::BOTTOM:
+				{
+					powerup->SetOnPlatform(true);
+					break;
+				}
+				case SIDE::RIGHT:
+				{
+					powerup->SetDirectionFacing(FACING_LEFT);
+					break;
+				}
+				case SIDE::LEFT:
+				{
+					powerup->SetDirectionFacing(FACING_RIGHT);
+					break;
+				}
+			}
+		}
+		if (RectIntersects(powerup->GetBottomSensorBox(), mPipes[j]->GetHitbox()))
 		{
 			botCollided = true;
 		}

@@ -1,6 +1,7 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_mixer.h>
+#include <SDL_ttf.h>
 #include <iostream>
 #include <string>
 #include <random>
@@ -20,8 +21,6 @@ SDL_Renderer* gRenderer = NULL;
 
 GameScreenManager* gameScreenManager;
 Uint32 gOldTime;
-
-double gAngle = 0; 
 
 //Prototypes
 bool InitSDL();
@@ -83,7 +82,13 @@ bool InitSDL()
 			int imageFlags = IMG_INIT_PNG;
 			if (!(IMG_Init(imageFlags) & imageFlags))
 			{
-				cout << "SDL_Image could not initialise. Error: " << IMG_GetError();
+				cout << "SDL_Image could not initialise. Error: " << IMG_GetError() << endl;
+				return false;
+			}
+
+			if (TTF_Init() < 0)
+			{
+				cout << "SDL_ttf could not initialise. Error: " << TTF_GetError() << endl;
 				return false;
 			}
 		}
@@ -141,6 +146,7 @@ void CloseSDL()
 
 	//Quit SDL subsystems
 	IMG_Quit();
+	TTF_Quit();
 	SDL_Quit();
 }
 

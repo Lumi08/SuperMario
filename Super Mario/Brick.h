@@ -23,7 +23,7 @@ public:
 	void Destroy();
 	void Hit(int playerHealth);
 
-	void Update(float deltaTime, SDL_Event e, Player* players[], int playerCount);
+	void Update(float deltaTime, SDL_Event e, Player* players[], int playerCount, int& score);
 	void Render(SDL_Rect* camera);
 
 	
@@ -56,7 +56,7 @@ private:
 		mDestroyAngle;
 	int mBouncingStartY;
 
-	void ItemCollisions(Player* player);
+	void ItemCollisions(Player* player, int& score);
 	void PerformBrickBounce();
 };
 

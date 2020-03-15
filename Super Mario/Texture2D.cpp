@@ -7,6 +7,12 @@ Texture2D::Texture2D(SDL_Renderer* renderer)
 	this->mRenderer = renderer;
 }
 
+Texture2D::Texture2D(SDL_Renderer* renderer, SDL_Texture* texture)
+{
+	this->mRenderer = renderer;
+	this->mTexture = texture;
+}
+
 Texture2D::~Texture2D()
 {
 	Free();

@@ -10,6 +10,7 @@
 #include "Mushroom.h"
 #include "Constants.h"
 #include "MapLoader.h"
+#include "Text.h"
 //#include "Character.h"
 
 class Texture2D;
@@ -27,17 +28,19 @@ private:
 	Vector2D mBackgroundPosition;
 	SDL_Rect* mCamera;
 	Player* mPlayers[MAXPLAYERCOUNT];
-	
+	Text* mScoreText;
+
 	std::vector<Pipe*> mPipes;
 	std::vector<Brick*> mBricks;
 
-	int mPlayerCount;
+	int mPlayerCount,
+		mScore;
 
 	bool SetUpLevel();
 	void BrickCollisionsWithPlayer(Player* player, bool& botCollided);
 	void PipeCollisionsWithPlayer(Player* player, bool& botCollided);
 	void RemoveDestroyedBricks(Brick* brick, int brickNum);
-	void BrickCollisionsWithSpawnedItem(PowerUp* powerup);
+	void SpawnedItemSolidBlockCollisions(PowerUp* powerup);
 	//debug:
 	int mDebugType = 0;
 	bool debug = false;

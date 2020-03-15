@@ -2,6 +2,7 @@
 #define _COMMONS_H
 
 #include <iostream>
+#include <SDL_ttf.h>
 
 enum SCREENS
 {

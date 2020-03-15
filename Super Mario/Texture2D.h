@@ -11,6 +11,7 @@ class Texture2D
 {
 public:
 	Texture2D(SDL_Renderer* renderer);
+	Texture2D(SDL_Renderer* renderer, SDL_Texture* texture);
 	~Texture2D();
 
 	bool LoadFromFile(std::string path);

@@ -13,7 +13,7 @@ Brick::Brick(SDL_Renderer* renderer, std::string imagePath, Vector2D position, B
 	mBouncingStartY = position.y;
 	if (brickType == BrickType::QUESTIONBLOCK)
 	{
-		mIdleAnimation = new Animation(mRenderer, mTexture, mSourceRect, 2 ,5000, RENDERSCALE);
+		mIdleAnimation = new Animation(mRenderer, mTexture, mSourceRect, 2 , 2500, RENDERSCALE);
 	}
 }
 
@@ -39,7 +39,7 @@ Brick::~Brick()
 	delete mSourceRect;
 }
 
-void Brick::Update(float deltaTime, SDL_Event e, Player* players[], int playerCount)
+void Brick::Update(float deltaTime, SDL_Event e, Player* players[], int playerCount, int& score)
 {
 	if (!mDestroyed)
 	{
@@ -48,7 +48,7 @@ void Brick::Update(float deltaTime, SDL_Event e, Player* players[], int playerCo
 			mItemInside->Update(deltaTime, e);
 			for (int i = 0; i < playerCount; i++)
 			{
-				ItemCollisions(players[i]);
+				ItemCollisions(players[i], score);
 			}
 		}
 
@@ -115,7 +115,7 @@ void Brick::Render(SDL_Rect* camera)
 	}
 }
 
-void Brick::ItemCollisions(Player* player)
+void Brick::ItemCollisions(Player* player, int& score)
 {
 	if (mItemInsideSpawned)
 	{
@@ -128,10 +128,11 @@ void Brick::ItemCollisions(Player* player)
 					if (player->GetHealth() == 1)
 					{
 						player->UpdateHealth(+1);
+						score += 100;
 					}
 					else
 					{
-						//Score goes up
+						score += 200;
 					}
 					break;
 				}
@@ -140,23 +141,23 @@ void Brick::ItemCollisions(Player* player)
 				{
 					if (player->GetHealth() == 1)
 					{
+						score += 150;
 						player->UpdateHealth(+2);
 					}
 					else if (player->GetHealth() == 2)
 					{
+						score += 150;
 						player->UpdateHealth(+1);
 					}
 					else
 					{
-						//Score goes up
+						score += 300;
 					}
 					break;
 				}
 			}
 			
-			
 			delete mItemInside;
-			//std::cerr << "test" << std::endl;
 			mItemInsideSpawned = false;
 		}
 	}
