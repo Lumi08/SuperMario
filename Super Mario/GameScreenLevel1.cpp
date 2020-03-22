@@ -17,8 +17,10 @@ void GameScreenLevel1::Render()
 {
 	mBackgroundTexture->Render(mBackgroundPosition, SDL_FLIP_NONE, 0, mCamera);
 	//mScoreText->Render("Score", Vector2D(10, 10), SDL_FLIP_NONE, RENDERSCALE, mCamera, 0.0f);
-
+	mScoreText->CreateTextureFromText("Score");
 	mScoreText->Render(Vector2D(10, 10), SDL_FLIP_NONE, RENDERSCALE, mCamera, 0.0f);
+	mScoreText->CreateTextureFromText(std::to_string(mScore));
+	mScoreText->Render(Vector2D(10, 30), SDL_FLIP_NONE, RENDERSCALE, mCamera, 0.0f);
 
 	for (int i = 0; i < mPlayerCount; i++)
 	{
@@ -32,9 +34,14 @@ void GameScreenLevel1::Render()
 	{
 		mPipes[i]->Render(mCamera);
 	}
+	for (int i = 0; i < mCoins.size(); i++)
+	{
+		mCoins[i]->Render(mCamera);
+	}
 	
 	if (debug)
 	{
+		//mDebugText->CreateTextureFromText("X:")
 		for (int i = 0; i < mPlayerCount; i++)
 		{
 			mPlayers[i]->Debug(mCamera, mDebugType);
@@ -47,12 +54,16 @@ void GameScreenLevel1::Render()
 		{
 			mPipes[i]->Debug(mCamera, mDebugType);
 		}
+		for (int i = 0; i < mCoins.size(); i++)
+		{
+			mCoins[i]->Debug(mCamera, mDebugType);
+		}
 	}
 }
 
 void GameScreenLevel1::Update(float deltaTime, SDL_Event e)
 {
-	std::cerr << mScore << std::endl;
+	std::cerr << deltaTime << std::endl;
 	
 	mScoreText->CreateTextureFromText("Score: " + std::to_string(mScore));
 
@@ -67,9 +78,9 @@ void GameScreenLevel1::Update(float deltaTime, SDL_Event e)
 	{
 		mCamera->y = 0;
 	}
-	if (mCamera->x > MAPWIDTHPIXELS)
+	if (mCamera->x + mCamera->w > mMapTileWidth * DEFAULTTILEWIDTH * RENDERSCALE)
 	{
-		mCamera->x = MAPWIDTHPIXELS;
+		mCamera->x = (mMapTileWidth * DEFAULTTILEWIDTH * RENDERSCALE) - mCamera->w;
 	}
 	if (mCamera->y < mCamera->h)
 	{
@@ -83,10 +94,20 @@ void GameScreenLevel1::Update(float deltaTime, SDL_Event e)
 
 	for (int i = 0; i < mPlayerCount; i++)
 	{
+		if (mPlayers[i]->GetX() < 0)
+		{
+			mPlayers[i]->SetX(0);
+		}
+		if (mPlayers[i]->GetX() + mPlayers[i]->GetHitbox()->w > mMapTileWidth * DEFAULTTILEWIDTH* RENDERSCALE)
+		{
+			mPlayers[i]->SetX(mMapTileWidth * DEFAULTTILEWIDTH * RENDERSCALE - mPlayers[i]->GetHitbox()->w);
+		}
+
 		mPlayers[i]->Update(deltaTime, e);
 		bool playerBotCollided = false;
 		BrickCollisionsWithPlayer(mPlayers[i], playerBotCollided);
 		PipeCollisionsWithPlayer(mPlayers[i], playerBotCollided);
+		CoinCollisionsWithPlayer(mPlayers[i]);
 
 		if (!playerBotCollided)
 		{
@@ -112,6 +133,10 @@ void GameScreenLevel1::Update(float deltaTime, SDL_Event e)
 	for (int i = 0; i < mPipes.size(); i++)
 	{
 		mPipes[i]->Update(deltaTime, e);
+	}
+	for (int i = 0; i < mCoins.size(); i++)
+	{
+		mCoins[i]->Update(deltaTime, e, mPlayers, mPlayerCount, mScore);
 	}
 
 
@@ -157,7 +182,6 @@ bool GameScreenLevel1::SetUpLevel()
 {
 	mCamera = new SDL_Rect{ 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
 	
-	mScoreText = new Text(mRenderer, "Font/OpenSans-Regular.ttf", SDL_Color{ 255, 0, 0, 255 }, 20);
 	mBackgroundTexture = new Texture2D(mRenderer);
 	if (!mBackgroundTexture->LoadFromFile("Images/unnamed.png"))
 	{
@@ -165,23 +189,24 @@ bool GameScreenLevel1::SetUpLevel()
 		return false;
 	}
 	
+	mPlayers[0] = new Player(mRenderer, "Images/Mario.png", Vector2D(4, 4), 1);
+	mPlayers[1] = new Player(mRenderer, "Images/Luigi.png", Vector2D(64, 250), 2);
+	
 	mScore = 0;
-	mScoreText = new Text(mRenderer, "Font/OpenSans-Regular.ttf", SDL_Color{ 255 , 0, 0, 255 }, 20);
+	mScoreText = new Text(mRenderer, "Font/SuperMario256.ttf", SDL_Color{ 255, 255, 255, 255 }, 20);
+	mDebugText = new Text(mRenderer, "Font/Oxanium-Regular.ttf", SDL_Color{ 0, 0, 0, 255 }, 20);
 
 	mBackgroundPosition = Vector2D(0, 0);
 	mPlayerCount = 2;
-	MapLoader* map = new MapLoader((char*)"map1.txt", mRenderer);
 
-	mPlayers[0] = new Player(mRenderer, "Images/Mario.png", Vector2D(4, 4), 1);
-	mPlayers[1] = new Player(mRenderer, "Images/Luigi.png", Vector2D(64, 250), 2);
-	//mPlayers[0]->UpdateHealth(1);
-	map->LoadMapAssets(mPlayers, mBricks, mPipes);
-	//SDL_SetRenderDrawColor(mRenderer, 255, 255, 255, 255);
+	MapLoader* map = new MapLoader((char*)"map1.txt", mRenderer);
+	mMapTileWidth = map->GetTileWidth();
+	map->LoadMapAssets(mPlayers, mBricks, mPipes, mCoins);
+	
 
 	return true;
 }
 
-//Use the players bottom sensor to detect wether it is on a platform or not
 void GameScreenLevel1::BrickCollisionsWithPlayer(Player* player, bool& botCollided)
 {
 	for (int j = 0; j < mBricks.size(); j++)
@@ -286,6 +311,18 @@ void GameScreenLevel1::PipeCollisionsWithPlayer(Player* player, bool& botCollide
 		if (RectIntersects(player->GetBottomSensorBox(), mPipes[j]->GetHitbox()))
 		{
 			botCollided = true;
+		}
+	}
+}
+
+void GameScreenLevel1::CoinCollisionsWithPlayer(Player* player)
+{
+	for (int i = 0; i < mCoins.size(); i++)
+	{
+		if (player->IsCollidingWith(mCoins[i]))
+		{
+			mScore += 100;
+			mCoins.erase(mCoins.begin() + i);
 		}
 	}
 }

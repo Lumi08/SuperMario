@@ -1,17 +1,20 @@
 ﻿  GameScreenLevel1.cpp
-C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\GameScreenLevel1.cpp(27,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\GameScreenLevel1.cpp(31,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\GameScreenLevel1.cpp(42,21): warning C4018: '<': signed/unsigned mismatch
-C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\GameScreenLevel1.cpp(46,21): warning C4018: '<': signed/unsigned mismatch
-C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\GameScreenLevel1.cpp(59,35): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\GameScreenLevel1.cpp(60,35): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\GameScreenLevel1.cpp(81,38): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\GameScreenLevel1.cpp(97,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\GameScreenLevel1.cpp(112,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\GameScreenLevel1.cpp(187,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\GameScreenLevel1.cpp(261,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\GameScreenLevel1.cpp(304,20): warning C4018: '<': signed/unsigned mismatch
-  Text.cpp
-  Generating Code...
-C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\GameScreenLevel1.cpp(336,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\GameScreenLevel1.cpp(29,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\GameScreenLevel1.cpp(33,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\GameScreenLevel1.cpp(37,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\GameScreenLevel1.cpp(49,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\GameScreenLevel1.cpp(53,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\GameScreenLevel1.cpp(57,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\GameScreenLevel1.cpp(70,35): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\GameScreenLevel1.cpp(71,35): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\GameScreenLevel1.cpp(92,38): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\GameScreenLevel1.cpp(103,69): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\GameScreenLevel1.cpp(118,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\GameScreenLevel1.cpp(133,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\GameScreenLevel1.cpp(137,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\GameScreenLevel1.cpp(212,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\GameScreenLevel1.cpp(286,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\GameScreenLevel1.cpp(320,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\GameScreenLevel1.cpp(341,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Super Mario\GameScreenLevel1.cpp(373,20): warning C4018: '<': signed/unsigned mismatch
   Super Mario.vcxproj -> C:\Users\rgold\OneDrive - Staffordshire University\Games Engine Creation\Semester 2\Mario\SuperMario\Debug\Super Mario.exe

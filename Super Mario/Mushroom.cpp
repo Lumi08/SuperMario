@@ -8,7 +8,7 @@ Mushroom::Mushroom(SDL_Renderer* renderer, std::string imagePath, Vector2D spawn
 	SetSpawning(true);
 	SetOnPlatform(true);
 	mStartY = spawnLocation.y;
-	mMovementSpeed = 0.075;
+	mMovementSpeed = 0.125;
 }
 
 Mushroom::~Mushroom()

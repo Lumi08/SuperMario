@@ -19,6 +19,8 @@ MapLoader::MapLoader(char* path, SDL_Renderer* renderer)
 			}
 		}
 	}
+
+	mTileWidth = currentLine.length();
 	map.close();
 }
 
@@ -26,7 +28,7 @@ MapLoader::~MapLoader()
 {
 }
 
-void MapLoader::LoadMapAssets(Player* players[], std::vector<Brick*>& bricks, std::vector<Pipe*>& pipes)
+void MapLoader::LoadMapAssets(Player* players[], std::vector<Brick*>& bricks, std::vector<Pipe*>& pipes, std::vector<Coin*>& coins)
 {
 	for (int i = 0; i < MAXMAPTILEHEIGHT / RENDERSCALE; i++)
 	{
@@ -59,17 +61,23 @@ void MapLoader::LoadMapAssets(Player* players[], std::vector<Brick*>& bricks, st
 					break;
 				}
 
-				case 'M':
-				{
-					players[0]->SetX(DEFAULTTILEWIDTH * RENDERSCALE * j);
-					players[0]->SetY(DEFAULTTILEHEIGHT * RENDERSCALE * i);
-					break;
-				}
-
 				case 'P':
 				{
 					pipes.push_back(new Pipe(mRenderer, "Images/Pipe.png", Vector2D(DEFAULTTILEWIDTH * RENDERSCALE * j, DEFAULTTILEHEIGHT * RENDERSCALE * i)));
 					FixPipeTexture(pipes[pipes.size() - 1], j, i);
+					break;
+				}
+
+				case 'O':
+				{
+					coins.push_back(new Coin(mRenderer, "Images/Coin.png", Vector2D(DEFAULTTILEWIDTH * RENDERSCALE * j, DEFAULTTILEHEIGHT * RENDERSCALE * i)));
+					break;
+				}
+
+				case 'M':
+				{
+					players[0]->SetX(DEFAULTTILEWIDTH * RENDERSCALE * j);
+					players[0]->SetY(DEFAULTTILEHEIGHT * RENDERSCALE * i);
 					break;
 				}
 			}

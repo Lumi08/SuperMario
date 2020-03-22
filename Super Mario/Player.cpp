@@ -6,7 +6,7 @@ Player::Player(SDL_Renderer* renderer, std::string imagePath, Vector2D startPosi
 	: Entity(renderer, imagePath, startPosition, SMALLPLAYERWIDTH, SMALLPLAYERHEIGHT)
 {
 	mPlayerNumber = playerNum;
-	mMovementSpeed = 0.25;
+	mMovementSpeed = 0.75;
 	mHealth = 1;
 	mFadeTime = 0;
 	mTimeIdle = 0;
@@ -320,15 +320,6 @@ void Player::MovementLogic(float deltaTime)
 		mSourceRect->x = 0;
 	}
 
-	if (mPosition.x < 0)
-	{
-		mPosition.x = 0;
-	}
-	if (mPosition.x + mHitbox->w > MAPWIDTHPIXELS + (SCREEN_WIDTH))
-	{
-		mPosition.x = MAPWIDTHPIXELS + SCREEN_WIDTH - mHitbox->w;
-	}
-
 	if (mTimeIdle > 100000)
 	{
 		mPlayerState = SLEEP;
@@ -415,9 +406,9 @@ void Player::FadeLogic()
 	if (mFading)
 	{
 		float result = ((0.5 * cos(mFadeDegrees * 3.14159265 / 180.0)) + 0.5) * 255;
-		mFadeDegrees += 0.15;
+		mFadeDegrees += 0.3;
 
-		if (mFadeTime > 3000 && mFadeDegrees >= 360)
+		if (mFadeTime > 2000 && mFadeDegrees >= 360)
 		{
 			mFading = false;
 			mFadeTime = 0;

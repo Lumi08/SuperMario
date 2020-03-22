@@ -11,6 +11,7 @@
 #include "Constants.h"
 #include "MapLoader.h"
 #include "Text.h"
+#include "Coin.h"
 //#include "Character.h"
 
 class Texture2D;
@@ -29,16 +30,20 @@ private:
 	SDL_Rect* mCamera;
 	Player* mPlayers[MAXPLAYERCOUNT];
 	Text* mScoreText;
-
+	Text* mDebugText;
+	
 	std::vector<Pipe*> mPipes;
 	std::vector<Brick*> mBricks;
+	std::vector<Coin*> mCoins;
 
 	int mPlayerCount,
-		mScore;
+		mScore,
+		mMapTileWidth;
 
 	bool SetUpLevel();
 	void BrickCollisionsWithPlayer(Player* player, bool& botCollided);
 	void PipeCollisionsWithPlayer(Player* player, bool& botCollided);
+	void CoinCollisionsWithPlayer(Player* player);
 	void RemoveDestroyedBricks(Brick* brick, int brickNum);
 	void SpawnedItemSolidBlockCollisions(PowerUp* powerup);
 	//debug:
