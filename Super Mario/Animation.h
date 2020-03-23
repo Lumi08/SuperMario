@@ -14,6 +14,8 @@ public:
 
 	void Play(Vector2D position, SDL_RendererFlip flip, SDL_Rect* camera, double angle = 0, int timesToLoop = 0);
 
+	void Play(Vector2D position, SDL_RendererFlip flip, double angle, int timesToLoop = 0);
+
 	void SetLoopStartSprite(int spriteNum);
 	bool Completed() { return mInitLoopComplete; }
 	void Reset() { mInitLoopComplete = false; }

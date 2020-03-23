@@ -39,29 +39,29 @@ void Entity::UpdateHitbox()
 
 bool Entity::IsCollidingWith(Entity* entity)
 {
-	return RectIntersects(this->GetHitbox(), entity->GetHitbox());
+	return RectContainsRect(this->GetHitbox(), entity->GetHitbox());
 }
 
 SIDE Entity::GetSideCollidingWithEntity(Entity* entity)
 {
 	if (IsCollidingWith(entity))
 	{
-		if (RectIntersects(mSensorLeft, entity->GetHitbox()))
+		if (RectContainsRect(mSensorLeft, entity->GetHitbox()))
 		{
 			//std::cerr << "Left" << std::endl;
 			return SIDE::LEFT;
 		}
-		if (RectIntersects(mSensorRight, entity->GetHitbox()))
+		if (RectContainsRect(mSensorRight, entity->GetHitbox()))
 		{
 			//std::cerr << "Right" << std::endl;
 			return SIDE::RIGHT;
 		}
-		if (RectIntersects(mSensorTop, entity->GetHitbox()))
+		if (RectContainsRect(mSensorTop, entity->GetHitbox()))
 		{
 			//std::cerr << "Top" << std::endl;
 			return SIDE::TOP;
 		}
-		if (RectIntersects(mSensorBottom, entity->GetHitbox()))
+		if (RectContainsRect(mSensorBottom, entity->GetHitbox()))
 		{
 			//std::cerr << "Bottom" << std::endl;
 			return SIDE::BOTTOM;

@@ -62,21 +62,21 @@ void GameScreenLevel1::Render()
 	}
 	for (int i = 0; i < mBricks.size(); i++)
 	{
-		if (RectIntersects(mCamera, mBricks[i]->GetHitbox()) || mBricks[i]->GetDestroyed())
+		if (RectContainsRect(mCamera, mBricks[i]->GetHitbox()) || mBricks[i]->GetDestroyed())
 		{
 			mBricks[i]->Render(mCamera);
 		}
 	}
 	for (int i = 0; i < mPipes.size(); i++)
 	{
-		if (RectIntersects(mCamera, mPipes[i]->GetHitbox()))
+		if (RectContainsRect(mCamera, mPipes[i]->GetHitbox()))
 		{
 			mPipes[i]->Render(mCamera);
 		}
 	}
 	for (int i = 0; i < mCoins.size(); i++)
 	{
-		if (RectIntersects(mCamera, mCoins[i]->GetHitbox()))
+		if (RectContainsRect(mCamera, mCoins[i]->GetHitbox()))
 		{
 			mCoins[i]->Render(mCamera);
 		}
@@ -87,10 +87,9 @@ void GameScreenLevel1::Render()
 
 void GameScreenLevel1::Update(float deltaTime, SDL_Event e)
 {
-	std::cerr << deltaTime << std::endl;
+	//std::cerr << deltaTime << std::endl;
 
 	mCamera->x = mPlayers[0]->GetX() - (SCREEN_WIDTH / 2);
-	//mCamera->y = mPlayers[0]->GetY() - (SCREEN_WIDTH / 2);
 
 	if (mCamera->x < 0)
 	{
@@ -139,7 +138,7 @@ void GameScreenLevel1::Update(float deltaTime, SDL_Event e)
 	}
 	for (int i = 0; i < mBricks.size(); i++)
 	{
-		if (RectIntersects(mCamera, mBricks[i]->GetHitbox()) || mBricks[i]->GetDestroyed())
+		if (RectContainsRect(mCamera, mBricks[i]->GetHitbox()) || mBricks[i]->GetDestroyed())
 		{
 			mBricks[i]->Update(deltaTime, e, mPlayers, mScore, mCoinsCollected);
 
@@ -155,14 +154,14 @@ void GameScreenLevel1::Update(float deltaTime, SDL_Event e)
 	}
 	for (int i = 0; i < mPipes.size(); i++)
 	{
-		if (RectIntersects(mCamera, mPipes[i]->GetHitbox()))
+		if (RectContainsRect(mCamera, mPipes[i]->GetHitbox()))
 		{
 			mPipes[i]->Update(deltaTime, e);
 		}
 	}
 	for (int i = 0; i < mCoins.size(); i++)
 	{
-		if (RectIntersects(mCamera, mCoins[i]->GetHitbox()))
+		if (RectContainsRect(mCamera, mCoins[i]->GetHitbox()))
 		{
 			mCoins[i]->Update(deltaTime, e, mScore);
 		}
@@ -218,21 +217,21 @@ void GameScreenLevel1::Debug()
 		}
 		for (int i = 0; i < mBricks.size(); i++)
 		{
-			if (RectIntersects(mCamera, mBricks[i]->GetHitbox()))
+			if (RectContainsRect(mCamera, mBricks[i]->GetHitbox()))
 			{
 				mBricks[i]->Debug(mCamera, mDebugType);
 			}
 		}
 		for (int i = 0; i < mPipes.size(); i++)
 		{
-			if (RectIntersects(mCamera, mPipes[i]->GetHitbox()))
+			if (RectContainsRect(mCamera, mPipes[i]->GetHitbox()))
 			{
 				mPipes[i]->Debug(mCamera, mDebugType);
 			}
 		}
 		for (int i = 0; i < mCoins.size(); i++)
 		{
-			if (RectIntersects(mCamera, mCoins[i]->GetHitbox()))
+			if (RectContainsRect(mCamera, mCoins[i]->GetHitbox()))
 			{
 				mCoins[i]->Debug(mCamera, mDebugType);
 			}
@@ -244,7 +243,7 @@ void GameScreenLevel1::BrickCollisionsWithPlayer(Player* player, bool& botCollid
 {
 	for (int j = 0; j < mBricks.size(); j++)
 	{
-		if (RectIntersects(mCamera, mBricks[j]->GetHitbox()))
+		if (RectContainsRect(mCamera, mBricks[j]->GetHitbox()))
 		{
 			if (player->IsCollidingWith(mBricks[j]))
 			{
@@ -289,7 +288,7 @@ void GameScreenLevel1::BrickCollisionsWithPlayer(Player* player, bool& botCollid
 
 								for (int i = 0; i < mCoins.size(); i++)
 								{
-									if (RectIntersects(mCoins[i]->GetHitbox(), mBricks[j]->GetTopSensorBox()))
+									if (RectContainsRect(mCoins[i]->GetHitbox(), mBricks[j]->GetTopSensorBox()))
 									{
 										mScore += 100;
 										mCoins.erase(mCoins.begin() + i);
@@ -314,7 +313,7 @@ void GameScreenLevel1::BrickCollisionsWithPlayer(Player* player, bool& botCollid
 				}
 			}
 
-			if (RectIntersects(player->GetBottomSensorBox(), mBricks[j]->GetHitbox()))
+			if (RectContainsRect(player->GetBottomSensorBox(), mBricks[j]->GetHitbox()))
 			{
 				if (mBricks[j]->GetBrickType() != BrickType::SECRETBLOCK)
 				{
@@ -329,7 +328,7 @@ void GameScreenLevel1::PipeCollisionsWithPlayer(Player* player, bool& botCollide
 {
 	for (int j = 0; j < mPipes.size(); j++)
 	{
-		if (RectIntersects(mCamera, mPipes[j]->GetHitbox()))
+		if (RectContainsRect(mCamera, mPipes[j]->GetHitbox()))
 		{
 			if (player->IsCollidingWith(mPipes[j]))
 			{
@@ -354,7 +353,7 @@ void GameScreenLevel1::PipeCollisionsWithPlayer(Player* player, bool& botCollide
 				}
 				}
 			}
-			if (RectIntersects(player->GetBottomSensorBox(), mPipes[j]->GetHitbox()))
+			if (RectContainsRect(player->GetBottomSensorBox(), mPipes[j]->GetHitbox()))
 			{
 				botCollided = true;
 			}
@@ -366,7 +365,7 @@ void GameScreenLevel1::CoinCollisionsWithPlayer(Player* player)
 {
 	for (int i = 0; i < mCoins.size(); i++)
 	{
-		if (RectIntersects(mCamera, mCoins[i]->GetHitbox()))
+		if (RectContainsRect(mCamera, mCoins[i]->GetHitbox()))
 		{
 			if (player->IsCollidingWith(mCoins[i]))
 			{
@@ -415,7 +414,7 @@ void GameScreenLevel1::SpawnedItemSolidBlockCollisions(PowerUp* powerup)
 			}
 		}
 
-		if (RectIntersects(powerup->GetBottomSensorBox(), mBricks[i]->GetHitbox()))
+		if (RectContainsRect(powerup->GetBottomSensorBox(), mBricks[i]->GetHitbox()))
 		{
 			botCollided = true;
 		}
@@ -445,7 +444,7 @@ void GameScreenLevel1::SpawnedItemSolidBlockCollisions(PowerUp* powerup)
 				}
 			}
 		}
-		if (RectIntersects(powerup->GetBottomSensorBox(), mPipes[j]->GetHitbox()))
+		if (RectContainsRect(powerup->GetBottomSensorBox(), mPipes[j]->GetHitbox()))
 		{
 			botCollided = true;
 		}

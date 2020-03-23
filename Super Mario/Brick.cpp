@@ -177,7 +177,7 @@ void Brick::ItemCollisions(Player* player, int& score)
 {
 	if (mItemInsideSpawned)
 	{
-		if (RectIntersects(mItemInside->GetHitbox(), player->GetHitbox()))
+		if (RectContainsRect(mItemInside->GetHitbox(), player->GetHitbox()))
 		{
 			switch (mItemInside->GetType())
 			{

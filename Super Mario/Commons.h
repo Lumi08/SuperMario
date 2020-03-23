@@ -62,7 +62,7 @@ struct Vector2D
 	}
 };
 
-SDL_FORCE_INLINE SDL_bool RectIntersects(const SDL_Rect* a, const SDL_Rect* b)
+SDL_FORCE_INLINE SDL_bool RectContainsRect(const SDL_Rect* a, const SDL_Rect* b)
 {
 	if (a->x + a->w > b->x && a->x < b->x + b->w && a->y + a->h > b->y && a->y < b->y + b->h)
 	{
@@ -70,6 +70,12 @@ SDL_FORCE_INLINE SDL_bool RectIntersects(const SDL_Rect* a, const SDL_Rect* b)
 	}
 
 	return SDL_FALSE;
+}
+
+SDL_FORCE_INLINE SDL_bool RectContainsVector(const Vector2D p, const SDL_Rect* r)
+{
+	return ((p.x >= r->x) && (p.x < (r->x + r->w)) &&
+		(p.y >= r->y) && (p.y < (r->y + r->h))) ? SDL_TRUE : SDL_FALSE;
 }
 
 #endif // !_COMMONS_H

@@ -49,6 +49,37 @@ void Animation::Play(Vector2D position, SDL_RendererFlip flip, SDL_Rect* camera,
 	mTexture->Render(position, flip, mRenderScale, camera, 0.0f, mSourceRect);
 }
 
+void Animation::Play(Vector2D position, SDL_RendererFlip flip, double angle, int timesToLoop)
+{
+
+	if (mCurrentFrameTime >= mTimePerFrame)
+	{
+		if (mSourceRect->x != (mSourceRect->w * (mNumberOfFrames - 1)))
+		{
+			mSourceRect->x += mSourceRect->w;
+		}
+		else
+		{
+			if (mSpriteLoopStartSprite != 0)
+			{
+				mSourceRect->x = mSourceRectStartPoint->x + ((mSpriteLoopStartSprite - 1) * mSourceRect->w);
+			}
+			else
+			{
+				mSourceRect->x = mSourceRectStartPoint->x;
+				mInitLoopComplete = true;
+			}
+			mTimesLooped++;
+			mSourceRect->y = mSourceRectStartPoint->y;
+		}
+		mCurrentFrameTime = 0;
+	}
+	mCurrentFrameTime++;
+
+
+	mTexture->Render(position, flip, mRenderScale, 0.0f, mSourceRect);
+}
+
 void Animation::SetLoopStartSprite(int spriteNum)
 {
 	mSpriteLoopStartSprite = spriteNum;
