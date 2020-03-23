@@ -16,7 +16,9 @@ public:
 
 	bool LoadFromFile(std::string path);
 	void Free();
+
 	void Render(Vector2D newPosition, SDL_RendererFlip flip, float renderScale, SDL_Rect* camera, double angle = 0, SDL_Rect* sourceRect = NULL);
+	void Render(Vector2D newPosition, SDL_RendererFlip flip, float renderScale, double angle = 0.0f, SDL_Rect* sourceRect = NULL);
 
 	int GetWidth() { return mWidth; }
 	int GetHeight() { return mHeight; }

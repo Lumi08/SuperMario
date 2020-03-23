@@ -28,7 +28,7 @@ MapLoader::~MapLoader()
 {
 }
 
-void MapLoader::LoadMapAssets(Player* players[], std::vector<Brick*>& bricks, std::vector<Pipe*>& pipes, std::vector<Coin*>& coins)
+void MapLoader::LoadMapAssets(std::vector<Player*>& players, std::vector<Brick*>& bricks, std::vector<Pipe*>& pipes, std::vector<Coin*>& coins)
 {
 	for (int i = 0; i < MAXMAPTILEHEIGHT / RENDERSCALE; i++)
 	{
@@ -42,9 +42,21 @@ void MapLoader::LoadMapAssets(Player* players[], std::vector<Brick*>& bricks, st
 					break;
 				}
 
-				case '?':
+				case '&':
+				{
+					bricks.push_back(new Brick(mRenderer, "Images/Brick2.png", Vector2D(DEFAULTTILEWIDTH * RENDERSCALE * j, DEFAULTTILEHEIGHT * RENDERSCALE * i), SOLIDBLOCK));
+					break;
+				}
+
+				case '>':
 				{
 					bricks.push_back(new Brick(mRenderer, "Images/QuestionBlock.png", Vector2D(DEFAULTTILEWIDTH * RENDERSCALE * j, DEFAULTTILEHEIGHT * RENDERSCALE * i), QUESTIONBLOCK));
+					break;
+				}
+
+				case '?':
+				{
+					bricks.push_back(new Brick(mRenderer, "Images/QuestionBlock.png", Vector2D(DEFAULTTILEWIDTH * RENDERSCALE * j, DEFAULTTILEHEIGHT * RENDERSCALE * i), QUESTIONBLOCK, 3));
 					break;
 				}
 
@@ -76,8 +88,7 @@ void MapLoader::LoadMapAssets(Player* players[], std::vector<Brick*>& bricks, st
 
 				case 'M':
 				{
-					players[0]->SetX(DEFAULTTILEWIDTH * RENDERSCALE * j);
-					players[0]->SetY(DEFAULTTILEHEIGHT * RENDERSCALE * i);
+					players.push_back(new Player(mRenderer, "Images/Mario.png", Vector2D(DEFAULTTILEWIDTH * RENDERSCALE * j, DEFAULTTILEHEIGHT * RENDERSCALE * i), 1));
 					break;
 				}
 			}

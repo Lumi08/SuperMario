@@ -15,8 +15,6 @@ Text::~Text()
 {
 }
 
-
-
 void Text::CreateTextureFromText(std::string message)
 {
 	Free();

@@ -28,19 +28,22 @@ private:
 	Texture2D* mBackgroundTexture;
 	Vector2D mBackgroundPosition;
 	SDL_Rect* mCamera;
-	Player* mPlayers[MAXPLAYERCOUNT];
+	//Player* mPlayers[MAXPLAYERCOUNT];
 	Text* mScoreText;
 	Text* mDebugText;
 	
+	std::vector<Player*> mPlayers;
 	std::vector<Pipe*> mPipes;
 	std::vector<Brick*> mBricks;
 	std::vector<Coin*> mCoins;
 
 	int mPlayerCount,
 		mScore,
+		mCoinsCollected,
 		mMapTileWidth;
 
 	bool SetUpLevel();
+	void Debug();
 	void BrickCollisionsWithPlayer(Player* player, bool& botCollided);
 	void PipeCollisionsWithPlayer(Player* player, bool& botCollided);
 	void CoinCollisionsWithPlayer(Player* player);

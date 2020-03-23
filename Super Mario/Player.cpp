@@ -6,7 +6,7 @@ Player::Player(SDL_Renderer* renderer, std::string imagePath, Vector2D startPosi
 	: Entity(renderer, imagePath, startPosition, SMALLPLAYERWIDTH, SMALLPLAYERHEIGHT)
 {
 	mPlayerNumber = playerNum;
-	mMovementSpeed = 0.75;
+	mMovementSpeed = 0.25;
 	mHealth = 1;
 	mFadeTime = 0;
 	mTimeIdle = 0;
@@ -17,7 +17,7 @@ Player::Player(SDL_Renderer* renderer, std::string imagePath, Vector2D startPosi
 	mWalkAnimation = new Animation(renderer, mTexture, new SDL_Rect{ 0, 0, DEFAULTTILEWIDTH, DEFAULTTILEHEIGHT }, 2, 200, RENDERSCALE);
 	mIdleAnimation = new Animation(renderer, mTexture, new SDL_Rect{ 0, 32, DEFAULTTILEWIDTH, DEFAULTTILEHEIGHT }, 2, 5000, RENDERSCALE);
 	mSleepAnimation = new Animation(renderer, mTexture, new SDL_Rect{ 0, 16, DEFAULTTILEWIDTH, DEFAULTTILEHEIGHT }, 6, 1000, RENDERSCALE);
-	mOnPlatform = false;
+	mOnPlatform = true;
 }
 
 Player::~Player()

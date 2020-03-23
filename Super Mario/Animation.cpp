@@ -29,10 +29,6 @@ void Animation::Play(Vector2D position, SDL_RendererFlip flip, SDL_Rect* camera,
 		}
 		else
 		{
-			if (mTimesLooped != timesToLoop || timesToLoop == 0)
-			{
-
-			}
 			if (mSpriteLoopStartSprite != 0)
 			{
 				mSourceRect->x = mSourceRectStartPoint->x + ((mSpriteLoopStartSprite - 1) * mSourceRect->w);
@@ -40,6 +36,7 @@ void Animation::Play(Vector2D position, SDL_RendererFlip flip, SDL_Rect* camera,
 			else
 			{
 				mSourceRect->x = mSourceRectStartPoint->x;
+				mInitLoopComplete = true;
 			}
 			mTimesLooped++;
 			mSourceRect->y = mSourceRectStartPoint->y;

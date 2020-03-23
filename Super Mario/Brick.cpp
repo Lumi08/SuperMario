@@ -15,6 +15,9 @@ Brick::Brick(SDL_Renderer* renderer, std::string imagePath, Vector2D position, B
 	{
 		mIdleAnimation = new Animation(mRenderer, mTexture, mSourceRect, 2 , 2500, RENDERSCALE);
 	}
+	Texture2D* texture = new Texture2D(mRenderer);
+	texture->LoadFromFile("Images/BrickCoin.png");
+	mCoinReleased = new Animation(mRenderer, texture, new SDL_Rect{ 0, 0, 32, 48 }, 35, 30, RENDERSCALE);
 }
 
 Brick::Brick(SDL_Renderer* renderer, std::string imagePath, Vector2D position, BrickType brickType, PowerUp* itemInside) : Entity(renderer, imagePath, position, 16, 16)
@@ -31,7 +34,42 @@ Brick::Brick(SDL_Renderer* renderer, std::string imagePath, Vector2D position, B
 	{
 		mIdleAnimation = new Animation(mRenderer, mTexture, mSourceRect, 2, 5000, RENDERSCALE);
 	}
-	mItemInside = itemInside;
+	if (itemInside == NULL)
+	{
+		mCoinsInside = true;
+	}
+	else
+	{
+		mItemInside = itemInside;
+	}
+	Texture2D* texture = new Texture2D(mRenderer);
+	texture->LoadFromFile("Images/BrickCoin.png");
+	mCoinReleased = new Animation(mRenderer, texture, new SDL_Rect{ 0, 0, 32, 48 }, 35, 30, RENDERSCALE);
+}
+
+Brick::Brick(SDL_Renderer* renderer, std::string imagePath, Vector2D position, BrickType brickType, int coinsInside) : Entity(renderer, imagePath, position, 16, 16)
+{
+	mSourceRect = new SDL_Rect{ 0, 0, DEFAULTTILEWIDTH, DEFAULTTILEHEIGHT };
+	mBeenHit = false;
+	mSideHit = NONE;
+	mBrickType = brickType;
+	mDestroyFallForce = 300;
+	mDestroySeperation = 0;
+	mDestroyAngle = 0;
+	mBouncingStartY = position.y;
+	if (brickType == BrickType::QUESTIONBLOCK)
+	{
+		mIdleAnimation = new Animation(mRenderer, mTexture, mSourceRect, 2, 2500, RENDERSCALE);
+	}
+	Texture2D* texture = new Texture2D(mRenderer);
+	texture->LoadFromFile("Images/BrickCoin.png");
+	mCoinReleased = new Animation(mRenderer, texture, new SDL_Rect{ 0, 0, 32, 48 }, 35, 30, RENDERSCALE);
+	
+	mNumCoinsInside = coinsInside;
+	if (coinsInside > 0)
+	{
+		mCoinsInside = true;
+	}
 }
 
 Brick::~Brick()
@@ -39,14 +77,21 @@ Brick::~Brick()
 	delete mSourceRect;
 }
 
-void Brick::Update(float deltaTime, SDL_Event e, Player* players[], int playerCount, int& score)
+void Brick::Update(float deltaTime, SDL_Event e, std::vector<Player*>& players, int & score, int & coinsCollected)
 {
+	if (mCoinReleased->Completed() && mCoinsInside)
+	{
+		score += 100;
+		coinsCollected++;
+		mCoinsInside = false;
+	}
+
 	if (!mDestroyed)
 	{
 		if (mItemInsideSpawned)
 		{
 			mItemInside->Update(deltaTime, e);
-			for (int i = 0; i < playerCount; i++)
+			for (int i = 0; i < players.size(); i++)
 			{
 				ItemCollisions(players[i], score);
 			}
@@ -64,7 +109,7 @@ void Brick::Update(float deltaTime, SDL_Event e, Player* players[], int playerCo
 		mPosition.y -= mDestroyFallForce * deltaTime;
 		mDestroyFallForce -= JUMP_FORCE_DECREMENT * deltaTime;
 		mDestroySeperation += 0.01;
-		mDestroyAngle += 0.025;
+		mDestroyAngle += 0.05;
 	}
 }
 
@@ -74,44 +119,57 @@ void Brick::Render(SDL_Rect* camera)
 	{
 		mItemInside->Render(camera);
 	}
-	if (!mDestroyed)
+
+	switch (mBrickType)
 	{
-		switch (mBrickType)
+		case QUESTIONBLOCK:
 		{
-			case QUESTIONBLOCK:
+			if (!mBeenHit)
 			{
-				if (!mBeenHit)
-				{
-					mIdleAnimation->Play(mPosition, SDL_FLIP_NONE, camera);
-				}
-				else
-				{
-					mTexture->Render(mPosition, SDL_FLIP_NONE, RENDERSCALE, camera, 0.0f, mSourceRect);
-				}
-				break;
+				mIdleAnimation->Play(mPosition, SDL_FLIP_NONE, camera);
 			}
-			case SECRETBLOCK:
+			else
 			{
-				if (mBeenHit)
+				if (mCoinsInside)
 				{
-					mTexture->Render(mPosition, SDL_FLIP_NONE, RENDERSCALE, camera, 0.0f, mSourceRect);
+					if (!mCoinReleased->Completed())
+					{
+						mCoinReleased->Play(Vector2D(mPosition.x - 16, mPosition.y - 64), SDL_FLIP_NONE, camera);
+					}
 				}
-				break;
-			}
-			default:
-			{
 
 				mTexture->Render(mPosition, SDL_FLIP_NONE, RENDERSCALE, camera, 0.0f, mSourceRect);
-				break;
 			}
+			break;
 		}
-	}
-	else 
-	{
-		mTexture->Render(Vector2D(mPosition.x - mDestroySeperation, mPosition.y - mDestroySeperation), SDL_FLIP_NONE, 1, camera, mDestroyAngle, mSourceRect);
-		mTexture->Render(Vector2D((mPosition.x + mHitbox->w / 2) + mDestroySeperation, mPosition.y - mDestroySeperation), SDL_FLIP_NONE, 1, camera, mDestroyAngle, mSourceRect);
-		mTexture->Render(Vector2D(mPosition.x - mDestroySeperation, mPosition.y + mHitbox->h / 2), SDL_FLIP_NONE, 1, camera, mDestroyAngle, mSourceRect);
-		mTexture->Render(Vector2D((mPosition.x + mHitbox->w / 2) + mDestroySeperation, mPosition.y + mHitbox->h / 2), SDL_FLIP_NONE, 1, camera, mDestroyAngle, mSourceRect);
+		case SECRETBLOCK:
+		{
+			if (mBeenHit)
+			{
+				mTexture->Render(mPosition, SDL_FLIP_NONE, RENDERSCALE, camera, 0.0f, mSourceRect);
+			}
+			break;
+		}
+		case BREAKABLEBLOCK:
+		{
+			if (!mDestroyed)
+			{
+				mTexture->Render(mPosition, SDL_FLIP_NONE, RENDERSCALE, camera, 0.0f, mSourceRect);
+			}
+			else
+			{
+				mTexture->Render(Vector2D(mPosition.x - mDestroySeperation, mPosition.y - mDestroySeperation), SDL_FLIP_NONE, 1, camera, mDestroyAngle, mSourceRect);
+				mTexture->Render(Vector2D((mPosition.x + mHitbox->w / 2) + mDestroySeperation, mPosition.y - mDestroySeperation), SDL_FLIP_NONE, 1, camera, mDestroyAngle, mSourceRect);
+				mTexture->Render(Vector2D(mPosition.x - mDestroySeperation, mPosition.y + mHitbox->h / 2), SDL_FLIP_NONE, 1, camera, mDestroyAngle, mSourceRect);
+				mTexture->Render(Vector2D((mPosition.x + mHitbox->w / 2) + mDestroySeperation, mPosition.y + mHitbox->h / 2), SDL_FLIP_NONE, 1, camera, mDestroyAngle, mSourceRect);
+			}
+			break;
+		}
+		default:
+		{
+			mTexture->Render(mPosition, SDL_FLIP_NONE, RENDERSCALE, camera, 0.0f, mSourceRect);
+			break;
+		}
 	}
 }
 
@@ -191,15 +249,20 @@ void Brick::Hit(int playerHealth)
 		{
 			case QUESTIONBLOCK:
 			{
-				if (playerHealth == 1)
+				if (!mCoinsInside)
 				{
-					mItemInside = new Mushroom(mRenderer, "Images/RedMushroom.png", Vector2D(mPosition.x, mPosition.y), RENDERSCALE, FACING_RIGHT);
-				}
-				if (playerHealth >= 2)
-				{
-					mItemInside = new FireFlower(mRenderer, "Images/FireFlower.png", Vector2D(mPosition.x, mPosition.y), RENDERSCALE);
-				}
+					if (playerHealth == 1)
+					{
+						mItemInside = new Mushroom(mRenderer, "Images/RedMushroom.png", Vector2D(mPosition.x, mPosition.y), RENDERSCALE, FACING_RIGHT);
+					}
+					if (playerHealth >= 2)
+					{
+						mItemInside = new FireFlower(mRenderer, "Images/FireFlower.png", Vector2D(mPosition.x, mPosition.y), RENDERSCALE);
+					}
 
+					mItemInsideSpawned = true;
+				}
+				
 				if (!mBeenHit)
 				{
 					mBouncing = true;
@@ -209,7 +272,6 @@ void Brick::Hit(int playerHealth)
 				mSourceRect->y = 16;
 				mSourceRect->x = 0;
 				mBeenHit = true;
-				mItemInsideSpawned = true;
 				break;
 			}
 
@@ -233,6 +295,11 @@ void Brick::Hit(int playerHealth)
 					mBouncingUp = true;
 				}
 				break;
+			}
+
+			case COINBLOCK:
+			{
+
 			}
 		}
 	}

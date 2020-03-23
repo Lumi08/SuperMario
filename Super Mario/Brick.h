@@ -3,6 +3,7 @@
 
 #include <SDL.h>
 #include <string>
+#include <vector>
 
 #include "Player.h"
 #include "Entity.h"
@@ -18,16 +19,14 @@ class Brick : public Entity
 public:
 	Brick(SDL_Renderer* renderer, std::string imagePath, Vector2D position, BrickType brickType);
 	Brick(SDL_Renderer* renderer, std::string imagePath, Vector2D position, BrickType brickType, PowerUp* itemInside);
+	Brick(SDL_Renderer* renderer, std::string imagePath, Vector2D position, BrickType brickType, int coinsInside);
 	~Brick();
 
 	void Destroy();
 	void Hit(int playerHealth);
 
-	void Update(float deltaTime, SDL_Event e, Player* players[], int playerCount, int& score);
+	void Update(float deltaTime, SDL_Event e, std::vector<Player*>& players, int & score, int & coinsCollected);
 	void Render(SDL_Rect* camera);
-
-	
-
 	
 	virtual void Debug(SDL_Rect* camera, int type) override;
 
@@ -46,15 +45,18 @@ private:
 	BrickType mBrickType;
 	SIDE mSideHit;
 	Animation* mIdleAnimation = NULL;
+	Animation* mCoinReleased;
 	bool mItemInsideSpawned,
 		mBeenHit,
 		mDestroyed,
 		mBouncing,
-		mBouncingUp;
+		mBouncingUp,
+		mCoinsInside;
 	float mDestroyFallForce,
 		mDestroySeperation,
 		mDestroyAngle;
-	int mBouncingStartY;
+	int mBouncingStartY,
+		mNumCoinsInside;
 
 	void ItemCollisions(Player* player, int& score);
 	void PerformBrickBounce();

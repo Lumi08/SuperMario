@@ -16,7 +16,7 @@ void Coin::Render(SDL_Rect* camera)
 	mAnimation->Play(mPosition, SDL_FLIP_NONE, camera);
 }
 
-void Coin::Update(float deltaTime, SDL_Event e, Player* players[], int playerCount, int& score)
+void Coin::Update(float deltaTime, SDL_Event e, int& score)
 {
 	
 }

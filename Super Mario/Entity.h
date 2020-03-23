@@ -41,6 +41,7 @@ public:
 	void SetHeight(int height) { mHeight = height; }
 	
 	SDL_Rect* GetBottomSensorBox() { return mSensorBottom; }
+	SDL_Rect* GetTopSensorBox() { return mSensorTop; }
 
 protected:
 	SDL_Renderer* mRenderer;

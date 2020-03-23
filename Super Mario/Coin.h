@@ -14,7 +14,7 @@ public:
 	~Coin();
 
 	void Render(SDL_Rect* camera);
-	void Update(float deltaTime, SDL_Event e, Player* players[], int playerCount, int& score);
+	void Update(float deltaTime, SDL_Event e, int& score);
 private:
 	SDL_Renderer* mRenderer;
 	Animation* mAnimation;
