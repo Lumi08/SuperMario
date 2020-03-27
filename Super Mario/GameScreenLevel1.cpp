@@ -134,6 +134,7 @@ void GameScreenLevel1::Update(float deltaTime, SDL_Event e)
 		{
 			mPlayers[i]->SetOnPlatform(false);
 			mPlayers[i]->SetJumping(true);
+			mPlayers[i]->SetPlayerState(PlayerState::JUMP);
 		}
 	}
 	for (int i = 0; i < mBricks.size(); i++)

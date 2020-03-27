@@ -30,15 +30,9 @@ public:
 
 	SIDE GetSideHit() { return mSideHit; }
 	void SetSideHit(SIDE side) { mSideHit = side; }
-private:
-	enum PlayerState
-	{
-		WALK = 0,
-		JUMP,
-		IDLE,
-		SLEEP
-	};
 
+	void SetPlayerState(PlayerState playerState) { mPlayerState = playerState; }
+private:
 	int mPlayerNumber,
 		mTimeIdle,
 		mHealth,

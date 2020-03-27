@@ -4,6 +4,14 @@
 #include <iostream>
 #include <SDL_ttf.h>
 
+enum PlayerState
+{
+	WALK = 0,
+	JUMP,
+	IDLE,
+	SLEEP
+};
+
 enum SCREENS
 {
 	SCREEN_INTRO = 0,
