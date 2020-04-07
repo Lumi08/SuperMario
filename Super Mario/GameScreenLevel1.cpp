@@ -31,7 +31,7 @@ bool GameScreenLevel1::SetUpLevel()
 
 	MapLoader* map = new MapLoader((char*)"map1.txt", mRenderer);
 	mMapTileWidth = map->GetTileWidth();
-	map->LoadMapAssets(mPlayers, mBricks, mPipes, mCoins);
+	map->LoadMapAssets(mPlayers, mBricks, mPipes, mCoins, mEnemys);
 
 	return true;
 }
@@ -56,7 +56,7 @@ void GameScreenLevel1::Render()
 	mScoreText->CreateTextureFromText(std::to_string(mCoinsCollected));
 	mScoreText->Render(Vector2D(120, 50), SDL_FLIP_NONE, RENDERSCALE, mCamera, 0.0f);
 
-	for (int i = 0; i < mPlayerCount; i++)
+	for (int i = 0; i < mPlayers.size(); i++)
 	{
 		mPlayers[i]->Render(mCamera);
 	}
@@ -81,15 +81,38 @@ void GameScreenLevel1::Render()
 			mCoins[i]->Render(mCamera);
 		}
 	}
+	for (int i = 0; i < mEnemys.size(); i++)
+	{
+		if (RectContainsRect(mCamera, mEnemys[i]->GetHitbox()))
+		{
+			mEnemys[i]->Render(mCamera);
+		}
+	}
 	
 	Debug();
 }
 
 void GameScreenLevel1::Update(float deltaTime, SDL_Event e)
 {
-	//std::cerr << deltaTime << std::endl;
-
-	mCamera->x = mPlayers[0]->GetX() - (SCREEN_WIDTH / 2);
+	//std::cerr << (mPlayers[1]->GetX() + ((mPlayers[0]->GetX() - mPlayers[1]->GetX())) / 2) << std::endl;
+	if (mPlayers.size() == 2)
+	{
+		if (mPlayers.size() == 2)
+		{
+			if (mPlayers[0]->GetX() > mPlayers[1]->GetX())
+			{
+				mCamera->x = (mPlayers[1]->GetX() + (mPlayers[1]->GetHitbox()->w / 2) + ((mPlayers[0]->GetX() - mPlayers[1]->GetX())) / 2) - (mCamera->w / 2);
+			}
+			else
+			{
+				mCamera->x = (mPlayers[0]->GetX() + (mPlayers[0]->GetHitbox()->w / 2) + ((mPlayers[1]->GetX() - mPlayers[0]->GetX())) / 2) - (mCamera->w / 2);
+			}
+		}
+	}
+	else
+	{
+		mCamera->x = mPlayers[0]->GetX() - (SCREEN_WIDTH / 2);
+	}
 
 	if (mCamera->x < 0)
 	{
@@ -99,7 +122,7 @@ void GameScreenLevel1::Update(float deltaTime, SDL_Event e)
 	{
 		mCamera->y = 0;
 	}
-	if (mCamera->x + mCamera->w > mMapTileWidth * DEFAULTTILEWIDTH * RENDERSCALE)
+	if (mCamera->x + mCamera->w > mMapTileWidth* DEFAULTTILEWIDTH* RENDERSCALE)
 	{
 		mCamera->x = (mMapTileWidth * DEFAULTTILEWIDTH * RENDERSCALE) - mCamera->w;
 	}
@@ -119,9 +142,20 @@ void GameScreenLevel1::Update(float deltaTime, SDL_Event e)
 		{
 			mPlayers[i]->SetX(0);
 		}
+
 		if (mPlayers[i]->GetX() + mPlayers[i]->GetHitbox()->w > mMapTileWidth * DEFAULTTILEWIDTH* RENDERSCALE)
 		{
 			mPlayers[i]->SetX(mMapTileWidth * DEFAULTTILEWIDTH * RENDERSCALE - mPlayers[i]->GetHitbox()->w);
+		}
+
+		if (mPlayers[i]->GetX() < mCamera->x)
+		{
+			mPlayers[i]->SetX(mCamera->x);
+		}
+
+		if (mPlayers[i]->GetX() + mPlayers[i]->GetHitbox()->w > mCamera->x + mCamera->w)
+		{
+			mPlayers[i]->SetX(mCamera->x + mCamera->w - mPlayers[i]->GetHitbox()->w);
 		}
 
 		mPlayers[i]->Update(deltaTime, e);
@@ -167,6 +201,13 @@ void GameScreenLevel1::Update(float deltaTime, SDL_Event e)
 			mCoins[i]->Update(deltaTime, e, mScore);
 		}
 	}
+	for (int i = 0; i < mEnemys.size(); i++)
+	{
+		if (RectContainsRect(mCamera, mEnemys[i]->GetHitbox()))
+		{
+			mEnemys[i]->Update(deltaTime, e);
+		}
+	}
 
 	switch (e.type)
 	{
@@ -176,8 +217,7 @@ void GameScreenLevel1::Update(float deltaTime, SDL_Event e)
 			{
 				case SDLK_i:
 				{
-					mPlayers[0]->SetX(100);
-					mPlayers[0]->SetY(300);
+					mEnemys[0]->Killed();
 					break;
 				}
 
@@ -203,6 +243,11 @@ void GameScreenLevel1::Update(float deltaTime, SDL_Event e)
 			break;
 		}
 	}
+}
+
+void GameScreenLevel1::CameraMovementLogic()
+{
+	
 }
 
 void GameScreenLevel1::Debug()
@@ -235,6 +280,13 @@ void GameScreenLevel1::Debug()
 			if (RectContainsRect(mCamera, mCoins[i]->GetHitbox()))
 			{
 				mCoins[i]->Debug(mCamera, mDebugType);
+			}
+		}
+		for (int i = 0; i < mEnemys.size(); i++)
+		{
+			if (RectContainsRect(mCamera, mEnemys[i]->GetHitbox()))
+			{
+				mEnemys[i]->Debug(mCamera, mDebugType);
 			}
 		}
 	}
@@ -456,3 +508,4 @@ void GameScreenLevel1::SpawnedItemSolidBlockCollisions(PowerUp* powerup)
 		powerup->SetOnPlatform(false);
 	}
 }
+

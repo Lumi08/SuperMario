@@ -12,6 +12,7 @@
 #include "Brick.h"
 #include "Pipe.h"
 #include "Coin.h"
+#include "Enemy.h"
 
 class MapLoader
 {
@@ -19,9 +20,9 @@ public:
 	MapLoader(char* path, SDL_Renderer* renderer);
 	~MapLoader();
 
-	void LoadMapAssets(std::vector<Player*>& players, std::vector<Brick*>& bricks, std::vector<Pipe*>& pipes, std::vector<Coin*>& coins);
+	void LoadMapAssets(std::vector<Player*>& players, std::vector<Brick*>& bricks, std::vector<Pipe*>& pipes, std::vector<Coin*>& coins, std::vector<Enemy*>& enemies);
 
-	void LoadMapAssets(Player* players[], std::vector<Brick*>& bricks, std::vector<Pipe*>& pipes, std::vector<Coin*>& coins);
+	//void LoadMapAssets(Player* players[], std::vector<Brick*>& bricks, std::vector<Pipe*>& pipes, std::vector<Coin*>& coins);
 	int GetTileWidth() { return mTileWidth; }
 private:
 	SDL_Renderer* mRenderer;

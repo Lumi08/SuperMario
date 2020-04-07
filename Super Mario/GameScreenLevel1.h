@@ -12,6 +12,7 @@
 #include "MapLoader.h"
 #include "Text.h"
 #include "Coin.h"
+#include "Enemy.h"
 //#include "Character.h"
 
 class Texture2D;
@@ -36,6 +37,7 @@ private:
 	std::vector<Pipe*> mPipes;
 	std::vector<Brick*> mBricks;
 	std::vector<Coin*> mCoins;
+	std::vector<Enemy*> mEnemys;
 
 	int mPlayerCount,
 		mScore,
@@ -49,6 +51,8 @@ private:
 	void CoinCollisionsWithPlayer(Player* player);
 	void RemoveDestroyedBricks(Brick* brick, int brickNum);
 	void SpawnedItemSolidBlockCollisions(PowerUp* powerup);
+	void CameraMovementLogic();
+
 	//debug:
 	int mDebugType = 0;
 	bool debug = false;
