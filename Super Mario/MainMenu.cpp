@@ -7,6 +7,7 @@ MainMenu::MainMenu(SDL_Renderer* renderer, GameScreenManager* manager) : GameScr
 	mTitleTexture = new Texture2D(mRenderer);
 	mBackgroundTexture = new Texture2D(mRenderer);
 	mGithubTexture = new Texture2D(mRenderer);
+	mPlayerSelect = false;
 
 	if (!mBackgroundTexture->LoadFromFile("Images/untitled.png"))
 	{
@@ -29,7 +30,9 @@ MainMenu::MainMenu(SDL_Renderer* renderer, GameScreenManager* manager) : GameScr
 
 	mStartButton = new Button(mRenderer, (SCREEN_WIDTH / 2) - (48 * 3) / 2, 400, 48 * 3, 16 * 3, "Images/Menu/StartButton.png");
 	mExitButton = new Button(mRenderer, (SCREEN_WIDTH / 2) - (48 * 3) / 2, 500, 48 * 3, 16 * 3, "Images/Menu/ExitButton.png");
-	mGithubButton = new Button(mRenderer, (SCREEN_WIDTH / 2) - (164 * 3) / 2, 700, 174 * 3, 16 * 3, "Images/Menu/Github.png");
+	mGithubButton = new Button(mRenderer, (SCREEN_WIDTH / 2) - (164 * 3) / 2, 700, 164 * 3, 16 * 3, "Images/Menu/Github.png");
+	mOnePlayerButton = new Button(mRenderer, (SCREEN_WIDTH / 2) - (100 * 3) / 2, 400, 100 * 3, 16 * 3, "Images/Menu/SinglePlayerButton.png");
+	mTwoPlayerButton = new Button(mRenderer, (SCREEN_WIDTH / 2) - (82 * 3) / 2, 500, 82 * 3, 16 * 3, "Images/Menu/TwoPlayerButton.png");
 }
 
 MainMenu::~MainMenu()
@@ -46,8 +49,17 @@ void MainMenu::Render()
 	mBackgroundTexture->Render(mBackgroundPosition, SDL_FLIP_NONE, 1);
 	mTitleTexture->Render(mTitlePosition, SDL_FLIP_NONE, 3);
 	mGithubButton->Render(3);
-	mStartButton->Render(3);
-	mExitButton->Render(3);
+	
+	if (!mPlayerSelect)
+	{
+		mStartButton->Render(3);
+		mExitButton->Render(3);
+	}
+	else
+	{
+		mOnePlayerButton->Render(3);
+		mTwoPlayerButton->Render(3);
+	}
 }
 
 void MainMenu::Update(float deltaTime, SDL_Event e)
@@ -70,9 +82,17 @@ void MainMenu::Update(float deltaTime, SDL_Event e)
 
 		case SDL_MOUSEMOTION:
 		{
-			mStartButton->Update(e.motion.x, e.motion.y);
-			mExitButton->Update(e.motion.x, e.motion.y);
 			mGithubButton->Update(e.motion.x, e.motion.y);
+			if (!mPlayerSelect)
+			{
+				mStartButton->Update(e.motion.x, e.motion.y);
+				mExitButton->Update(e.motion.x, e.motion.y);
+			}
+			else
+			{
+				mOnePlayerButton->Update(e.motion.x, e.motion.y);
+				mTwoPlayerButton->Update(e.motion.x, e.motion.y);
+			}
 			break;
 		}
 
@@ -80,8 +100,7 @@ void MainMenu::Update(float deltaTime, SDL_Event e)
 		{
 			if (mStartButton->hovering)
 			{
-				mManager->ChangeScreen(SCREEN_LEVEL1);
-				break;
+				mPlayerSelect = true;
 			}
 
 			if (mGithubButton->hovering)
@@ -103,6 +122,18 @@ void MainMenu::Update(float deltaTime, SDL_Event e)
 				std::cout << "Exit" << std::endl;
 				SDL_Quit();
 				exit(0);
+			}
+
+			if (mOnePlayerButton->hovering)
+			{
+				mManager->ChangeScreen(SCREEN_LEVEL1, 1);
+				break;
+			}
+
+			if (mTwoPlayerButton->hovering)
+			{
+				mManager->ChangeScreen(SCREEN_LEVEL1, 2);
+				break;
 			}
 			break;
 		}

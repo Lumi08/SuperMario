@@ -3,14 +3,14 @@
 #include <SDL_ttf.h>
 
 
-GameScreenLevel1::GameScreenLevel1(SDL_Renderer* renderer) : GameScreen(renderer)
+GameScreenLevel1::GameScreenLevel1(SDL_Renderer* renderer, int numOfPlayers) : GameScreen(renderer)
 {
 	mCoinsCollected = 0;
 	mScore = 0;
-	SetUpLevel();
+	SetUpLevel(numOfPlayers);
 }
 
-bool GameScreenLevel1::SetUpLevel()
+bool GameScreenLevel1::SetUpLevel(int numOfPlayers)
 {
 	mCamera = new SDL_Rect{ 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
 
@@ -27,11 +27,11 @@ bool GameScreenLevel1::SetUpLevel()
 	mDebugText = new Text(mRenderer, "Font/Oxanium-Regular.ttf", SDL_Color{ 0, 0, 0, 255 }, 20);
 
 	mBackgroundPosition = Vector2D(0, 0);
-	mPlayerCount = 1;
+	//mPlayerCount = 1;
 
 	MapLoader* map = new MapLoader((char*)"map1.txt", mRenderer);
 	mMapTileWidth = map->GetTileWidth();
-	map->LoadMapAssets(mPlayers, mBricks, mPipes, mCoins, mEnemys);
+	map->LoadMapAssets(numOfPlayers, mPlayers, mBricks, mPipes, mCoins, mEnemys);
 
 	return true;
 }

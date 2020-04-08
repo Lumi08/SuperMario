@@ -52,6 +52,12 @@ enum BrickType
 	COINBLOCK
 };
 
+enum EnemyType
+{
+	GOOMBA = 0,
+	TURTLE
+};
+
 struct Vector2D
 {
 	float x;

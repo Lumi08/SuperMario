@@ -88,6 +88,9 @@ private:
 	Button* mStartButton;
 	Button* mExitButton;
 	Button* mGithubButton;
+	Button* mOnePlayerButton;
+	Button* mTwoPlayerButton;
+	bool mPlayerSelect;
 };
 
 #endif // !_MAINMENU_H

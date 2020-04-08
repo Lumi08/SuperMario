@@ -20,7 +20,7 @@ class Texture2D;
 class GameScreenLevel1 : GameScreen
 {
 public:
-	GameScreenLevel1(SDL_Renderer* renderer);
+	GameScreenLevel1(SDL_Renderer* renderer, int numOfPlayers);
 	~GameScreenLevel1();
 
 	void Render();
@@ -44,7 +44,7 @@ private:
 		mCoinsCollected,
 		mMapTileWidth;
 
-	bool SetUpLevel();
+	bool SetUpLevel(int numOfPlayers);
 	void Debug();
 	void BrickCollisionsWithPlayer(Player* player, bool& botCollided);
 	void PipeCollisionsWithPlayer(Player* player, bool& botCollided);

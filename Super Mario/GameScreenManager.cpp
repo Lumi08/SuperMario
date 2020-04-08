@@ -27,7 +27,7 @@ void GameScreenManager::Update(float deltaTime, SDL_Event e)
 	mCurrentScreen->Update(deltaTime, e);
 }
 
-void GameScreenManager::ChangeScreen(SCREENS newScreen)
+void GameScreenManager::ChangeScreen(SCREENS newScreen, int numOfPlayers)
 {
 	if (mCurrentScreen != NULL)
 	{
@@ -41,7 +41,7 @@ void GameScreenManager::ChangeScreen(SCREENS newScreen)
 	{
 		case SCREEN_LEVEL1:
 		{
-			tempLevel1Screen = new GameScreenLevel1(mRenderer);
+			tempLevel1Screen = new GameScreenLevel1(mRenderer, numOfPlayers);
 			mCurrentScreen = (GameScreen*)tempLevel1Screen;
 			tempLevel1Screen = NULL;
 			break;
