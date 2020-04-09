@@ -7,6 +7,7 @@
 #include "Constants.h"
 #include "Animation.h"
 #include "Entity.h"
+#include "Text.h"
 
 class Player : public Entity
 {
@@ -15,9 +16,10 @@ public:
 	~Player();
 
 	void Render(SDL_Rect* camera);
-
 	void Update(float deltaTime, SDL_Event e);
+	void DisplayText();
 
+	bool IsAlive() { return (mPlayerState != DEAD) ? true : false; }
 	void UpdateHealth(int changeInHealth);
 	void SetOnPlatform(bool isOnPlatform) { mOnPlatform = isOnPlatform; };
 	float GetJumpForce() { return mJumpForce; }
@@ -51,6 +53,7 @@ private:
 	Animation* mSleepAnimation;
 	Animation* mIdleAnimation;
 	SDL_Rect* mSourceRect;
+	Text* mScoreText;
 	PlayerState mPlayerState;
 	SIDE mSideHit;
 

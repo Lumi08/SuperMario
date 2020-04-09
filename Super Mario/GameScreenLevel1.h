@@ -27,12 +27,15 @@ public:
 	void Update(float deltaTime, SDL_Event e);
 private:
 	Texture2D* mBackgroundTexture;
+	Texture2D* mMarioFace;
+	Texture2D* mLuigiFace;
 	Vector2D mBackgroundPosition;
 	SDL_Rect* mCamera;
 	//Player* mPlayers[MAXPLAYERCOUNT];
 	Text* mScoreText;
 	Text* mDebugText;
-	
+	Text* mDeathScreenText;
+
 	std::vector<Player*> mPlayers;
 	std::vector<Pipe*> mPipes;
 	std::vector<Brick*> mBricks;
@@ -42,14 +45,22 @@ private:
 	int mPlayerCount,
 		mScore,
 		mCoinsCollected,
-		mMapTileWidth;
+		mMapTileWidth,
+		mLives;
+
+	bool mResetingLevel;
 
 	bool SetUpLevel(int numOfPlayers);
+	void ResetLevel();
+
 	void Debug();
 	void BrickCollisionsWithPlayer(Player* player, bool& botCollided);
 	void PipeCollisionsWithPlayer(Player* player, bool& botCollided);
 	void CoinCollisionsWithPlayer(Player* player);
+	void EnemyCollisionsWithPlayer(Player* player);
+	void EnemyCollisionsWithBlocks(Enemy* enemy);
 	void RemoveDestroyedBricks(Brick* brick, int brickNum);
+	void RemoveDeadEnemies(Enemy* enemy, int enemyNum);
 	void SpawnedItemSolidBlockCollisions(PowerUp* powerup);
 	void CameraMovementLogic();
 

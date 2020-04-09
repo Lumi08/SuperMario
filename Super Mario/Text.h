@@ -23,6 +23,8 @@ public:
 
 	void Render(std::string message, Vector2D position, SDL_RendererFlip flip, float renderScale, SDL_Rect* camera, double angle);
 
+	void SetColor(SDL_Color color) { mTextColour = color; }
+
 private:
 	SDL_Renderer* mRenderer;
 	SDL_Texture* mTextTexture;

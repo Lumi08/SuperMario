@@ -14,13 +14,22 @@ public:
 	void Render(SDL_Rect* camera);
 	void Update(float deltaTime, SDL_Event e);
 	void Killed();
+
+	bool CanBeRemoved() { return mRemovable; }
+	bool IsAlive() { return mAlive; }
+
+	void SetDirectionFacing(FACING facing) { mFacing = facing; };
+	void SetOnPlatform(bool onPlatform) { mOnPlatform = onPlatform; }
 private:
 
 	Animation* mWalkAnimation;
 	SDL_Rect* mSourceRect;
 	FACING mFacing;
 	float mMovementSpeed;
-	bool mAlive = true;
+	bool mAlive = true,
+		mOnPlatform,
+		mRemovable;
+	int mKilledTimer;
 	
 };
 

@@ -9,7 +9,8 @@ enum PlayerState
 	WALK = 0,
 	JUMP,
 	IDLE,
-	SLEEP
+	SLEEP,
+	DEAD
 };
 
 enum SCREENS
