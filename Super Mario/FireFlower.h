@@ -12,8 +12,9 @@ public:
 	FireFlower(SDL_Renderer* renderer, std::string imagePath, Vector2D spawnLocation, float renderScale);
 	~FireFlower();
 
+	/// used to render the fireflowers animation and texture
 	void Render(SDL_Rect* camera) override;
-
+	/// used to update the fire flowers position as it doesnt scroll with the camera
 	void Update(float deltaTime, SDL_Event e) override;
 
 private:

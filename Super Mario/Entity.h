@@ -16,19 +16,26 @@ public:
 	Entity(SDL_Renderer* renderer, std::string imagePath, Vector2D startPosition, int width, int height);
 	virtual ~Entity();
 
+	/// Renders the entitys textures and the animations for the entity 
 	virtual void Render();
+	/// update function is where all the logic for the enemy is updated
 	virtual void Update(float deltaTime, SDL_Event e);
+	/// Used to display the entitys hitboxes which is useful for debugging 
+	virtual void Debug(SDL_Rect* camera, int type);
 	
+	/// updates the hitboxes pisitions to make sure collisions work perfectly
 	void UpdateHitbox();
+	/// update the sensor hitboxes which are used to determine which side has been hit on a entity
 	void UpdateSensors();
+	/// fully updates the sensors as this will take width and height into acount wile the standard update doesnt as most entitys will not change width and height
 	void FullUpdateSensors();
 
-	
+	/// Check if a entity is colliding with another entity
 	bool IsCollidingWith(Entity* entity);
+	/// Gets the side which the entitys are colliding with
 	SIDE GetSideCollidingWithEntity(Entity* entity);
 
-
-	virtual void Debug(SDL_Rect* camera, int type);
+	/// gets the entitys hitboxes making collisions work in external classes which use entitys
 	SDL_Rect* GetHitbox() { return mHitbox; }
 	float GetX() { return mPosition.x; }
 	float GetY() { return mPosition.y; }

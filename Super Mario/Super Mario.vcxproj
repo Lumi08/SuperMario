@@ -132,6 +132,7 @@
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="FireFlower.cpp" />
+    <ClCompile Include="GameOver.cpp" />
     <ClCompile Include="GameScreen.cpp" />
     <ClCompile Include="GameScreenLevel1.cpp" />
     <ClCompile Include="GameScreenManager.cpp" />
@@ -144,6 +145,7 @@
     <ClCompile Include="PowerUp.cpp" />
     <ClCompile Include="Text.cpp" />
     <ClCompile Include="Texture2D.cpp" />
+    <ClCompile Include="Ui.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\SDL\SDL2.lib" />
@@ -161,6 +163,7 @@
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="FireFlower.h" />
+    <ClInclude Include="GameOver.h" />
     <ClInclude Include="GameScreen.h" />
     <ClInclude Include="GameScreenLevel1.h" />
     <ClInclude Include="GameScreenManager.h" />
@@ -172,9 +175,11 @@
     <ClInclude Include="PowerUp.h" />
     <ClInclude Include="Text.h" />
     <ClInclude Include="Texture2D.h" />
+    <ClInclude Include="Ui.h" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="map1.txt" />
+    <Text Include="1-1.txt" />
+    <Text Include="1-2.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

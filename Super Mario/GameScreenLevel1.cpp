@@ -3,11 +3,12 @@
 #include <SDL_ttf.h>
 
 
-GameScreenLevel1::GameScreenLevel1(SDL_Renderer* renderer, int numOfPlayers) : GameScreen(renderer)
+GameScreenLevel1::GameScreenLevel1(SDL_Renderer* renderer, GameScreenManager* manager, int numOfPlayers) : GameScreen(renderer)
 {
+	mManager = manager;
 	mCoinsCollected = 0;
 	mScore = 0;
-	mLives = 3;
+	mLives = 1;
 	SetUpLevel(numOfPlayers);
 }
 
@@ -34,8 +35,7 @@ bool GameScreenLevel1::SetUpLevel(int numOfPlayers)
 
 	mBackgroundPosition = Vector2D(0, 0);
 	//mPlayerCount = 1;
-
-	MapLoader* map = new MapLoader((char*)"map1.txt", mRenderer);
+	MapLoader* map = new MapLoader((char*)"Levels/1-1.txt", mRenderer);
 	mMapTileWidth = map->GetTileWidth();
 	map->LoadMapAssets(numOfPlayers, mPlayers, mBricks, mPipes, mCoins, mEnemys);
 	mResetingLevel = false;
@@ -71,7 +71,7 @@ void GameScreenLevel1::ResetLevel()
 
 GameScreenLevel1::~GameScreenLevel1()
 {
-	mBackgroundTexture = NULL;
+//BackgroundTexture = NULL;
 	//TODO this
 }
 
@@ -107,6 +107,11 @@ void GameScreenLevel1::Render()
 	mScoreText->Render(Vector2D(120, 50), SDL_FLIP_NONE, RENDERSCALE, mCamera, 0.0f);
 
 	mScoreText->CreateTextureFromText("Lives");
+	mScoreText->Render(Vector2D(220, 30), SDL_FLIP_NONE, RENDERSCALE, mCamera, 0.0f);
+	mScoreText->CreateTextureFromText(std::to_string(mLives));
+	mScoreText->Render(Vector2D(220, 50), SDL_FLIP_NONE, RENDERSCALE, mCamera, 0.0f);
+
+	mScoreText->CreateTextureFromText("Time");
 	mScoreText->Render(Vector2D(220, 30), SDL_FLIP_NONE, RENDERSCALE, mCamera, 0.0f);
 	mScoreText->CreateTextureFromText(std::to_string(mLives));
 	mScoreText->Render(Vector2D(220, 50), SDL_FLIP_NONE, RENDERSCALE, mCamera, 0.0f);
@@ -150,6 +155,12 @@ void GameScreenLevel1::Render()
 void GameScreenLevel1::Update(float deltaTime, SDL_Event e)
 {
 	//std::cerr << deltaTime << std::endl;
+	if (mLives == 0 )
+	{
+		mManager->ChangeToGameOver(mScore);
+		return;
+	}
+
 	if (mResetingLevel)
 	{
 		ResetLevel();
@@ -218,9 +229,13 @@ void GameScreenLevel1::Update(float deltaTime, SDL_Event e)
 				}
 				else
 				{
-					mResetingLevel = true;
+					
 					mPlayers.erase(mPlayers.begin() + i);
 					mLives--;
+					if (mLives == 1)
+					{
+						mResetingLevel = true;
+					}
 				}
 			}
 		}
@@ -614,7 +629,7 @@ void GameScreenLevel1::EnemyCollisionsWithPlayer(Player* player)
 {
 	for (int j = 0; j < mEnemys.size(); j++)
 	{
-		if (player->IsCollidingWith(mEnemys[j]))
+		if (mEnemys[j]->IsCollidingWith(player))
 		{
 			if (mEnemys[j]->IsAlive())
 			{

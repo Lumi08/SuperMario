@@ -20,14 +20,16 @@ public:
 	MapLoader(char* path, SDL_Renderer* renderer);
 	~MapLoader();
 
+	/// Used to load all the correct assets for the selected map and set their locations to the correct times which is also determined by the txt file
 	void LoadMapAssets(int numOfPlayers, std::vector<Player*>& players, std::vector<Brick*>& bricks, std::vector<Pipe*>& pipes, std::vector<Coin*>& coins, std::vector<Enemy*>& enemies);
 
-	//void LoadMapAssets(Player* players[], std::vector<Brick*>& bricks, std::vector<Pipe*>& pipes, std::vector<Coin*>& coins);
 	int GetTileWidth() { return mTileWidth; }
 private:
 	SDL_Renderer* mRenderer;
 	char mapArray[MAXMAPTILEHEIGHT][MAXMAPTILEWIDTH];
 	int mTileWidth;
+
+	/// Fixes the pipes textures to be the correct texture so pipes look correct when rendered
 	void FixPipeTexture(Pipe* pipe, int widthPos, int heightPos);
 };
 

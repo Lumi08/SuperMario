@@ -2,8 +2,9 @@
 #define _COMMONS_H
 
 #include <iostream>
-#include <SDL_ttf.h>
+//#include <SDL_ttf.h>
 
+/// Player states. used to determine what logic should run for each state in the player class
 enum PlayerState
 {
 	WALK = 0,
@@ -13,6 +14,7 @@ enum PlayerState
 	DEAD
 };
 
+/// Used to change the screens using the GameScreen Manager class
 enum SCREENS
 {
 	SCREEN_INTRO = 0,
@@ -23,12 +25,14 @@ enum SCREENS
 	SCREEN_HIGHSCORES
 };
 
+/// Used to determine which direction a entity is facing
 enum FACING
 {
 	FACING_LEFT = 0,
 	FACING_RIGHT
 };
 
+/// Used to determine which side of a quare has been hitten
 enum SIDE
 {
 	LEFT = 0,
@@ -38,12 +42,14 @@ enum SIDE
 	NONE
 };
 
+/// The powerups currently in the game
 enum PowerUpType
 {
 	MUSHROOM = 0,
 	FIREFLOWER
 };
 
+/// The brick types currently in the game, this is used to determine how a brick acts
 enum BrickType
 {
 	BREAKABLEBLOCK = 0,
@@ -53,12 +59,14 @@ enum BrickType
 	COINBLOCK
 };
 
+/// The different types of enemys, this determines how an enemy should act
 enum EnemyType
 {
 	GOOMBA = 0,
 	TURTLE
 };
 
+/// Vector 2d is used to stor the x and y coords for entity positions
 struct Vector2D
 {
 	float x;
@@ -77,6 +85,7 @@ struct Vector2D
 	}
 };
 
+/// Hitbox logic. check whether 2 rects are intersecting
 SDL_FORCE_INLINE SDL_bool RectContainsRect(const SDL_Rect* a, const SDL_Rect* b)
 {
 	if (a->x + a->w > b->x && a->x < b->x + b->w && a->y + a->h > b->y && a->y < b->y + b->h)
@@ -87,6 +96,7 @@ SDL_FORCE_INLINE SDL_bool RectContainsRect(const SDL_Rect* a, const SDL_Rect* b)
 	return SDL_FALSE;
 }
 
+/// Checks if a vector is inside of a rect
 SDL_FORCE_INLINE SDL_bool RectContainsVector(const Vector2D p, const SDL_Rect* r)
 {
 	return ((p.x >= r->x) && (p.x < (r->x + r->w)) &&

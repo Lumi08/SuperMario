@@ -13,7 +13,9 @@ public:
 	Coin(SDL_Renderer* renderer, std::string imagePath, Vector2D position);
 	~Coin();
 
+	/// Renders the coins textures
 	void Render(SDL_Rect* camera);
+	///Updates the coins information
 	void Update(float deltaTime, SDL_Event e, int& score);
 private:
 	SDL_Renderer* mRenderer;

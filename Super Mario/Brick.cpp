@@ -63,7 +63,7 @@ Brick::Brick(SDL_Renderer* renderer, std::string imagePath, Vector2D position, B
 	}
 	Texture2D* texture = new Texture2D(mRenderer);
 	texture->LoadFromFile("Images/BrickCoin.png");
-	mCoinReleased = new Animation(mRenderer, texture, new SDL_Rect{ 0, 0, 32, 48 }, 35, 30, RENDERSCALE);
+	mCoinReleased = new Animation(mRenderer, texture, new SDL_Rect{ 0, 0, 32, 48 }, 46, 20, RENDERSCALE);
 	
 	mNumCoinsInside = coinsInside;
 	if (coinsInside > 0)

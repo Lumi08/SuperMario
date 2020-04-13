@@ -15,9 +15,12 @@ public:
 	Player(SDL_Renderer* renderer, std::string imagepath, Vector2D startPosition, int playerNum);
 	~Player();
 
+	/// Renders the player and all the animations depending on the player state
 	void Render(SDL_Rect* camera);
+	/// Updates the player and checks for the movement logic using keyboard inputs
 	void Update(float deltaTime, SDL_Event e);
 	void DisplayText();
+
 
 	bool IsAlive() { return (mPlayerState != DEAD) ? true : false; }
 	void UpdateHealth(int changeInHealth);

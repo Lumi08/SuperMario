@@ -66,20 +66,6 @@ void MainMenu::Update(float deltaTime, SDL_Event e)
 {
 	switch (e.type)
 	{
-		case SDL_KEYDOWN:
-		{
-			switch (e.key.keysym.sym)
-			{
-				case SDLK_SPACE:
-				{
-					mManager->ChangeScreen(SCREEN_LEVEL1);
-					//this->~MainMenu();
-					break;
-				}
-			}
-			break;
-		}
-
 		case SDL_MOUSEMOTION:
 		{
 			mGithubButton->Update(e.motion.x, e.motion.y);
@@ -126,13 +112,13 @@ void MainMenu::Update(float deltaTime, SDL_Event e)
 
 			if (mOnePlayerButton->hovering)
 			{
-				mManager->ChangeScreen(SCREEN_LEVEL1, 1);
+				mManager->ChangeToGameScreen(1);
 				break;
 			}
 
 			if (mTwoPlayerButton->hovering)
 			{
-				mManager->ChangeScreen(SCREEN_LEVEL1, 2);
+				mManager->ChangeToGameScreen(2);
 				break;
 			}
 			break;

@@ -5,6 +5,7 @@
 
 #include "Commons.h"
 #include "GameScreen.h"
+#include "GameScreenManager.h"
 #include "Player.h"
 #include "Brick.h"
 #include "Mushroom.h"
@@ -20,18 +21,20 @@ class Texture2D;
 class GameScreenLevel1 : GameScreen
 {
 public:
-	GameScreenLevel1(SDL_Renderer* renderer, int numOfPlayers);
+	GameScreenLevel1(SDL_Renderer* renderer, GameScreenManager* manager, int numOfPlayers);
 	~GameScreenLevel1();
 
+	/// Render function which is used to render all the assets on the gamescrenlevel1
 	void Render();
+	/// update function which is used to update all the assets on the gamescrenlevel1
 	void Update(float deltaTime, SDL_Event e);
 private:
+	GameScreenManager* mManager;
 	Texture2D* mBackgroundTexture;
 	Texture2D* mMarioFace;
 	Texture2D* mLuigiFace;
 	Vector2D mBackgroundPosition;
 	SDL_Rect* mCamera;
-	//Player* mPlayers[MAXPLAYERCOUNT];
 	Text* mScoreText;
 	Text* mDebugText;
 	Text* mDeathScreenText;
@@ -42,17 +45,18 @@ private:
 	std::vector<Coin*> mCoins;
 	std::vector<Enemy*> mEnemys;
 
-	int mPlayerCount,
-		mScore,
+	int mScore,
 		mCoinsCollected,
 		mMapTileWidth,
 		mLives;
 
 	bool mResetingLevel;
 
+	/// used to load in all the assets for the level
 	bool SetUpLevel(int numOfPlayers);
+	/// used to delete all necisary assets for the 
 	void ResetLevel();
-
+	/// used to call all assets debug functions
 	void Debug();
 	void BrickCollisionsWithPlayer(Player* player, bool& botCollided);
 	void PipeCollisionsWithPlayer(Player* player, bool& botCollided);
