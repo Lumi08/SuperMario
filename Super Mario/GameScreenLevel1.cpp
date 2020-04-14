@@ -9,6 +9,8 @@ GameScreenLevel1::GameScreenLevel1(SDL_Renderer* renderer, GameScreenManager* ma
 	mCoinsCollected = 0;
 	mScore = 0;
 	mLives = 1;
+	mCurrentLevel = 1;
+	mPlayerCount = numOfPlayers;
 	SetUpLevel(numOfPlayers);
 }
 
@@ -16,12 +18,14 @@ bool GameScreenLevel1::SetUpLevel(int numOfPlayers)
 {
 	mCamera = new SDL_Rect{ 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
 
+	std::string bkstring = "Images/unnamed" + std::to_string(mCurrentLevel) + ".png";
 	mBackgroundTexture = new Texture2D(mRenderer);
-	if (!mBackgroundTexture->LoadFromFile("Images/unnamed.png"))
+	if (!mBackgroundTexture->LoadFromFile(bkstring))
 	{
 		std::cout << "Error: Failed to load background texture!" << std::endl;
 		return false;
 	}
+
 	mMarioFace = new Texture2D(mRenderer);
 	mMarioFace->LoadFromFile("Images/MarioHead.png");
 	mLuigiFace = new Texture2D(mRenderer);
@@ -34,15 +38,26 @@ bool GameScreenLevel1::SetUpLevel(int numOfPlayers)
 	mDebugText = new Text(mRenderer, "Font/Oxanium-Regular.ttf", SDL_Color{ 0, 0, 0, 255 }, 20);
 
 	mBackgroundPosition = Vector2D(0, 0);
-	//mPlayerCount = 1;
-	MapLoader* map = new MapLoader((char*)"Levels/1-1.txt", mRenderer);
+	//mFlag = new Flag(mRenderer, "Images/Flag.png", Vector2D(0, 0));
+	std::string level = "Levels/" + std::to_string(mCurrentLevel) + ".txt";
+	MapLoader* map = new MapLoader((char*)level.c_str(), mRenderer);
 	mMapTileWidth = map->GetTileWidth();
-	map->LoadMapAssets(numOfPlayers, mPlayers, mBricks, mPipes, mCoins, mEnemys);
+	map->LoadMapAssets(numOfPlayers, mPlayers, mBricks, mPipes, mCoins, mEnemys, mFlag);
+	
+	if (mCurrentLevel >= 2)
+	{
+		//mCamera->y = 11 * 32;
+		for (int i = 0; i < mPlayers.size(); i++)
+		{
+			mPlayers[i]->UpdateHealth(mPreviousHealth[i] - 1);
+		}
+	}
+	
 	mResetingLevel = false;
 	return true;
 }
 
-void GameScreenLevel1::ResetLevel()
+void GameScreenLevel1::ClearLevel()
 {
 	mCamera = NULL;
 	delete mBackgroundTexture;
@@ -63,6 +78,10 @@ void GameScreenLevel1::ResetLevel()
 	delete mDebugText;
 	mDebugText = NULL;
 
+	delete mFlag;
+	mFlag = NULL;
+
+	mPlayers.clear();
 	mBricks.clear();
 	mCoins.clear();
 	mPipes.clear();
@@ -71,8 +90,7 @@ void GameScreenLevel1::ResetLevel()
 
 GameScreenLevel1::~GameScreenLevel1()
 {
-//BackgroundTexture = NULL;
-	//TODO this
+	ClearLevel();
 }
 
 void GameScreenLevel1::Render()
@@ -116,6 +134,11 @@ void GameScreenLevel1::Render()
 	mScoreText->CreateTextureFromText(std::to_string(mLives));
 	mScoreText->Render(Vector2D(220, 50), SDL_FLIP_NONE, RENDERSCALE, mCamera, 0.0f);
 
+	if (RectContainsRect(mCamera, mFlag->GetHitbox()))
+	{
+		mFlag->Render(mCamera);
+	}
+
 	for (int i = 0; i < mPlayers.size(); i++)
 	{
 		mPlayers[i]->Render(mCamera);
@@ -148,7 +171,7 @@ void GameScreenLevel1::Render()
 			mEnemys[i]->Render(mCamera);
 		}
 	}
-	
+
 	Debug();
 }
 
@@ -157,14 +180,15 @@ void GameScreenLevel1::Update(float deltaTime, SDL_Event e)
 	//std::cerr << deltaTime << std::endl;
 	if (mLives == 0 )
 	{
+		ClearLevel();
 		mManager->ChangeToGameOver(mScore);
 		return;
 	}
 
 	if (mResetingLevel)
 	{
-		ResetLevel();
-		SetUpLevel(1);
+		ClearLevel();
+		SetUpLevel(mPlayerCount);
 	}
 	
 	CameraMovementLogic();
@@ -205,6 +229,10 @@ void GameScreenLevel1::Update(float deltaTime, SDL_Event e)
 			PipeCollisionsWithPlayer(mPlayers[i], playerBotCollided);
 			CoinCollisionsWithPlayer(mPlayers[i]);
 			EnemyCollisionsWithPlayer(mPlayers[i]);
+			if (FlagCollisionsWithPlayer(mPlayers[i]))
+			{
+				return;
+			}
 
 			if (!playerBotCollided)
 			{
@@ -244,7 +272,7 @@ void GameScreenLevel1::Update(float deltaTime, SDL_Event e)
 	{
 		if (RectContainsRect(mCamera, mBricks[i]->GetHitbox()) || mBricks[i]->GetDestroyed())
 		{
-			mBricks[i]->Update(deltaTime, e, mPlayers, mScore, mCoinsCollected);
+			mBricks[i]->Update(deltaTime, e, mPlayers, mScore, mCoinsCollected, mCurrentLevel);
 
 			if (mBricks[i]->GetItemInsideSpawned())
 			{
@@ -281,6 +309,11 @@ void GameScreenLevel1::Update(float deltaTime, SDL_Event e)
 				RemoveDeadEnemies(mEnemys[i], i);
 			}
 		}
+	}
+	
+	if (RectContainsRect(mCamera, mFlag->GetHitbox()))
+	{
+		mFlag->Update(deltaTime, e);
 	}
 
 	switch (e.type)
@@ -396,6 +429,11 @@ void GameScreenLevel1::Debug()
 			{
 				mEnemys[i]->Debug(mCamera, mDebugType);
 			}
+		}
+
+		if (RectContainsRect(mCamera, mFlag->GetHitbox()))
+		{
+			mFlag->Debug(mCamera, mDebugType);
 		}
 	}
 }
@@ -530,7 +568,7 @@ void GameScreenLevel1::CoinCollisionsWithPlayer(Player* player)
 		{
 			if (player->IsCollidingWith(mCoins[i]))
 			{
-				mScore += 100;
+				mScore += 200;
 				mCoinsCollected++;
 				mCoins.erase(mCoins.begin() + i);
 			}
@@ -652,6 +690,7 @@ void GameScreenLevel1::EnemyCollisionsWithPlayer(Player* player)
 						if (player->GetJumpForce() < 0)
 						{
 							mEnemys[j]->Killed();
+							mScore += 100;
 							player->SetJumpForce(300);
 						}
 						break;
@@ -747,3 +786,29 @@ void GameScreenLevel1::EnemyCollisionsWithBlocks(Enemy* enemy)
 }
 
 
+bool GameScreenLevel1::FlagCollisionsWithPlayer(Player* player)
+{
+	if (RectContainsRect(mCamera, mFlag->GetHitbox()))
+	{
+		if (mFlag->IsCollidingWith(player))
+		{
+			if (mCurrentLevel == 2)
+			{
+				mManager->ChangeToGameOver(mScore);
+				return true;
+			}
+
+
+			player->SetOnPlatform(true);
+			mCurrentLevel++;
+			for (int i = 0; i < mPlayers.size(); i++)
+			{
+				mPreviousHealth[i] = mPlayers[i]->GetHealth();
+			}
+			ClearLevel();
+			SetUpLevel(mPlayerCount);
+			return true;
+		}
+	}
+	return false;
+}

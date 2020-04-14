@@ -22,13 +22,14 @@ public:
 	Brick(SDL_Renderer* renderer, std::string imagePath, Vector2D position, BrickType brickType, int coinsInside);
 	~Brick();
 
+
 	/// For when the brick has been destroyed by the player
 	void Destroy();
 	/// For when the player hits the bricks underside
 	void Hit(int playerHealth);
 
 	/// Updates all the logic for the brick
-	void Update(float deltaTime, SDL_Event e, std::vector<Player*>& players, int & score, int & coinsCollected);
+	void Update(float deltaTime, SDL_Event e, std::vector<Player*>& players, int& score, int& coinsCollected, int level);
 	/// Renders the images and the animations for the bricks
 	void Render(SDL_Rect* camera);
 	

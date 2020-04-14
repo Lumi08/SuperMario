@@ -13,6 +13,7 @@
 #include "Pipe.h"
 #include "Coin.h"
 #include "Enemy.h"
+#include "Flag.h"
 
 class MapLoader
 {
@@ -21,7 +22,7 @@ public:
 	~MapLoader();
 
 	/// Used to load all the correct assets for the selected map and set their locations to the correct times which is also determined by the txt file
-	void LoadMapAssets(int numOfPlayers, std::vector<Player*>& players, std::vector<Brick*>& bricks, std::vector<Pipe*>& pipes, std::vector<Coin*>& coins, std::vector<Enemy*>& enemies);
+	void LoadMapAssets(int numOfPlayers, std::vector<Player*>& players, std::vector<Brick*>& bricks, std::vector<Pipe*>& pipes, std::vector<Coin*>& coins, std::vector<Enemy*>& enemies, Flag* & flag);
 
 	int GetTileWidth() { return mTileWidth; }
 private:

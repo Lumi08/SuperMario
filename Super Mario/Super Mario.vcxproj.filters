@@ -85,6 +85,9 @@
     <ClInclude Include="Ui.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Flag.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -147,12 +150,18 @@
     <ClCompile Include="Ui.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Flag.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="1-1.txt">
+    <Text Include="Levels\1.txt">
       <Filter>Resource Files</Filter>
     </Text>
-    <Text Include="1-2.txt">
+    <Text Include="Levels\2.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="3.txt">
       <Filter>Resource Files</Filter>
     </Text>
   </ItemGroup>

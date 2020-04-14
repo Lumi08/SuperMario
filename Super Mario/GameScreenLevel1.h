@@ -14,6 +14,7 @@
 #include "Text.h"
 #include "Coin.h"
 #include "Enemy.h"
+#include "Flag.h"
 //#include "Character.h"
 
 class Texture2D;
@@ -38,6 +39,7 @@ private:
 	Text* mScoreText;
 	Text* mDebugText;
 	Text* mDeathScreenText;
+	Flag* mFlag;
 
 	std::vector<Player*> mPlayers;
 	std::vector<Pipe*> mPipes;
@@ -48,14 +50,18 @@ private:
 	int mScore,
 		mCoinsCollected,
 		mMapTileWidth,
-		mLives;
+		mLives,
+		mPlayerCount,
+		mCurrentLevel;
+
+	int mPreviousHealth[2];
 
 	bool mResetingLevel;
 
 	/// used to load in all the assets for the level
 	bool SetUpLevel(int numOfPlayers);
 	/// used to delete all necisary assets for the 
-	void ResetLevel();
+	void ClearLevel();
 	/// used to call all assets debug functions
 	void Debug();
 	void BrickCollisionsWithPlayer(Player* player, bool& botCollided);
@@ -67,6 +73,7 @@ private:
 	void RemoveDeadEnemies(Enemy* enemy, int enemyNum);
 	void SpawnedItemSolidBlockCollisions(PowerUp* powerup);
 	void CameraMovementLogic();
+	bool FlagCollisionsWithPlayer(Player* player);
 
 	//debug:
 	int mDebugType = 0;

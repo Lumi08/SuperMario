@@ -77,8 +77,13 @@ Brick::~Brick()
 	delete mSourceRect;
 }
 
-void Brick::Update(float deltaTime, SDL_Event e, std::vector<Player*>& players, int & score, int & coinsCollected)
+void Brick::Update(float deltaTime, SDL_Event e, std::vector<Player*>& players, int & score, int & coinsCollected, int level)
 {
+	if (level == 2)
+	{
+		SDL_SetTextureColorMod(mTexture->GetTexture(), 38, 217, 201);
+	}
+
 	if (mCoinReleased->Completed() && mCoinsInside)
 	{
 		score += 100;

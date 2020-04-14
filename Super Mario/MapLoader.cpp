@@ -28,7 +28,7 @@ MapLoader::~MapLoader()
 {
 }
 
-void MapLoader::LoadMapAssets(int numOfPlayers, std::vector<Player*>& players, std::vector<Brick*>& bricks, std::vector<Pipe*>& pipes, std::vector<Coin*>& coins, std::vector<Enemy*>& enemies)
+void MapLoader::LoadMapAssets(int numOfPlayers, std::vector<Player*>& players, std::vector<Brick*>& bricks, std::vector<Pipe*>& pipes, std::vector<Coin*>& coins, std::vector<Enemy*>& enemies, Flag* & flag)
 {
 	for (int i = 0; i < MAXMAPTILEHEIGHT / RENDERSCALE; i++)
 	{
@@ -104,6 +104,17 @@ void MapLoader::LoadMapAssets(int numOfPlayers, std::vector<Player*>& players, s
 					{
 						players.push_back(new Player(mRenderer, "Images/Luigi.png", Vector2D(DEFAULTTILEWIDTH * RENDERSCALE * j, DEFAULTTILEHEIGHT * RENDERSCALE * i), 2));
 					}
+					break;
+				}
+
+				case 'F':
+				{
+					if (flag == NULL)
+					{
+						flag = new Flag(mRenderer, "Images/Flag.png", Vector2D(DEFAULTTILEWIDTH * RENDERSCALE * j, DEFAULTTILEHEIGHT * RENDERSCALE * i));
+					}
+
+					flag->AddSection(DEFAULTTILEWIDTH * RENDERSCALE * j, DEFAULTTILEHEIGHT * RENDERSCALE * i);
 					break;
 				}
 			}
