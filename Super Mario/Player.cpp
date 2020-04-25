@@ -10,6 +10,7 @@ Player::Player(SDL_Renderer* renderer, std::string imagePath, Vector2D startPosi
 	mHealth = 1;
 	mFadeTime = 0;
 	mTimeIdle = 0;
+	mInvunerableTime = 0;
 	mPlayerState = IDLE;
 	mSideHit = NONE;
 	mDirectionFacing = FACING_RIGHT;
@@ -18,6 +19,11 @@ Player::Player(SDL_Renderer* renderer, std::string imagePath, Vector2D startPosi
 	mIdleAnimation = new Animation(renderer, mTexture, new SDL_Rect{ 0, 32, DEFAULTTILEWIDTH, DEFAULTTILEHEIGHT }, 2, 2000, RENDERSCALE);
 	mSleepAnimation = new Animation(renderer, mTexture, new SDL_Rect{ 0, 16, DEFAULTTILEWIDTH, DEFAULTTILEHEIGHT }, 6, 1000, RENDERSCALE);
 	mOnPlatform = true;
+
+	mJumpSound = new SoundEffect("Audio/Jump.wav");
+	mDeathSound = new SoundEffect("Audio/mariodie.wav");
+	mPowerUpSound = new SoundEffect("Audio/powerup.wav");
+	mPowerDownSound = new SoundEffect("Audio/powerdown.wav");
 	//mScoreText = new Text(mRenderer, )
 }
 
@@ -103,6 +109,7 @@ void Player::Render(SDL_Rect* camera)
 					break;
 				}
 			}
+
 			break;
 		}
 
@@ -352,6 +359,7 @@ void Player::Jump()
 		mJumpForce = INITIAL_JUMP_FORCE;
 		mJumping = true;
 		mSideHit = NONE;
+		mJumpSound->Play(0);
 	}
 }
 
@@ -362,6 +370,11 @@ void Player::UpdateHealth(int changeInHealth)
 		mHealth = mHealth + changeInHealth;
 	}
 
+	if (changeInHealth < 0)
+	{
+		mInvunerable = true;
+	}
+
 	switch (mHealth)
 	{
 		case 0:
@@ -370,11 +383,21 @@ void Player::UpdateHealth(int changeInHealth)
 			mSourceRect->y = 0;
 			mPlayerState = DEAD;
 			mJumpForce = 500;
+			mDeathSound->Play(0);
 			break;
 		}
 
 		case 1:
 		{
+			if (changeInHealth < 0)
+			{
+				mPowerDownSound->Play(0);
+			}
+			else
+			{
+				mPowerUpSound->Play(0);
+			}
+
 			mSourceRect->y = 0;
 			mSourceRect->h = 16;
 			mHitbox->h = DEFAULTTILEHEIGHT * RENDERSCALE;
@@ -389,6 +412,14 @@ void Player::UpdateHealth(int changeInHealth)
 
 		case 2:
 		{
+			if (changeInHealth < 0)
+			{
+				mPowerDownSound->Play(0);
+			}
+			else
+			{
+				mPowerUpSound->Play(0);
+			}
 			mSourceRect->y = 64;
 			mSourceRect->h = BIGPLAYERHEIGHT;
 			mPosition.y -= DEFAULTTILEHEIGHT * RENDERSCALE;
@@ -403,6 +434,15 @@ void Player::UpdateHealth(int changeInHealth)
 
 		case 3:
 		{
+			if (changeInHealth < 0)
+			{
+				mPowerDownSound->Play(0);
+			}
+			else
+			{
+				mPowerUpSound->Play(0);
+			}
+
 			if (changeInHealth == 2)
 			{
 				mPosition.y -= DEFAULTTILEHEIGHT * RENDERSCALE;
@@ -426,12 +466,13 @@ void Player::FadeLogic()
 	if (mFading)
 	{
 		float result = ((0.5 * cos(mFadeDegrees * 3.14159265 / 180.0)) + 0.5) * 255;
-		mFadeDegrees += 0.3;
+		mFadeDegrees += 0.5;
 
-		if (mFadeTime > 2000 && mFadeDegrees >= 360)
+		if (mFadeTime > 500 && mFadeDegrees >= 360)
 		{
 			mFading = false;
 			mFadeTime = 0;
+			mInvunerable = false;
 		}
 		else
 		{

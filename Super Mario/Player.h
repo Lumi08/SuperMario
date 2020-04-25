@@ -8,6 +8,7 @@
 #include "Animation.h"
 #include "Entity.h"
 #include "Text.h"
+#include "SoundEffect.h"
 
 class Player : public Entity
 {
@@ -23,6 +24,7 @@ public:
 
 
 	bool IsAlive() { return (mPlayerState != DEAD) ? true : false; }
+	bool IsInvunerable() { return mInvunerable; }
 	void UpdateHealth(int changeInHealth);
 	void SetOnPlatform(bool isOnPlatform) { mOnPlatform = isOnPlatform; };
 	float GetJumpForce() { return mJumpForce; }
@@ -37,11 +39,13 @@ public:
 	void SetSideHit(SIDE side) { mSideHit = side; }
 
 	void SetPlayerState(PlayerState playerState) { mPlayerState = playerState; }
+
 private:
 	int mPlayerNumber,
 		mTimeIdle,
 		mHealth,
-		mFadeTime;
+		mFadeTime,
+		mInvunerableTime;
 	float mMovementSpeed,
 		mJumpForce,
 		mFadeDegrees;
@@ -50,7 +54,8 @@ private:
 		mJumpKeyPressed,
 		mJumping,
 		mOnPlatform,
-		mFading;
+		mFading,
+		mInvunerable;
 	FACING mDirectionFacing;
 	Animation* mWalkAnimation;
 	Animation* mSleepAnimation;
@@ -59,6 +64,10 @@ private:
 	Text* mScoreText;
 	PlayerState mPlayerState;
 	SIDE mSideHit;
+	SoundEffect* mJumpSound;
+	SoundEffect* mDeathSound;
+	SoundEffect* mPowerUpSound;
+	SoundEffect* mPowerDownSound;
 
 	void FadeLogic();
 	void MovementLogic(float deltaTime);

@@ -5,7 +5,7 @@ GameOver::GameOver(SDL_Renderer* renderer, GameScreenManager* manager, int final
 	mManager = manager;
 	
 	mBackgroundTexture = new Texture2D(mRenderer);
-	mBackgroundTexture->LoadFromFile("Images/Untitled.png");
+	mBackgroundTexture->LoadFromFile("Images/untitled.png");
 
 	mGameOverTexture = new Texture2D(mRenderer);
 	mGameOverTexture->LoadFromFile("Images/Menu/GameOver.png");
@@ -17,7 +17,8 @@ GameOver::GameOver(SDL_Renderer* renderer, GameScreenManager* manager, int final
 	mText = new Text(mRenderer, "Font/SMBtext.ttf", SDL_Color{ 255, 204, 128, 255 }, 40);
 	mText->CreateTextureFromText("score  " + std::to_string(finalScore));
 	mTextPosition = Vector2D(310, 272);
-
+	mMusic = new SoundEffect("Audio/endgame.wav");
+	mMusic->Play(0);
 	mMainMenuButton = new Button(mRenderer, (SCREEN_WIDTH / 2) - (79 * 3) / 2, 500, 79 * 3, 16 * 3, "Images/Menu/MainMenu.png");
 }
 

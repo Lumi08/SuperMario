@@ -8,6 +8,7 @@
 #include "Commons.h"
 #include "Constants.h"
 #include "Ui.h"
+#include "SoundEffect.h"
 
 class Texture2D;
 class MainMenu : GameScreen
@@ -35,6 +36,10 @@ private:
 	Button* mOnePlayerButton;
 	Button* mTwoPlayerButton;
 	bool mPlayerSelect;
+
+
+	//DEBUG:
+	SoundEffect* mSelectedSound;
 };
 
 #endif // !_MAINMENU_H

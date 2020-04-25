@@ -5,6 +5,10 @@ PowerUp::PowerUp(SDL_Renderer* renderer, std::string imgPath, Vector2D spawnLoca
 	mType = type;
 }
 
+PowerUp::PowerUp() : Entity()
+{
+}
+
 PowerUp::~PowerUp()
 {
 

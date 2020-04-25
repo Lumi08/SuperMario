@@ -22,6 +22,8 @@ SDL_Renderer* gRenderer = NULL;
 GameScreenManager* gameScreenManager;
 Uint32 gOldTime;
 
+Mix_Music* gMusic = NULL;
+
 //Prototypes
 bool InitSDL();
 bool Update();
@@ -83,6 +85,12 @@ bool InitSDL()
 			if (!(IMG_Init(imageFlags) & imageFlags))
 			{
 				cout << "SDL_Image could not initialise. Error: " << IMG_GetError() << endl;
+				return false;
+			}
+
+			if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
+			{
+				cout << "SDL_Mixer could not initialise. Error: " << Mix_GetError() << endl;
 				return false;
 			}
 

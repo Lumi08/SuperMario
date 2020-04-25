@@ -24,6 +24,8 @@ MainMenu::MainMenu(SDL_Renderer* renderer, GameScreenManager* manager) : GameScr
 		std::cout << "Error: Failed to load title texture!" << std::endl;
 	}
 
+	mSelectedSound = new SoundEffect("Audio/coin collected.wav");
+
 	mTitlePosition = Vector2D((SCREEN_WIDTH/2) - (174*3)/2, 75);
 	mGithubPosition = Vector2D((SCREEN_WIDTH / 2) - (164 * 3) / 2, 700);
 	mBackgroundPosition = Vector2D(0, 0);
@@ -87,10 +89,12 @@ void MainMenu::Update(float deltaTime, SDL_Event e)
 			if (mStartButton->hovering)
 			{
 				mPlayerSelect = true;
+				mSelectedSound->Play(0);
 			}
 
 			if (mGithubButton->hovering)
 			{
+				mSelectedSound->Play(0);
 				std::cout << "GitHub" << std::endl;
 
 				try
@@ -105,6 +109,7 @@ void MainMenu::Update(float deltaTime, SDL_Event e)
 
 			if (mExitButton->hovering)
 			{
+				mSelectedSound->Play(0);
 				std::cout << "Exit" << std::endl;
 				SDL_Quit();
 				exit(0);
@@ -112,12 +117,14 @@ void MainMenu::Update(float deltaTime, SDL_Event e)
 
 			if (mOnePlayerButton->hovering)
 			{
+				mSelectedSound->Play(0);
 				mManager->ChangeToGameScreen(1);
 				break;
 			}
 
 			if (mTwoPlayerButton->hovering)
 			{
+				mSelectedSound->Play(0);
 				mManager->ChangeToGameScreen(2);
 				break;
 			}

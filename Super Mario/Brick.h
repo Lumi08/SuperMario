@@ -13,6 +13,7 @@
 #include "Commons.h"
 #include "Constants.h"
 #include "Animation.h"
+#include "SoundEffect.h"
 
 class Brick : public Entity
 {
@@ -54,6 +55,10 @@ public:
 	void SetItemInsideSpawned(bool spawned) { mItemInsideSpawned = spawned; }
 	/// Gets whether the brick has been destroyed, useful for deleting destroyed bricks
 	bool GetDestroyed() { return mDestroyed; }
+
+	bool GetBeenHit() { return mBeenHit; }
+	bool GetIfCoinsInside() { return mCoinsInside; }
+
 private:
 	SDL_Rect* mSourceRect;
 	PowerUp* mItemInside;
@@ -61,6 +66,7 @@ private:
 	SIDE mSideHit;
 	Animation* mIdleAnimation = NULL;
 	Animation* mCoinReleased;
+	
 	bool mItemInsideSpawned,
 		mBeenHit,
 		mDestroyed,

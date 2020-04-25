@@ -15,6 +15,7 @@
 #include "Coin.h"
 #include "Enemy.h"
 #include "Flag.h"
+#include "SoundEffect.h"
 //#include "Character.h"
 
 class Texture2D;
@@ -40,6 +41,15 @@ private:
 	Text* mDebugText;
 	Text* mDeathScreenText;
 	Flag* mFlag;
+
+	SoundEffect* mMusic;
+	SoundEffect* mCoinCollectedSound;
+	SoundEffect* mStompSound;
+	SoundEffect* mCourseClearSound;
+	SoundEffect* mPowerUpCollectedSound;
+	SoundEffect* mPowerUpSpawnedSound;
+	SoundEffect* mBreakBlockSound;
+	SoundEffect* mBumpBlockSound;
 
 	std::vector<Player*> mPlayers;
 	std::vector<Pipe*> mPipes;

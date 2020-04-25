@@ -11,6 +11,8 @@ Brick::Brick(SDL_Renderer* renderer, std::string imagePath, Vector2D position, B
 	mDestroySeperation = 0;
 	mDestroyAngle = 0;
 	mBouncingStartY = position.y;
+	mItemInside = new PowerUp();
+
 	if (brickType == BrickType::QUESTIONBLOCK)
 	{
 		mIdleAnimation = new Animation(mRenderer, mTexture, mSourceRect, 2 , 2500, RENDERSCALE);
@@ -30,6 +32,8 @@ Brick::Brick(SDL_Renderer* renderer, std::string imagePath, Vector2D position, B
 	mDestroySeperation = 0;
 	mDestroyAngle = 0;
 	mBouncingStartY = position.y;
+	mItemInside = itemInside;
+
 	if (brickType == BrickType::QUESTIONBLOCK)
 	{
 		mIdleAnimation = new Animation(mRenderer, mTexture, mSourceRect, 2, 5000, RENDERSCALE);
@@ -57,6 +61,7 @@ Brick::Brick(SDL_Renderer* renderer, std::string imagePath, Vector2D position, B
 	mDestroySeperation = 0;
 	mDestroyAngle = 0;
 	mBouncingStartY = position.y;
+	
 	if (brickType == BrickType::QUESTIONBLOCK)
 	{
 		mIdleAnimation = new Animation(mRenderer, mTexture, mSourceRect, 2, 2500, RENDERSCALE);
@@ -64,7 +69,7 @@ Brick::Brick(SDL_Renderer* renderer, std::string imagePath, Vector2D position, B
 	Texture2D* texture = new Texture2D(mRenderer);
 	texture->LoadFromFile("Images/BrickCoin.png");
 	mCoinReleased = new Animation(mRenderer, texture, new SDL_Rect{ 0, 0, 32, 48 }, 46, 20, RENDERSCALE);
-	
+	 
 	mNumCoinsInside = coinsInside;
 	if (coinsInside > 0)
 	{
@@ -75,6 +80,9 @@ Brick::Brick(SDL_Renderer* renderer, std::string imagePath, Vector2D position, B
 Brick::~Brick()
 {
 	delete mSourceRect;
+	delete mItemInside;
+	delete mIdleAnimation;
+	delete mCoinReleased;
 }
 
 void Brick::Update(float deltaTime, SDL_Event e, std::vector<Player*>& players, int & score, int & coinsCollected, int level)
@@ -184,6 +192,8 @@ void Brick::ItemCollisions(Player* player, int& score)
 	{
 		if (RectContainsRect(mItemInside->GetHitbox(), player->GetHitbox()))
 		{
+			
+
 			switch (mItemInside->GetType())
 			{
 				case PowerUpType::MUSHROOM:
@@ -296,6 +306,7 @@ void Brick::Hit(int playerHealth)
 				}
 				else
 				{
+					
 					mBouncing = true;
 					mBouncingUp = true;
 				}
@@ -315,6 +326,7 @@ void Brick::Destroy()
 	mDestroyed = true;
 	mHitbox->x = -1;
 	mHitbox->y = -1;
+
 }
 
 void Brick::Debug(SDL_Rect* camera, int type)

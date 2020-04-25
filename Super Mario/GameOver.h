@@ -7,6 +7,7 @@
 #include "Ui.h"
 #include "Texture2D.h"
 #include "Text.h"
+#include "SoundEffect.h"
 
 class GameOver : GameScreen
 {
@@ -26,7 +27,7 @@ private:
 	Vector2D mTextPosition;
 	Button* mMainMenuButton;
 	Text* mText;
-
+	SoundEffect* mMusic;
 };
 
 #endif // !_GAMEOVER_H

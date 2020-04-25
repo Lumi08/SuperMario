@@ -8,6 +8,7 @@ class PowerUp : public Entity
 {
 public: 
 	PowerUp(SDL_Renderer* renderer, std::string imgPath, Vector2D spawnLocation, int width, int height, PowerUpType type);
+	PowerUp();
 	~PowerUp();
 
 	/// Used to determine wether the powerup needs to have gravity applied to it

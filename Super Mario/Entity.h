@@ -14,6 +14,7 @@ class Entity
 {
 public:
 	Entity(SDL_Renderer* renderer, std::string imagePath, Vector2D startPosition, int width, int height);
+	Entity();
 	virtual ~Entity();
 
 	/// Renders the entitys textures and the animations for the entity 

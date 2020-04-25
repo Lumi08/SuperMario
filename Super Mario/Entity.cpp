@@ -14,6 +14,10 @@ Entity::Entity(SDL_Renderer* renderer, std::string imagePath, Vector2D startPosi
 	InitSensors();
 }
 
+Entity::Entity()
+{
+}
+
 Entity::~Entity()
 {
 	mRenderer = NULL;

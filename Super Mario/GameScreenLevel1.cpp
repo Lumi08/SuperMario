@@ -8,9 +8,19 @@ GameScreenLevel1::GameScreenLevel1(SDL_Renderer* renderer, GameScreenManager* ma
 	mManager = manager;
 	mCoinsCollected = 0;
 	mScore = 0;
-	mLives = 1;
+	mLives = 3;
 	mCurrentLevel = 1;
 	mPlayerCount = numOfPlayers;
+
+	mCoinCollectedSound = new SoundEffect("Audio/coin collected.wav");
+	mStompSound = new SoundEffect("Audio/stomp.wav");
+	mCourseClearSound = new SoundEffect("Audio/course clear.wav");
+	mPowerUpCollectedSound = new SoundEffect("Audio/powerup.wav");
+	mPowerUpSpawnedSound = new SoundEffect("Audio/powerupspawn.wav");
+	mBreakBlockSound = new SoundEffect("Audio/breakblock.wav");
+	mBumpBlockSound = new SoundEffect("Audio/bump.wav");
+	mCoinCollectedSound = new SoundEffect("Audio/coin collected.wav");
+
 	SetUpLevel(numOfPlayers);
 }
 
@@ -26,6 +36,18 @@ bool GameScreenLevel1::SetUpLevel(int numOfPlayers)
 		return false;
 	}
 
+	if (mCurrentLevel == 1)
+	{
+		mMusic = new SoundEffect("Audio/Mario.wav");
+		mMusic->Play(0);
+	}
+	if (mCurrentLevel == 2)
+	{
+		
+		mMusic = new SoundEffect("Audio/underground.wav");
+		mMusic->Play(0);
+	}
+
 	mMarioFace = new Texture2D(mRenderer);
 	mMarioFace->LoadFromFile("Images/MarioHead.png");
 	mLuigiFace = new Texture2D(mRenderer);
@@ -36,6 +58,8 @@ bool GameScreenLevel1::SetUpLevel(int numOfPlayers)
 	mDeathScreenText = new Text(mRenderer, "Font/SuperMario256.ttf", SDL_Color{ 255, 255, 255, 255 }, 80);
 	mScoreText = new Text(mRenderer, "Font/SuperMario256.ttf", SDL_Color{ 255, 255, 255, 255 }, 20);
 	mDebugText = new Text(mRenderer, "Font/Oxanium-Regular.ttf", SDL_Color{ 0, 0, 0, 255 }, 20);
+
+	
 
 	mBackgroundPosition = Vector2D(0, 0);
 	//mFlag = new Flag(mRenderer, "Images/Flag.png", Vector2D(0, 0));
@@ -51,6 +75,16 @@ bool GameScreenLevel1::SetUpLevel(int numOfPlayers)
 		{
 			mPlayers[i]->UpdateHealth(mPreviousHealth[i] - 1);
 		}
+
+		if (mPlayers.size() == 2)
+		{
+			mPreviousHealth[0] = 1;
+			mPreviousHealth[1] = 1;
+		}
+		else
+		{
+			mPreviousHealth[0] = 1;
+		}
 	}
 	
 	mResetingLevel = false;
@@ -59,6 +93,8 @@ bool GameScreenLevel1::SetUpLevel(int numOfPlayers)
 
 void GameScreenLevel1::ClearLevel()
 {
+	delete mMusic;
+
 	mCamera = NULL;
 	delete mBackgroundTexture;
 	mBackgroundTexture = NULL;
@@ -90,7 +126,7 @@ void GameScreenLevel1::ClearLevel()
 
 GameScreenLevel1::~GameScreenLevel1()
 {
-	ClearLevel();
+	
 }
 
 void GameScreenLevel1::Render()
@@ -125,11 +161,6 @@ void GameScreenLevel1::Render()
 	mScoreText->Render(Vector2D(120, 50), SDL_FLIP_NONE, RENDERSCALE, mCamera, 0.0f);
 
 	mScoreText->CreateTextureFromText("Lives");
-	mScoreText->Render(Vector2D(220, 30), SDL_FLIP_NONE, RENDERSCALE, mCamera, 0.0f);
-	mScoreText->CreateTextureFromText(std::to_string(mLives));
-	mScoreText->Render(Vector2D(220, 50), SDL_FLIP_NONE, RENDERSCALE, mCamera, 0.0f);
-
-	mScoreText->CreateTextureFromText("Time");
 	mScoreText->Render(Vector2D(220, 30), SDL_FLIP_NONE, RENDERSCALE, mCamera, 0.0f);
 	mScoreText->CreateTextureFromText(std::to_string(mLives));
 	mScoreText->Render(Vector2D(220, 50), SDL_FLIP_NONE, RENDERSCALE, mCamera, 0.0f);
@@ -177,6 +208,7 @@ void GameScreenLevel1::Render()
 
 void GameScreenLevel1::Update(float deltaTime, SDL_Event e)
 {
+	
 	//std::cerr << deltaTime << std::endl;
 	if (mLives == 0 )
 	{
@@ -189,6 +221,7 @@ void GameScreenLevel1::Update(float deltaTime, SDL_Event e)
 	{
 		ClearLevel();
 		SetUpLevel(mPlayerCount);
+		return;
 	}
 	
 	CameraMovementLogic();
@@ -228,7 +261,10 @@ void GameScreenLevel1::Update(float deltaTime, SDL_Event e)
 			BrickCollisionsWithPlayer(mPlayers[i], playerBotCollided);
 			PipeCollisionsWithPlayer(mPlayers[i], playerBotCollided);
 			CoinCollisionsWithPlayer(mPlayers[i]);
-			EnemyCollisionsWithPlayer(mPlayers[i]);
+			if (!mPlayers[i]->IsInvunerable())
+			{
+				EnemyCollisionsWithPlayer(mPlayers[i]);
+			}
 			if (FlagCollisionsWithPlayer(mPlayers[i]))
 			{
 				return;
@@ -257,12 +293,11 @@ void GameScreenLevel1::Update(float deltaTime, SDL_Event e)
 				}
 				else
 				{
-					
 					mPlayers.erase(mPlayers.begin() + i);
 					mLives--;
-					if (mLives == 1)
+					if (mLives > 0)
 					{
-						mResetingLevel = true;
+						mResetingLevel = true;	
 					}
 				}
 			}
@@ -458,6 +493,9 @@ void GameScreenLevel1::BrickCollisionsWithPlayer(Player* player, bool& botCollid
 								{
 									player->SetY(mBricks[j]->GetY() + (mBricks[j]->GetHitbox()->h));
 									player->SetJumpForce(0);
+									mBumpBlockSound->Play(0);
+									mPowerUpSpawnedSound->Play(0);
+
 									mBricks[j]->Hit(player->GetHealth());
 									mBricks[j]->SetBrickType(BrickType::SOLIDBLOCK);
 								}
@@ -483,6 +521,35 @@ void GameScreenLevel1::BrickCollisionsWithPlayer(Player* player, bool& botCollid
 								//if(mPlayers[i].GetJumpf)
 								player->SetY(mBricks[j]->GetY() + (mBricks[j]->GetHitbox()->h));
 								player->SetJumpForce(0);
+
+								//Play correct sound
+								if (mBricks[j]->GetIfCoinsInside() && !mBricks[j]->GetBeenHit())
+								{
+									mCoinCollectedSound->Play(1);
+								}
+
+								if (player->GetHealth() == 1)
+								{
+									mBumpBlockSound->Play(0);
+								}
+								if (player->GetHealth() > 1)
+								{
+									if (mBricks[j]->GetBrickType() == BrickType::QUESTIONBLOCK)
+									{
+										mBumpBlockSound->Play(0);
+									}
+									else
+									{
+										mBreakBlockSound->Play(0);
+									}
+								}
+								//End sound logic
+
+								if (mBricks[j]->GetItemInside() && !mBricks[j]->GetBeenHit() && (mBricks[j]->GetBrickType() == BrickType::QUESTIONBLOCK))
+								{
+									mPowerUpSpawnedSound->Play(0);
+								}
+
 								mBricks[j]->Hit(player->GetHealth());
 
 								for (int i = 0; i < mCoins.size(); i++)
@@ -491,6 +558,7 @@ void GameScreenLevel1::BrickCollisionsWithPlayer(Player* player, bool& botCollid
 									{
 										mScore += 100;
 										mCoins.erase(mCoins.begin() + i);
+										mCoinCollectedSound->Play(0);
 									}
 								}
 
@@ -570,6 +638,7 @@ void GameScreenLevel1::CoinCollisionsWithPlayer(Player* player)
 			{
 				mScore += 200;
 				mCoinsCollected++;
+				mCoinCollectedSound->Play(0);
 				mCoins.erase(mCoins.begin() + i);
 			}
 		}
@@ -690,6 +759,7 @@ void GameScreenLevel1::EnemyCollisionsWithPlayer(Player* player)
 						if (player->GetJumpForce() < 0)
 						{
 							mEnemys[j]->Killed();
+							mStompSound->Play(0);
 							mScore += 100;
 							player->SetJumpForce(300);
 						}
@@ -794,17 +864,25 @@ bool GameScreenLevel1::FlagCollisionsWithPlayer(Player* player)
 		{
 			if (mCurrentLevel == 2)
 			{
+				ClearLevel();
 				mManager->ChangeToGameOver(mScore);
 				return true;
 			}
 
-
-			player->SetOnPlatform(true);
+			//player->SetOnPlatform(true);
 			mCurrentLevel++;
 			for (int i = 0; i < mPlayers.size(); i++)
 			{
-				mPreviousHealth[i] = mPlayers[i]->GetHealth();
+				if (!mPlayers[i]->IsAlive())
+				{
+					mPreviousHealth[i] = 1;
+				}
+				else
+				{
+					mPreviousHealth[i] = mPlayers[i]->GetHealth();
+				}
 			}
+			mCourseClearSound->Play(0);
 			ClearLevel();
 			SetUpLevel(mPlayerCount);
 			return true;
