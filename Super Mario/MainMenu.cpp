@@ -95,22 +95,12 @@ void MainMenu::Update(float deltaTime, SDL_Event e)
 			if (mGithubButton->hovering)
 			{
 				mSelectedSound->Play(0);
-				std::cout << "GitHub" << std::endl;
-
-				try
-				{
-					system("start chrome https://ryangoldsmith.github.io/");
-				}
-				catch(const std::exception& e)
-				{
-					system("start iexplore https://ryangoldsmith.github.io/");
-				}
+				system("start chrome https://ryangoldsmith.github.io/");
 			}
 
 			if (mExitButton->hovering)
 			{
 				mSelectedSound->Play(0);
-				std::cout << "Exit" << std::endl;
 				SDL_Quit();
 				exit(0);
 			}

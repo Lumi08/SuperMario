@@ -34,7 +34,6 @@ void SetRandomWindowIcon();
 
 int main(int argc, char* args[])
 {
-
 	if (InitSDL())
 	{
 		gameScreenManager = new GameScreenManager(gRenderer, SCREEN_MENU);

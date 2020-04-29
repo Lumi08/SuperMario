@@ -150,9 +150,6 @@
     <ClCompile Include="GameOver.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Ui.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Flag.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

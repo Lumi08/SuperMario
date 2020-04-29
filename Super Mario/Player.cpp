@@ -324,7 +324,6 @@ void Player::MovementLogic(float deltaTime)
 			mPlayerState = IDLE;
 		}
 	}
-
 	if (mJumping)
 	{
 		if (mJumpForce < 100)

@@ -147,7 +147,6 @@
     <ClCompile Include="SoundEffect.cpp" />
     <ClCompile Include="Text.cpp" />
     <ClCompile Include="Texture2D.cpp" />
-    <ClCompile Include="Ui.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\SDL\SDL2.lib" />

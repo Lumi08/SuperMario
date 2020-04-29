@@ -18,7 +18,6 @@ public:
 	///Updates the coins information
 	void Update(float deltaTime, SDL_Event e, int& score);
 private:
-	SDL_Renderer* mRenderer;
 	Animation* mAnimation;
 	SDL_Rect* mSourceRect;
 };
